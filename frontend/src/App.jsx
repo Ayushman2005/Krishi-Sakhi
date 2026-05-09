@@ -18,6 +18,7 @@ const AppContent = () => {
   const { profile, clearProfile } = useFarmer();
   const [activePage, setActivePage] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
@@ -83,14 +84,43 @@ const AppContent = () => {
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </button>
-              <div className="flex items-center gap-2">
+              <div className="relative flex items-center">
                 <button 
-                  onClick={() => setShowSettings(true)}
-                  className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" 
-                  aria-label="Settings"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className={`relative p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
+                  aria-label="Notifications"
                 >
-                  <Settings size={16} className="text-text-muted hover:text-white" />
+                  <Bell size={16} />
+                  {/* Notification dot */}
+                  <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border border-background animate-pulse"></span>
                 </button>
+                
+                {/* Notifications Dropdown */}
+                <AnimatePresence>
+                  {showNotifications && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 top-full mt-4 w-80 glass p-4 rounded-3xl shadow-2xl z-50 border border-white/10 bg-[#020617]/95 origin-top-right"
+                    >
+                      <h3 className="text-sm font-black mb-3 px-2 flex items-center justify-between">
+                        Notifications
+                        <span className="text-[9px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">2 New</span>
+                      </h3>
+                      <div className="space-y-2">
+                        <div className="p-3 bg-white/5 hover:bg-white/10 transition-colors rounded-2xl cursor-pointer">
+                          <p className="text-xs font-bold text-error mb-1">Weather Alert</p>
+                          <p className="text-[11px] text-text-muted leading-tight">Heavy unseasonal rain expected tomorrow in your district. Delay fertilizer application.</p>
+                        </div>
+                        <div className="p-3 bg-white/5 hover:bg-white/10 transition-colors rounded-2xl cursor-pointer">
+                          <p className="text-xs font-bold text-primary mb-1">Market Pulse</p>
+                          <p className="text-[11px] text-text-muted leading-tight">Paddy rates have increased by 2.4% today in local mandis.</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               {clearProfile && (
                 <button
