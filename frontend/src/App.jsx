@@ -21,28 +21,23 @@ const AppContent = () => {
   return (
     <div className="flex-1 flex flex-col min-h-screen">
 
-      {/* Navbar */}
-      <nav className="glass border-none rounded-none w-full flex justify-center items-center z-50 sticky top-0 backdrop-blur-3xl bg-background/60 border-b border-white/5">
-        <div className="w-full max-w-[1300px] px-8 py-5 flex justify-between items-center">
-
+      {/* Floating Navbar */}
+      <div className="w-full flex justify-center z-50 sticky top-6 px-4 pointer-events-none">
+        <nav className="glass w-full max-w-6xl flex justify-between items-center px-4 py-3 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/70 backdrop-blur-xl">
           {/* Logo */}
           <div className="flex items-center gap-4">
             <motion.div
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              className="flex items-center gap-3 cursor-pointer"
+              className="flex items-center gap-3 cursor-pointer pl-2"
               onClick={() => setActivePage('dashboard')}
             >
-              <div className="w-11 h-11 bg-primary rounded-2xl flex items-center justify-center text-white shadow-[0_8px_24px_rgba(16,185,129,0.4)] relative overflow-hidden group">
+              <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg relative overflow-hidden group">
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                <Sprout size={24} className="relative z-10" />
+                <Sprout size={20} className="relative z-10" />
               </div>
-              <div>
-                <span className="text-xl font-black tracking-tighter">Krishi Sakhi <span className="text-primary">AI</span></span>
-                <div className="flex items-center gap-1">
-                  <ShieldCheck size={9} className="text-primary" />
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-text-muted">Verified Assistant</span>
-                </div>
+              <div className="hidden sm:block">
+                <span className="text-lg font-black tracking-tight leading-none">Krishi Sakhi</span>
               </div>
             </motion.div>
 
@@ -52,16 +47,16 @@ const AppContent = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="hidden md:flex items-center gap-1 ml-6 bg-white/5 rounded-2xl p-1 border border-white/5"
+                className="hidden md:flex items-center gap-1 ml-6 bg-white/5 rounded-full p-1 border border-white/5"
               >
                 {NAV_ITEMS.map(item => (
                   <button
                     key={item.id}
                     onClick={() => setActivePage(item.id)}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 ${
                       activePage === item.id
                         ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                        : 'text-text-muted hover:text-white hover:bg-white/5'
+                        : 'text-text-muted hover:text-white hover:bg-white/10'
                     }`}
                   >
                     <item.icon size={16} />
@@ -74,40 +69,42 @@ const AppContent = () => {
 
           {/* Right side */}
           {profile ? (
-            <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
+            <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-2 pr-1">
+              <div className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 cursor-default mr-2">
                 <div className="text-right">
-                  <p className="text-sm font-black leading-none">{profile.name}</p>
-                  <p className="text-[10px] text-primary font-bold uppercase tracking-wider">{profile.crop} · {profile.landSize || '—'} ac</p>
+                  <p className="text-xs font-black leading-none">{profile.name}</p>
+                  <p className="text-[9px] text-primary font-bold uppercase tracking-widest">{profile.crop}</p>
                 </div>
-                <div className="w-9 h-9 bg-primary/20 rounded-full border-2 border-primary/50 flex items-center justify-center text-primary font-black text-sm group-hover:bg-primary group-hover:text-white transition-all">
+                <div className="w-7 h-7 bg-primary/20 rounded-full border border-primary/50 flex items-center justify-center text-primary font-black text-xs">
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </div>
-              <button className="p-2.5 bg-white/5 rounded-xl hover:bg-white/10 transition-colors border border-white/5" aria-label="Notifications">
-                <Bell size={18} className="text-text-muted" />
+              <button className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" aria-label="Notifications">
+                <Bell size={16} className="text-text-muted hover:text-white" />
               </button>
-              <button className="p-2.5 bg-white/5 rounded-xl hover:bg-white/10 transition-colors border border-white/5" aria-label="Settings">
-                <Settings size={18} className="text-text-muted" />
+              <button className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" aria-label="Settings">
+                <Settings size={16} className="text-text-muted hover:text-white" />
               </button>
               {clearProfile && (
                 <button
                   onClick={clearProfile}
-                  className="p-2.5 bg-error/10 rounded-xl hover:bg-error/20 transition-colors border border-error/10"
+                  className="p-2.5 bg-error/10 rounded-full hover:bg-error/20 transition-colors border border-error/10 ml-1"
                   title="Reset Profile"
                   aria-label="Log out"
                 >
-                  <LogOut size={18} className="text-error" />
+                  <LogOut size={16} className="text-error" />
                 </button>
               )}
             </motion.div>
           ) : (
-            <div className="flex gap-3 items-center">
-              <span className="px-4 py-1.5 bg-white/5 rounded-full text-xs font-bold text-text-muted uppercase tracking-widest border border-white/5">v2.0 Beta</span>
+            <div className="flex gap-3 items-center pr-2">
+              <span className="px-4 py-1.5 bg-white/5 rounded-full text-[10px] font-black text-primary uppercase tracking-[0.2em] border border-white/10 flex items-center gap-2">
+                <ShieldCheck size={12} /> v2.0 Beta
+              </span>
             </div>
           )}
-        </div>
-      </nav>
+        </nav>
+      </div>
 
       {/* Mobile Nav Tabs */}
       {profile && (
