@@ -132,11 +132,10 @@ const AppContent = () => {
           {!profile ? (
             <motion.div
               key="setup"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5, ease: 'circOut' }}
-              className="flex items-center justify-center min-h-[calc(100vh-80px)] p-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.4 }}
             >
               <ProfileForm />
             </motion.div>
