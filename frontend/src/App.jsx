@@ -71,15 +71,18 @@ const AppContent = () => {
           {/* Right side */}
           {profile ? (
             <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-2 pr-1">
-              <div className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 cursor-default mr-2">
-                <div className="text-right">
+              <button 
+                onClick={() => setShowSettings(true)}
+                className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors mr-2 text-left"
+              >
+                <div>
                   <p className="text-xs font-black leading-none">{profile.name}</p>
                   <p className="text-[9px] text-primary font-bold uppercase tracking-widest">{profile.crop}</p>
                 </div>
                 <div className="w-7 h-7 bg-primary/20 rounded-full border border-primary/50 flex items-center justify-center text-primary font-black text-xs">
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
-              </div>
+              </button>
               <div className="flex items-center gap-2">
                 <button 
                   onClick={() => setShowSettings(true)}
