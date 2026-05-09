@@ -81,15 +81,15 @@ const AppContent = () => {
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </div>
-              <div className="relative">
+              <div className="relative flex items-center">
                 <button 
                   onClick={() => { setShowNotifications(!showNotifications); setShowSettings(false); }}
-                  className={`p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
+                  className={`relative p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
                   aria-label="Notifications"
                 >
                   <Bell size={16} />
                   {/* Notification dot */}
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+                  <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border border-background animate-pulse"></span>
                 </button>
                 
                 {/* Notifications Dropdown */}
@@ -99,7 +99,7 @@ const AppContent = () => {
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute right-0 mt-4 w-80 glass p-4 rounded-3xl shadow-2xl z-50 border border-white/10 bg-[#020617]/90"
+                      className="absolute right-0 top-full mt-4 w-80 glass p-4 rounded-3xl shadow-2xl z-50 border border-white/10 bg-[#020617]/95 origin-top-right"
                     >
                       <h3 className="text-sm font-black mb-3 px-2 flex items-center justify-between">
                         Notifications
