@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FarmerProvider, useFarmer } from './context/FarmerContext';
 import ProfileForm from './components/ProfileForm';
@@ -19,6 +19,17 @@ const AppContent = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
@@ -84,7 +95,7 @@ const AppContent = () => {
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </button>
-              <div className="relative flex items-center">
+              <div className="relative flex items-center" ref={notificationRef}>
                 <button 
                   onClick={() => setShowNotifications(!showNotifications)}
                   className={`relative p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
