@@ -7,11 +7,13 @@
 *   **Premium Glassmorphism UI**: A cutting-edge frontend built with React, Framer Motion, and Tailwind CSS. Features animated aurora backgrounds, multi-layer frosted glass panels, and dynamic shimmers.
 *   **Global Location Intelligence**: Integrated with the OpenStreetMap (Nominatim) API for 100% accurate, debounced global city and country autocomplete without requiring user API keys.
 *   **RAG-Powered Conversational AI**: A robust chatbot interface backed by Google's Gemini 2.0 Flash and a localized Kerala-specific agricultural Knowledge Base.
+*   **Live Market Economics**: Real-time regional mandi prices, commodity trend charting, and a "Smart Revenue Estimator" calculator for harvest financial planning.
+*   **Farm Task Scheduling**: Dynamic scheduling widget allowing users to track critical and routine agronomic tasks visually.
 *   **Advanced ML Hub**:
     *   **🍃 Plant Disease Detector**: Upload leaf images for simulated CNN-based disease diagnosis with confidence intervals and treatment protocols.
     *   **📈 Crop Yield Predictor**: A multi-factor regression simulator predicting harvests based on 10+ agronomic parameters (pH, NPK, Rainfall).
     *   **⛈️ Climate Risk Advisor**: An NLP-style rules engine assessing crop risk based on live temperature, humidity, and wind parameters.
-*   **Dynamic Dashboard**: Real-time activity timeline tracking with a dynamically calculated "Farm Health Index", and mock live market trend streams.
+*   **Dynamic Dashboard**: Real-time activity timeline tracking with a dynamically calculated "Farm Health Index".
 
 ## 🛠️ Technology Stack
 

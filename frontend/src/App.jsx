@@ -5,11 +5,13 @@ import ProfileForm from './components/ProfileForm';
 import Dashboard from './components/Dashboard';
 import ChatInterface from './components/ChatInterface';
 import MLHub from './components/MLHub';
-import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut } from 'lucide-react';
+import MarketInsights from './components/MarketInsights';
+import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'ml', label: 'AI Models', icon: Cpu },
+  { id: 'market', label: 'Market Rates', icon: TrendingUp },
 ];
 
 const AppContent = () => {
@@ -142,6 +144,11 @@ const AppContent = () => {
           ) : activePage === 'dashboard' ? (
             <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Dashboard />
+              <ChatInterface />
+            </motion.div>
+          ) : activePage === 'market' ? (
+            <motion.div key="market" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <MarketInsights />
               <ChatInterface />
             </motion.div>
           ) : (

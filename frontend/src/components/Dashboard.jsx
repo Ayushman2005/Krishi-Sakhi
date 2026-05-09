@@ -6,9 +6,9 @@ import {
   CloudRain, Sprout, Bug, Droplets, 
   Plus, Calendar, TrendingUp, AlertCircle,
   CheckCircle2, Clock, ArrowUpRight, Sun, Wind,
-  AlertTriangle, RefreshCw, LayoutGrid
+  AlertTriangle, RefreshCw, LayoutGrid, CalendarCheck, MoreHorizontal
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 const Dashboard = () => {
   const { profile, activities, addActivity } = useFarmer();
@@ -285,34 +285,34 @@ const Dashboard = () => {
           <motion.div variants={itemVariants} className="glass p-10 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl -mr-24 -mt-24 group-hover:bg-primary/10 transition-colors" />
             <h3 className="text-2xl font-black mb-8 flex items-center gap-4">
-              <TrendingUp className="text-primary" /> Market Pulse
+              <CalendarCheck className="text-primary" /> Upcoming Tasks
             </h3>
-            <div className="space-y-6">
-              {isLoading ? (
-                [1, 2, 3].map(i => <div key={i} className="h-16 skeleton w-full opacity-30" />)
-              ) : (
-                marketTrends.map((item, i) => (
-                  <div key={i} className="flex justify-between items-center group/item hover:bg-white/5 p-3 -mx-3 rounded-2xl transition-colors cursor-pointer">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center font-black text-xs group-hover/item:bg-primary group-hover/item:text-white transition-all">
-                        {item.name.charAt(0)}
-                      </div>
-                      <span className="font-bold text-lg">{item.name}</span>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-black text-xl tracking-tight">{item.price}</p>
-                      <p className={`text-[10px] font-black flex items-center justify-end gap-1 ${
-                        item.trend === 'up' ? 'text-success' : item.trend === 'down' ? 'text-error' : 'text-text-muted'
-                      }`}>
-                        {item.trend === 'up' && <ArrowUpRight size={14} />}
-                        {item.change}
-                      </p>
-                    </div>
+            <div className="space-y-4">
+              {[
+                { date: addDays(new Date(), 1), task: 'Apply NPK Fertilizer', type: 'critical' },
+                { date: addDays(new Date(), 3), task: 'Check Irrigation Lines', type: 'routine' },
+                { date: addDays(new Date(), 5), task: 'Pesticide Spray (Preventive)', type: 'routine' }
+              ].map((item, i) => (
+                <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all cursor-pointer">
+                  <div className="flex flex-col items-center justify-center min-w-[50px] border-r border-white/10 pr-4">
+                    <span className="text-[10px] uppercase font-black text-text-muted">{format(item.date, 'MMM')}</span>
+                    <span className="text-xl font-black">{format(item.date, 'dd')}</span>
                   </div>
-                ))
-              )}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <p className="font-bold text-sm">{item.task}</p>
+                    <p className={`text-[9px] uppercase font-black tracking-widest mt-1 ${item.type === 'critical' ? 'text-warning' : 'text-primary'}`}>
+                      {item.type}
+                    </p>
+                  </div>
+                  <button className="text-text-muted hover:text-white self-center">
+                    <MoreHorizontal size={16} />
+                  </button>
+                </div>
+              ))}
             </div>
-            <button className="w-full mt-10 py-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-xs font-black uppercase tracking-[0.2em] border border-white/5">Analyze Full Market</button>
+            <button className="w-full mt-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all text-xs font-black uppercase tracking-[0.2em] border border-white/5 flex items-center justify-center gap-2">
+              <Plus size={14} /> Add Task
+            </button>
           </motion.div>
 
           <motion.div variants={itemVariants} className="glass p-10 bg-gradient-to-br from-primary/10 via-background to-transparent border-primary/20 relative">
