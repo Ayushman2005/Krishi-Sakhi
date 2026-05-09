@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard';
 import ChatInterface from './components/ChatInterface';
 import MLHub from './components/MLHub';
 import MarketInsights from './components/MarketInsights';
-import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp } from 'lucide-react';
+import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -17,6 +17,8 @@ const NAV_ITEMS = [
 const AppContent = () => {
   const { profile, clearProfile } = useFarmer();
   const [activePage, setActivePage] = useState('dashboard');
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <div className="flex-1 flex flex-col min-h-screen">
@@ -79,10 +81,50 @@ const AppContent = () => {
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </div>
-              <button className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" aria-label="Notifications">
-                <Bell size={16} className="text-text-muted hover:text-white" />
-              </button>
-              <button className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" aria-label="Settings">
+              <div className="relative">
+                <button 
+                  onClick={() => { setShowNotifications(!showNotifications); setShowSettings(false); }}
+                  className={`p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
+                  aria-label="Notifications"
+                >
+                  <Bell size={16} />
+                  {/* Notification dot */}
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+                </button>
+                
+                {/* Notifications Dropdown */}
+                <AnimatePresence>
+                  {showNotifications && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 mt-4 w-80 glass p-4 rounded-3xl shadow-2xl z-50 border border-white/10 bg-[#020617]/90"
+                    >
+                      <h3 className="text-sm font-black mb-3 px-2 flex items-center justify-between">
+                        Notifications
+                        <span className="text-[9px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">2 New</span>
+                      </h3>
+                      <div className="space-y-2">
+                        <div className="p-3 bg-white/5 hover:bg-white/10 transition-colors rounded-2xl cursor-pointer">
+                          <p className="text-xs font-bold text-error mb-1">Weather Alert</p>
+                          <p className="text-[11px] text-text-muted leading-tight">Heavy unseasonal rain expected tomorrow in your district. Delay fertilizer application.</p>
+                        </div>
+                        <div className="p-3 bg-white/5 hover:bg-white/10 transition-colors rounded-2xl cursor-pointer">
+                          <p className="text-xs font-bold text-primary mb-1">Market Pulse</p>
+                          <p className="text-[11px] text-text-muted leading-tight">Paddy rates have increased by 2.4% today in local mandis.</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <button 
+                onClick={() => { setShowSettings(true); setShowNotifications(false); }}
+                className="p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/5" 
+                aria-label="Settings"
+              >
                 <Settings size={16} className="text-text-muted hover:text-white" />
               </button>
               {clearProfile && (
@@ -156,6 +198,65 @@ const AppContent = () => {
           )}
         </AnimatePresence>
       </main>
+
+      {/* Settings Modal */}
+      <AnimatePresence>
+        {showSettings && profile && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowSettings(false)}
+              className="absolute inset-0 bg-background/80 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              className="glass p-8 md:p-12 max-w-lg w-full relative z-10 shadow-[0_50px_100px_rgba(0,0,0,0.8)] border-white/10 bg-[#020617]/95"
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl font-black flex items-center gap-3">
+                  <Settings className="text-primary" size={28} /> Preferences
+                </h2>
+                <button onClick={() => setShowSettings(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div className="p-5 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
+                  <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary font-black text-2xl border-2 border-primary/30">
+                    {profile.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-black text-xl">{profile.name}</h3>
+                    <p className="text-sm text-text-muted">{profile.location || 'Location Not Set'}</p>
+                    <p className="text-xs text-primary font-bold uppercase tracking-widest mt-1">{profile.crop} Farmer</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted">Account Management</p>
+                  <button className="w-full btn btn-secondary py-4 justify-start bg-white/5 border-transparent hover:bg-white/10">
+                    <User size={16} /> Edit Farm Details
+                  </button>
+                  <button className="w-full btn btn-secondary py-4 justify-start bg-white/5 border-transparent hover:bg-white/10">
+                    <ShieldCheck size={16} /> Privacy & Data
+                  </button>
+                  <button 
+                    onClick={() => { clearProfile(); setShowSettings(false); }}
+                    className="w-full btn py-4 justify-start bg-error/10 text-error hover:bg-error/20 border border-error/10"
+                  >
+                    <LogOut size={16} /> Factory Reset (Clear Data)
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
       <footer className="w-full flex justify-center border-t border-white/5 mt-20 relative overflow-hidden bg-black/20">
