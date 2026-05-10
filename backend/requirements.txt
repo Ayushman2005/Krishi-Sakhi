@@ -9,3 +9,6 @@ chromadb
 sentence-transformers
 requests
 cors
+torch
+torchvision
+Pillow

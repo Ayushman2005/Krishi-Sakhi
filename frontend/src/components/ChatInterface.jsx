@@ -12,7 +12,53 @@ const ChatInterface = () => {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const scrollRef = useRef(null);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = true;
+
+      recognitionRef.current.onresult = (event) => {
+        const transcript = Array.from(event.results)
+          .map(result => result[0])
+          .map(result => result.transcript)
+          .join('');
+        setInput(transcript);
+      };
+
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error', event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert("Voice recognition is not supported in this browser (Try Chrome/Edge).");
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      setInput(''); // clear input before listening
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
+  const formatTime = (date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -109,7 +155,7 @@ const ChatInterface = () => {
                   }`}>
                     <p className="text-[15px] leading-relaxed font-medium">{msg.text}</p>
                     <p className={`text-[10px] mt-2 font-bold opacity-40 ${msg.sender === 'user' ? 'text-right' : 'text-left'}`}>
-                      {format(new Date(), 'HH:mm')}
+                      {formatTime(new Date())}
                     </p>
                   </div>
                 </motion.div>
@@ -146,7 +192,13 @@ const ChatInterface = () => {
                     placeholder="Ask about crops, weather, or advice..."
                     className="relative w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-primary/50 transition-all text-[15px]"
                   />
-                  <button type="button" className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors">
+                  <button 
+                    type="button" 
+                    onClick={toggleListening}
+                    className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${
+                      isListening ? 'text-error animate-pulse' : 'text-text-muted hover:text-primary'
+                    }`}
+                  >
                     <Mic size={22} />
                   </button>
                 </div>

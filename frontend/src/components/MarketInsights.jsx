@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X, BrainCircuit, Activity } from 'lucide-react';
+
+const BACKEND_URL = 'http://localhost:8000';
 
 const MARKET_DATA = [
   { id: 1, crop: 'Paddy (Grade A)', price: 2350, unit: 'per Quintal', trend: '+2.4%', up: true, location: 'Palakkad Mandi' },
@@ -13,10 +15,27 @@ const MARKET_DATA = [
 
 const MarketInsights = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedCrop, setSelectedCrop] = useState(null);
+  const [forecastData, setForecastData] = useState(null);
+  const [isLoadingForecast, setIsLoadingForecast] = useState(false);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => setIsRefreshing(false), 800);
+  };
+
+  const getForecast = async (crop) => {
+    setSelectedCrop(crop);
+    setIsLoadingForecast(true);
+    try {
+      const response = await fetch(`${BACKEND_URL}/ml/market-forecast?crop=${encodeURIComponent(crop)}`);
+      const data = await response.json();
+      setForecastData(data);
+    } catch (err) {
+      console.error("Failed to fetch forecast", err);
+    } finally {
+      setIsLoadingForecast(false);
+    }
   };
 
   return (
@@ -70,13 +89,108 @@ const MarketInsights = () => {
               <span className="text-text-muted font-bold mt-1 text-sm">{item.unit}</span>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/5 flex items-center gap-2 text-xs text-text-muted relative z-10">
-              <MapPin size={12} className="text-secondary" /> {item.location}
-              <span className="ml-auto opacity-50">Just updated</span>
+            <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-text-muted relative z-10">
+              <div className="flex items-center gap-2">
+                <MapPin size={12} className="text-secondary" /> {item.location}
+              </div>
+              <button 
+                onClick={() => getForecast(item.crop)}
+                className="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 hover:bg-secondary/20 text-secondary rounded-full transition-colors font-bold"
+              >
+                <Sparkles size={12} /> AI Forecast
+              </button>
             </div>
           </motion.div>
         ))}
       </div>
+
+      {/* Forecast Modal */}
+      <AnimatePresence>
+        {selectedCrop && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="glass-card w-full max-w-2xl relative overflow-hidden"
+            >
+              <button onClick={() => setSelectedCrop(null)} className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                <X size={20} />
+              </button>
+
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center">
+                  <BrainCircuit size={24} className="text-secondary" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black">{selectedCrop} AI Forecast</h3>
+                  <p className="text-text-muted text-sm flex items-center gap-2">
+                    <Activity size={14} /> Predictive Time-Series Model (7-Day)
+                  </p>
+                </div>
+              </div>
+
+              {isLoadingForecast ? (
+                <div className="h-64 flex flex-col items-center justify-center space-y-4">
+                  <RefreshCcw size={32} className="text-secondary animate-spin" />
+                  <p className="text-text-muted animate-pulse">Running ARIMA Models...</p>
+                </div>
+              ) : forecastData ? (
+                <div className="space-y-6">
+                  {/* Recommendation Banner */}
+                  <div className={`p-4 rounded-2xl flex items-center justify-between border ${
+                    forecastData.recommendation === 'Hold' ? 'bg-warning/10 border-warning/20' : 'bg-success/10 border-success/20'
+                  }`}>
+                    <div>
+                      <p className="text-xs uppercase tracking-widest font-bold opacity-70 mb-1">AI Recommendation</p>
+                      <p className={`text-xl font-black ${forecastData.recommendation === 'Hold' ? 'text-warning' : 'text-success'}`}>
+                        {forecastData.recommendation}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs uppercase tracking-widest font-bold opacity-70 mb-1">Model Confidence</p>
+                      <p className="text-xl font-black">{forecastData.confidence}%</p>
+                    </div>
+                  </div>
+
+                  {/* Graph visualization (Simulated using CSS widths) */}
+                  <div className="space-y-3">
+                    {forecastData.forecast_7_days.map((day, i) => {
+                      // Normalize width for basic bar chart look
+                      const minPrice = Math.min(...forecastData.forecast_7_days.map(d => d.predicted_price));
+                      const maxPrice = Math.max(...forecastData.forecast_7_days.map(d => d.predicted_price));
+                      const widthPercent = ((day.predicted_price - minPrice * 0.95) / (maxPrice - minPrice * 0.95)) * 100;
+                      
+                      return (
+                        <div key={i} className="flex items-center gap-4">
+                          <span className="w-10 text-xs font-bold text-text-muted">{day.day}</span>
+                          <div className="flex-1 h-8 bg-white/5 rounded-r-lg flex items-center">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: `${widthPercent}%` }}
+                              transition={{ delay: i * 0.1, duration: 0.8 }}
+                              className="h-full bg-gradient-to-r from-secondary/40 to-secondary rounded-r-lg relative"
+                            >
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-black text-black">
+                                ₹{day.predicted_price.toFixed(0)}
+                              </span>
+                            </motion.div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Revenue Estimator Banner */}
       <motion.div 

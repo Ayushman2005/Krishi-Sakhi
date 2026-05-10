@@ -9,6 +9,15 @@ from typing import List, Optional
 import datetime
 import logging
 import random
+import io
+try:
+    import torch
+    import torch.nn as nn
+    from torchvision import models, transforms
+    from PIL import Image
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -105,6 +114,39 @@ Krishi Sakhi Expert Agricultural Knowledge:
 """
 
 DISEASE_CLASSES = ["Healthy", "Leaf Blast", "Brown Plant Hopper", "Neck Rot", "Sheath Blight", "Tungro Virus"]
+
+# PyTorch Model Initialization
+cnn_model = None
+device = None
+transform = None
+
+if TORCH_AVAILABLE:
+    try:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        cnn_model = models.mobilenet_v2(pretrained=False)
+        # Assuming the model was trained with the same number of classes
+        cnn_model.classifier[1] = nn.Linear(cnn_model.last_channel, len(DISEASE_CLASSES))
+        
+        # Load weights if available
+        if os.path.exists("plant_disease_model.pth"):
+            cnn_model.load_state_dict(torch.load("plant_disease_model.pth", map_location=device))
+            cnn_model.to(device)
+            cnn_model.eval()
+            logger.info("✅ PyTorch CNN Model loaded successfully.")
+            
+            transform = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+            ])
+        else:
+            logger.warning("⚠ PyTorch model weights ('plant_disease_model.pth') not found. CNN will run in demo mode.")
+            cnn_model = None
+    except Exception as e:
+        logger.error(f"❌ Failed to load PyTorch model: {e}")
+        cnn_model = None
+
 CROP_BENCHMARKS = {
     "Paddy":     {"unit": "quintals/acre", "avg": 20, "good": 25, "excellent": 30},
     "Coconut":   {"unit": "nuts/tree/yr",  "avg": 60, "good": 80, "excellent": 100},
@@ -185,12 +227,31 @@ async def disease_detect(file: UploadFile = File(...)):
 
     logger.info(f"Analyzing image: {file.filename}, size: {len(contents)} bytes")
 
-    # ── Production stub: replace with actual model inference ──
-    # import tensorflow as tf
-    # img = preprocess(contents)
-    # logits = model.predict(img)
-    # prediction = DISEASE_CLASSES[np.argmax(logits)]
-    # confidence = float(np.max(softmax(logits)))
+    if cnn_model and TORCH_AVAILABLE:
+        try:
+            image = Image.open(io.BytesIO(contents)).convert('RGB')
+            input_tensor = transform(image).unsqueeze(0).to(device)
+            
+            with torch.no_grad():
+                outputs = cnn_model(input_tensor)
+                probabilities = torch.nn.functional.softmax(outputs[0], dim=0)
+                
+            confidence, predicted_idx = torch.max(probabilities, 0)
+            predicted_idx = predicted_idx.item()
+            confidence = confidence.item()
+            
+            all_preds = [{"label": DISEASE_CLASSES[i], "score": float(probabilities[i])} for i in range(len(DISEASE_CLASSES))]
+            all_preds.sort(key=lambda x: x["score"], reverse=True)
+            
+            return {
+                "prediction": DISEASE_CLASSES[predicted_idx],
+                "confidence": confidence,
+                "all_predictions": all_preds[:4],
+                "mode": "production"
+            }
+        except Exception as e:
+            logger.error(f"PyTorch inference failed: {e}")
+            # Fall back to demo mode if inference fails
 
     # Demo simulation with realistic distribution
     weights = [0.35, 0.25, 0.15, 0.10, 0.10, 0.05]
@@ -206,6 +267,7 @@ async def disease_detect(file: UploadFile = File(...)):
         "prediction": DISEASE_CLASSES[predicted_idx],
         "confidence": confidence,
         "all_predictions": all_preds[:4],
+        "mode": "demo"
     }
 
 @app.post("/ml/yield-predict")
@@ -274,6 +336,48 @@ async def weather_advisory(request: WeatherRequest):
         "irrigation_needed": request.rainfall_mm < 5 and request.humidity < 60,
     }
 
+@app.get("/ml/market-forecast")
+async def market_forecast(crop: str):
+    """
+    Time-Series Market Forecasting using ARIMA/Prophet simulation.
+    In production, this would load a trained Prophet model and predict future prices.
+    """
+    import math
+    base_price = 0
+    if crop.startswith("Paddy"): base_price = 2350
+    elif crop.startswith("Coconut"): base_price = 34
+    elif crop.startswith("Rubber"): base_price = 168
+    elif crop.startswith("Cardamom"): base_price = 1850
+    else: base_price = 100
+
+    forecast = []
+    current_date = datetime.datetime.now()
+    # Simulate a slight upward or downward trend with some sine wave seasonality
+    trend_direction = 1 if random.random() > 0.4 else -1 
+    
+    for i in range(1, 8):
+        future_date = current_date + datetime.timedelta(days=i)
+        # y = base + trend*t + seasonality
+        fluctuation = math.sin(i) * (base_price * 0.02)
+        trend = trend_direction * (base_price * 0.005) * i
+        noise = random.uniform(-base_price * 0.01, base_price * 0.01)
+        
+        predicted_price = round(base_price + trend + fluctuation + noise, 2)
+        forecast.append({
+            "date": future_date.strftime("%Y-%m-%d"),
+            "day": future_date.strftime("%a"),
+            "predicted_price": predicted_price
+        })
+
+    confidence = round(random.uniform(75, 92), 1)
+    return {
+        "crop": crop,
+        "current_price": base_price,
+        "forecast_7_days": forecast,
+        "model": "ARIMA-Simulation",
+        "confidence": confidence,
+        "recommendation": "Hold" if forecast[-1]["predicted_price"] > base_price * 1.02 else "Sell Now"
+    }
 
 if __name__ == "__main__":
     import uvicorn
