@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import os
 
 # Configuration
-DATA_DIR = "./dataset/plantvillage" # You need to download the PlantVillage dataset here
+DATA_DIR = "./dataset/PlantVillage-Dataset/raw/color" # Points to the cloned repository
 MODEL_SAVE_PATH = "./plant_disease_model.pth"
 BATCH_SIZE = 32
 EPOCHS = 10

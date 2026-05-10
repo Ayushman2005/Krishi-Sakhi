@@ -109,14 +109,14 @@ const Dashboard = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-6xl font-black mb-2 tracking-tighter"
           >
-            Hi, <span className="gradient-text">{profile.name}</span>
+            Hi, <span className="gradient-text">{profile?.name || 'Farmer'}</span>
           </motion.h1>
           <div className="flex flex-wrap items-center gap-4 text-text-muted font-bold text-sm">
             <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
               <Calendar size={14} className="text-primary" /> {format(new Date(), 'EEEE, MMM d')}
             </span>
             <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-              <Sprout size={14} className="text-primary" /> {profile.crop} Farm
+              <Sprout size={14} className="text-primary" /> {profile?.crop || 'Mixed'} Farm
             </span>
             <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
               <Clock size={14} className="text-primary" /> Last Sync: {format(new Date(), 'HH:mm')}
@@ -161,8 +161,8 @@ const Dashboard = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
           { label: 'Health Index', value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100` },
-          { label: 'Soil Health', value: profile.soilType === 'Alluvial' ? 'Optimum' : 'Balanced', icon: LayoutGrid, color: 'text-primary', sub: 'pH 6.5' },
-          { label: 'Daily Water', value: 'Optimal', icon: Droplets, color: 'text-primary', sub: profile.irrigation === 'Drip' ? 'Efficient Use' : 'Standard' },
+          { label: 'Soil Health', value: profile?.soilType === 'Alluvial' ? 'Optimum' : 'Balanced', icon: LayoutGrid, color: 'text-primary', sub: 'pH 6.5' },
+          { label: 'Daily Water', value: 'Optimal', icon: Droplets, color: 'text-primary', sub: profile?.irrigation === 'Drip' ? 'Efficient Use' : 'Standard' },
           { label: 'Pest Risk', value: 'Low', icon: Bug, color: 'text-warning', sub: 'No outbreaks' },
         ].map((stat, i) => (
           <motion.div 

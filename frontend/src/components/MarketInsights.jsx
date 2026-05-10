@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X, BrainCircuit, Activity } from 'lucide-react';
+import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X } from 'lucide-react';
 
 const BACKEND_URL = 'http://localhost:8000';
 
@@ -125,12 +125,12 @@ const MarketInsights = () => {
 
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center">
-                  <BrainCircuit size={24} className="text-secondary" />
+                  <LineChart size={24} className="text-secondary" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-black">{selectedCrop} AI Forecast</h3>
                   <p className="text-text-muted text-sm flex items-center gap-2">
-                    <Activity size={14} /> Predictive Time-Series Model (7-Day)
+                    <TrendingUp size={14} /> Predictive Time-Series Model (7-Day)
                   </p>
                 </div>
               </div>
