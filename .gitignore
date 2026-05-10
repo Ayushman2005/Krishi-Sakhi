@@ -24,4 +24,20 @@ dist-ssr
 *.sw?
 backend/dataset/
 backend/__pycache__/
+frontend/.env
 backend/.env
+
+# PyTorch model weights
+plant_disease_model.pth
+class_names.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS files
+.DS_Store
+Thumbs.db
+.env
