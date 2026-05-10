@@ -111,35 +111,49 @@ const DiseaseDetector = () => {
         {!result ? (
           <motion.div key="upload" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             {/* Drop Zone */}
-            <div
+            <motion.div
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
               onClick={() => !imagePreview && fileInputRef.current?.click()}
-              className={`relative border-2 border-dashed rounded-3xl transition-all duration-300 cursor-pointer group ${
-                isDragging ? 'border-primary bg-primary/10 scale-[1.02]' : 'border-white/10 hover:border-primary/40 hover:bg-white/3'
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
+              className={`relative border-2 border-dashed rounded-[40px] transition-all duration-500 cursor-pointer group overflow-hidden ${
+                isDragging ? 'border-primary bg-primary/10' : 'border-white/10 hover:border-primary/40 hover:bg-white/5'
               }`}
             >
               <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile(e.target.files[0])} />
               
               {imagePreview ? (
-                <div className="relative p-4">
-                  <button onClick={(e) => { e.stopPropagation(); reset(); }} className="absolute top-6 right-6 z-10 p-2 bg-error/80 rounded-full text-white hover:bg-error transition-colors">
-                    <X size={16} />
-                  </button>
-                  <img src={imagePreview} alt="Leaf preview" className="w-full max-h-72 object-contain rounded-2xl" />
-                  <p className="text-center text-sm text-text-muted mt-3 font-bold">{image?.name}</p>
+                <div className="relative p-8">
+                  <motion.button 
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={(e) => { e.stopPropagation(); reset(); }} 
+                    className="absolute top-10 right-10 z-10 p-3 bg-error shadow-xl rounded-full text-white hover:bg-error/80 transition-colors"
+                  >
+                    <X size={20} />
+                  </motion.button>
+                  <motion.img 
+                    layoutId="leaf-image"
+                    src={imagePreview} 
+                    alt="Leaf preview" 
+                    className="w-full max-h-[400px] object-contain rounded-3xl shadow-2xl" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+                  <p className="absolute bottom-12 left-1/2 -translate-x-1/2 text-sm text-white font-black px-4 py-2 bg-black/40 backdrop-blur-md rounded-full border border-white/10">{image?.name}</p>
                 </div>
               ) : (
-                <div className="p-16 text-center">
-                  <div className="w-20 h-20 bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/10 transition-colors">
-                    <Camera size={36} className="text-text-muted group-hover:text-primary transition-colors" />
+                <div className="p-20 text-center relative">
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="w-24 h-24 bg-white/5 rounded-[40px] flex items-center justify-center mx-auto mb-8 group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-500 relative z-10">
+                    <Camera size={40} className="text-text-muted group-hover:text-primary transition-colors" />
                   </div>
-                  <p className="text-xl font-black mb-2">Drop leaf image here</p>
-                  <p className="text-text-muted text-sm">or click to browse  •  JPG, PNG, WebP up to 10MB</p>
+                  <p className="text-2xl font-black mb-3 tracking-tight relative z-10">Drop leaf image here</p>
+                  <p className="text-text-muted text-sm relative z-10 font-medium">or click to browse  •  JPG, PNG, WebP up to 10MB</p>
                 </div>
               )}
-            </div>
+            </motion.div>
 
             {error && (
               <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-error text-sm font-bold text-center mt-4 flex items-center justify-center gap-2">
@@ -170,32 +184,47 @@ const DiseaseDetector = () => {
             )}
 
             {/* Main Result */}
-            <div className={`glass-card border-l-4 ${isHealthy ? 'border-l-success glass-card-accent' : 'border-l-warning glass-card-warning'}`}>
-              <div className="flex items-center gap-6 mb-6">
-                <div className={`p-4 rounded-3xl ${isHealthy ? 'bg-success/20' : 'bg-warning/20'}`}>
-                  {isHealthy ? <CheckCircle2 size={40} className="text-success" /> : <AlertTriangle size={40} className="text-warning" />}
-                </div>
+            <div className={`glass rounded-[40px] p-10 border-l-8 overflow-hidden relative group ${isHealthy ? 'border-l-success' : 'border-l-warning'}`}>
+              <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.05] pointer-events-none group-hover:opacity-[0.1] transition-opacity">
+                {isHealthy ? <CheckCircle2 size={256} /> : <AlertTriangle size={256} />}
+              </div>
+              
+              <div className="flex items-center gap-8 mb-10 relative z-10">
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", damping: 12 }}
+                  className={`w-24 h-24 rounded-[32px] flex items-center justify-center shadow-2xl ${isHealthy ? 'bg-success text-black' : 'bg-warning text-black'}`}
+                >
+                  {isHealthy ? <CheckCircle2 size={48} strokeWidth={3} /> : <AlertTriangle size={48} strokeWidth={3} />}
+                </motion.div>
                 <div>
-                  <p className="text-xs font-black uppercase tracking-widest text-text-muted mb-1">Diagnosis</p>
-                  <h3 className="text-3xl font-black">{result.prediction}</h3>
-                  <p className="text-sm font-bold text-text-muted">Confidence: <span className="text-white">{(result.confidence * 100).toFixed(1)}%</span></p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted mb-2">Expert Diagnosis</p>
+                  <h3 className="text-5xl font-black tracking-tighter text-white">{result.prediction}</h3>
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                    <p className="text-sm font-black text-text-muted">AI Confidence: <span className="text-white">{(result.confidence * 100).toFixed(1)}%</span></p>
+                  </div>
                 </div>
               </div>
               
               {/* Confidence Bars */}
-              <div className="space-y-3">
+              <div className="space-y-4 relative z-10">
                 {result.all_predictions?.map((pred, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between text-xs font-bold">
-                      <span>{pred.label}</span><span className="text-text-muted">{(pred.score * 100).toFixed(1)}%</span>
+                  <div key={i} className="space-y-2">
+                    <div className="flex justify-between text-[10px] font-black uppercase tracking-widest">
+                      <span className={i === 0 ? 'text-white' : 'text-text-muted'}>{pred.label}</span>
+                      <span className="text-text-muted">{(pred.score * 100).toFixed(1)}%</span>
                     </div>
-                    <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-2.5 bg-black/40 rounded-full overflow-hidden p-0.5 border border-white/5">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${pred.score * 100}%` }}
-                        transition={{ duration: 0.8, delay: i * 0.1 }}
-                        className={`h-full rounded-full ${i === 0 ? 'bg-primary' : 'bg-white/20'}`}
-                      />
+                        transition={{ duration: 1.2, delay: i * 0.1, ease: "circOut" }}
+                        className={`h-full rounded-full relative ${i === 0 ? (isHealthy ? 'bg-success' : 'bg-warning') : 'bg-white/10'}`}
+                      >
+                        {i === 0 && <div className="absolute inset-0 bg-white/20 animate-pulse" />}
+                      </motion.div>
                     </div>
                   </div>
                 ))}

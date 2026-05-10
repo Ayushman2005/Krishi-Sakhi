@@ -97,42 +97,57 @@ const FertilizerRecommender = () => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
-              <Activity size={12} className="text-[#ec4899]" /> Soil Type
+          <motion.div 
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="space-y-1.5 group"
+          >
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5 group-focus-within:text-[#ec4899] transition-colors">
+              <Activity size={12} /> Soil Type
             </label>
             <select
               name="soil_type"
               value={formData.soil_type}
               onChange={handleInputChange}
-              className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#ec4899]/50 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ec4899]/50 transition-all appearance-none cursor-pointer"
             >
               {['Sandy', 'Loamy', 'Black', 'Red', 'Clayey'].map(type => (
                 <option key={type} value={type} className="bg-[#111111]">{type}</option>
               ))}
             </select>
-          </div>
+          </motion.div>
           
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
-              <Activity size={12} className="text-[#ec4899]" /> Crop Type
+          <motion.div 
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="space-y-1.5 group"
+          >
+            <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5 group-focus-within:text-[#ec4899] transition-colors">
+              <Activity size={12} /> Crop Type
             </label>
             <select
               name="crop_type"
               value={formData.crop_type}
               onChange={handleInputChange}
-              className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-[#ec4899]/50 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ec4899]/50 transition-all appearance-none cursor-pointer"
             >
               {['Maize', 'Sugarcane', 'Cotton', 'Tobacco', 'Paddy', 'Barley', 'Wheat', 'Millets', 'Oil seeds', 'Pulses', 'Ground Nuts'].map(type => (
                 <option key={type} value={type} className="bg-[#111111]">{type}</option>
               ))}
             </select>
-          </div>
+          </motion.div>
 
-          {numFields.map((field) => (
-            <div key={field.name} className="space-y-1.5">
-              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5">
-                <field.icon size={12} className="text-[#ec4899]" />
+          {numFields.map((field, idx) => (
+            <motion.div 
+              key={field.name}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 + idx * 0.05 }}
+              className="space-y-1.5 group"
+            >
+              <label className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5 group-focus-within:text-[#ec4899] transition-colors">
+                <field.icon size={12} />
                 {field.label}
               </label>
               <div className="relative">
@@ -142,83 +157,98 @@ const FertilizerRecommender = () => {
                   value={formData[field.name]}
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
-                  className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-white/20 focus:outline-none focus:border-[#ec4899]/50 transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/10 focus:outline-none focus:border-[#ec4899]/50 focus:bg-white/10 transition-all"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-text-muted">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-text-muted uppercase tracking-widest opacity-50">
                   {field.unit}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        <button
+        <motion.button
           onClick={handlePredict}
           disabled={isLoading}
-          className="w-full btn bg-[#ec4899] hover:bg-[#ec4899]/90 text-white py-4 flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(236,72,153,0.3)] disabled:opacity-50 border-none"
+          whileHover={{ scale: 1.02, boxShadow: '0 20px 40px rgba(236,72,153,0.2)' }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full btn bg-[#ec4899] hover:bg-[#ec4899]/90 text-white py-5 flex justify-center items-center gap-3 shadow-[0_10px_20px_rgba(236,72,153,0.2)] disabled:opacity-50 text-lg font-black rounded-2xl border-none"
         >
           {isLoading ? (
             <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}>
-              <Activity size={20} />
+              <Beaker size={24} />
             </motion.div>
           ) : (
             <>
-              Run Gradient Boosting Model <ArrowRight size={18} />
+              Optimize Fertilizer Plan <ArrowRight size={20} />
             </>
           )}
-        </button>
+        </motion.button>
       </div>
 
       {/* Results Column */}
       <div className="flex-1 lg:max-w-md">
-        <div className="h-full bg-black/20 rounded-3xl border border-white/5 p-6 flex flex-col">
-          <h4 className="text-sm font-black uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">
-            <Beaker size={16} /> Target Fertilizer
+        <div className="h-full glass rounded-3xl p-8 flex flex-col relative overflow-hidden group">
+          {/* Subtle background glow */}
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#ec4899]/5 rounded-full blur-[80px] group-hover:bg-[#ec4899]/10 transition-colors" />
+
+          <h4 className="text-xs font-black uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2 relative z-10">
+            <Beaker size={16} className="text-[#ec4899]" /> Optimal Blend Output
           </h4>
 
           {prediction ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex-1 flex flex-col"
+              className="flex-1 flex flex-col relative z-10"
             >
-              <div className="text-center mb-8">
-                <div className="w-24 h-24 bg-[#ec4899]/10 rounded-full mx-auto flex items-center justify-center mb-4 border border-[#ec4899]/20">
-                  <Beaker size={40} className="text-[#ec4899]" />
-                </div>
-                <p className="text-sm text-text-muted uppercase tracking-widest font-bold mb-1">Recommended Blend</p>
-                <h2 className="text-5xl font-black text-[#ec4899]">{prediction.prediction}</h2>
+              <div className="text-center mb-10">
+                <motion.div 
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-28 h-28 bg-[#ec4899]/10 rounded-[40px] mx-auto flex items-center justify-center mb-6 border border-[#ec4899]/20 shadow-2xl relative"
+                >
+                  <div className="absolute inset-0 bg-[#ec4899]/20 blur-2xl rounded-full" />
+                  <Beaker size={48} className="text-[#ec4899] relative z-10" />
+                </motion.div>
+                <p className="text-[10px] text-text-muted uppercase tracking-[0.3em] font-black mb-2">Target Fertilizer</p>
+                <h2 className="text-6xl font-black text-white tracking-tighter drop-shadow-2xl">{prediction.prediction}</h2>
               </div>
 
-              <div className="bg-white/5 rounded-2xl p-4 mb-6 mt-auto">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-bold text-text-muted">Model Confidence</span>
-                  <span className="text-sm font-black text-success">{(prediction.confidence * 100).toFixed(1)}%</span>
+              <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-6 mb-8 mt-auto border border-white/10 shadow-inner">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-xs font-black uppercase tracking-widest text-text-muted">Prediction Confidence</span>
+                  <span className="text-lg font-black text-success">{(prediction.confidence * 100).toFixed(1)}%</span>
                 </div>
-                <div className="h-2 bg-black/50 rounded-full overflow-hidden">
+                <div className="h-3 bg-black/40 rounded-full overflow-hidden p-0.5 border border-white/5">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${prediction.confidence * 100}%` }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                    className="h-full bg-success rounded-full"
-                  />
+                    transition={{ duration: 1.5, ease: "circOut" }}
+                    className="h-full bg-gradient-to-r from-[#ec4899] to-success rounded-full relative"
+                  >
+                    <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                  </motion.div>
                 </div>
-                <p className="text-xs text-text-muted mt-3 text-center">
-                  Powered by {prediction.model} algorithm.
+                <p className="text-[9px] text-text-muted mt-4 text-center font-bold uppercase tracking-widest opacity-60">
+                  Powered by {prediction.model}
                 </p>
               </div>
             </motion.div>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center text-center opacity-50">
-              <Beaker size={64} className="mb-4 text-white/20" />
-              <p className="font-bold text-lg mb-2">Awaiting Parameters</p>
-              <p className="text-sm text-text-muted max-w-[200px]">
-                Enter NPK values and crop data to determine the optimal fertilizer.
+            <div className="flex-1 flex flex-col items-center justify-center text-center relative z-10">
+              <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/5 flex items-center justify-center mb-6 animate-pulse">
+                <Beaker size={32} className="text-text-muted opacity-30" />
+              </div>
+              <p className="font-black text-2xl mb-3 tracking-tight">System Ready</p>
+              <p className="text-sm text-text-muted max-w-[240px] leading-relaxed">
+                Provide soil nutrients and crop data to calculate the optimal fertilization strategy.
               </p>
             </div>
           )}
         </div>
       </div>
+
     </div>
   );
 };

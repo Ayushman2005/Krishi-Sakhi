@@ -6,6 +6,7 @@ import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
 import CropRecommender from './CropRecommender';
 import FertilizerRecommender from './FertilizerRecommender';
+import EnhancedBackground from './EnhancedBackground';
 
 const ML_TABS = [
   {
@@ -72,7 +73,8 @@ const MLHub = () => {
   const ActiveComponent = activeModel.component;
 
   return (
-    <div className="main-container">
+    <div className="main-container relative">
+      <EnhancedBackground />
       {/* Hub Header */}
       <header className="text-center">
         <motion.div
@@ -111,34 +113,50 @@ const MLHub = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            whileHover={{ y: -8, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.97 }}
-            className={`glass-card text-left relative overflow-hidden group transition-all duration-300 ${
-              activeTab === tab.id ? 'border-white/20 shadow-2xl' : 'hover:border-white/10'
+            whileHover={{ 
+              y: -8, 
+              scale: 1.02,
+              boxShadow: `0 25px 60px -15px ${tab.accent}60`,
+              borderColor: `${tab.accent}40`
+            }}
+            whileTap={{ scale: 0.98 }}
+            className={`glass-card text-left relative overflow-hidden group transition-all duration-500 border-2 ${
+              activeTab === tab.id ? 'border-white/30 shadow-2xl bg-white/10' : 'border-white/5 hover:border-white/10'
             }`}
-            style={activeTab === tab.id ? { boxShadow: `0 20px 50px -10px ${tab.accent}40` } : {}}
+            style={activeTab === tab.id ? { borderColor: `${tab.accent}60` } : {}}
           >
             {activeTab === tab.id && (
               <motion.div
-                layoutId="active-tab-bg"
-                className="absolute inset-0 rounded-3xl"
-                style={{ background: `linear-gradient(135deg, ${tab.accent}15, transparent)` }}
+                layoutId="active-tab-glow"
+                className="absolute inset-0 opacity-20"
+                style={{ background: `radial-gradient(circle at center, ${tab.accent}, transparent)` }}
               />
             )}
-            <div className="absolute inset-x-0 bottom-0 h-1 rounded-b-3xl transition-all duration-300"
-              style={{ background: activeTab === tab.id ? `linear-gradient(90deg, transparent, ${tab.accent}, transparent)` : 'transparent' }}
-            />
+            
             <div className="relative z-10">
               <div className="flex justify-between items-start mb-6">
-                <div className="p-4 rounded-2xl" style={{ background: `${tab.accent}20` }}>
+                <motion.div 
+                  animate={activeTab === tab.id ? { scale: [1, 1.1, 1] } : {}}
+                  transition={{ repeat: Infinity, duration: 2 }}
+                  className="p-4 rounded-2xl" 
+                  style={{ background: `${tab.accent}20` }}
+                >
                   <tab.icon size={28} style={{ color: tab.accent }} />
-                </div>
-                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${tab.badgeColor} border border-white/10`}>
+                </motion.div>
+                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${tab.badgeColor} border border-white/10 backdrop-blur-md`}>
                   {tab.badge}
                 </span>
               </div>
-              <h3 className="text-xl font-black mb-2">{tab.label}</h3>
-              <p className="text-text-muted text-sm leading-relaxed">{tab.description}</p>
+              <h3 className="text-xl font-black mb-2 group-hover:translate-x-1 transition-transform">{tab.label}</h3>
+              <p className="text-text-muted text-xs leading-relaxed line-clamp-2 group-hover:text-text transition-colors">{tab.description}</p>
+            </div>
+
+            {/* Decorative background element */}
+            <div 
+              className="absolute -right-4 -bottom-4 w-16 h-16 opacity-10 group-hover:opacity-20 transition-opacity rotate-12"
+              style={{ color: tab.accent }}
+            >
+              <tab.icon size={64} />
             </div>
           </motion.button>
         ))}
@@ -175,10 +193,20 @@ const MLHub = () => {
           className="glass p-10 relative overflow-hidden"
         >
           {/* Top accent line */}
-          <div className="absolute top-0 inset-x-0 h-1 rounded-t-[32px]"
+          <div className="absolute top-0 inset-x-0 h-1"
             style={{ background: `linear-gradient(90deg, transparent, ${activeModel.accent}, transparent)` }}
           />
           <ActiveComponent />
+          
+          {/* Animated background element in panel */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            className="absolute -right-20 -bottom-20 w-80 h-80 opacity-[0.03] pointer-events-none"
+            style={{ color: activeModel.accent }}
+          >
+            <activeModel.icon size={320} />
+          </motion.div>
         </motion.div>
       </AnimatePresence>
     </div>
