@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X } from 'lucide-react';
+import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X, Loader2 } from 'lucide-react';
+import { useFarmer } from '../context/FarmerContext';
+import { useEffect } from 'react';
 
 const BACKEND_URL = 'http://localhost:8000';
 
@@ -14,14 +16,33 @@ const MARKET_DATA = [
 ];
 
 const MarketInsights = () => {
+  const { profile } = useFarmer();
+  const [marketData, setMarketData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [forecastData, setForecastData] = useState(null);
   const [isLoadingForecast, setIsLoadingForecast] = useState(false);
 
-  const handleRefresh = () => {
+  const fetchMarketRates = async () => {
     setIsRefreshing(true);
-    setTimeout(() => setIsRefreshing(false), 800);
+    try {
+      const location = profile?.location || 'Kerala';
+      const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
+      const data = await response.json();
+      setMarketData(data);
+    } catch (err) {
+      console.error("Failed to fetch market rates", err);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketRates();
+  }, [profile?.location]);
+
+  const handleRefresh = () => {
+    fetchMarketRates();
   };
 
   const getForecast = async (crop) => {
@@ -41,67 +62,101 @@ const MarketInsights = () => {
   return (
     <div className="main-container">
       {/* Header section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-4">
-        <div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+        <div className="flex-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-[10px] font-black uppercase tracking-widest mb-4">
-            <LineChart size={12} /> Real-Time Economics
+            <LineChart size={12} /> Pan-India Intelligence
           </div>
           <h2 className="text-4xl font-black tracking-tighter">Live <span className="text-secondary">Market Rates</span></h2>
-          <p className="text-text-muted mt-2">Track real-time commodity prices across major Kerala mandis.</p>
+          <p className="text-text-muted mt-2">Check accurate commodity prices for any district in India.</p>
         </div>
         
-        <button 
-          onClick={handleRefresh}
-          className="btn btn-secondary flex items-center gap-2"
-        >
-          <RefreshCcw size={16} className={isRefreshing ? 'animate-spin text-secondary' : ''} />
-          {isRefreshing ? 'Syncing...' : 'Live Sync'}
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+          <div className="relative group min-w-[250px]">
+            <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-secondary transition-colors" />
+            <input 
+              type="text" 
+              placeholder="Search District (e.g. Nashik, Ludhiana)" 
+              className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-secondary/50 focus:bg-white/10 transition-all"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const val = e.target.value.trim();
+                  if (val) {
+                    setIsRefreshing(true);
+                    fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(val)}`)
+                      .then(res => res.json())
+                      .then(data => {
+                        setMarketData(data);
+                        setIsRefreshing(false);
+                      });
+                  }
+                }
+              }}
+            />
+          </div>
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleRefresh}
+            className="btn btn-secondary h-12 px-6 flex items-center gap-2"
+          >
+            <RefreshCcw size={16} className={isRefreshing ? 'animate-spin text-secondary' : ''} />
+            {isRefreshing ? 'Syncing...' : 'Refresh'}
+          </motion.button>
+        </div>
       </div>
 
       {/* Grid of Market Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {MARKET_DATA.map((item, index) => (
+        {marketData.length > 0 ? marketData.map((item, index) => (
           <motion.div
             key={item.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="glass-card flex flex-col group relative overflow-hidden"
+            whileHover={{ y: -8, transition: { duration: 0.2 } }}
+            className="glass rounded-3xl flex flex-col group relative overflow-hidden p-8 border border-white/5 hover:border-white/20 transition-all duration-300"
           >
             {/* Background glowing orb for up/down trend */}
-            <div className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl opacity-20 transition-opacity group-hover:opacity-40 ${item.up ? 'bg-success' : 'bg-error'}`} />
+            <div className={`absolute -right-20 -top-20 w-48 h-48 rounded-full blur-[100px] opacity-10 transition-all duration-700 group-hover:opacity-30 ${item.up ? 'bg-success' : 'bg-error'}`} />
 
-            <div className="flex justify-between items-start mb-6 relative z-10">
-              <div className="flex items-center gap-2 text-xs font-bold text-text-muted uppercase tracking-wider bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+            <div className="flex justify-between items-start mb-8 relative z-10">
+              <div className="flex items-center gap-3 text-[10px] font-black text-text-muted uppercase tracking-widest bg-white/5 px-4 py-2 rounded-xl border border-white/5">
                 <Landmark size={14} className="text-secondary" /> {item.crop}
               </div>
-              <div className={`flex items-center gap-1 text-sm font-black px-2 py-1 rounded-md ${item.up ? 'text-success bg-success/10' : 'text-error bg-error/10'}`}>
+              <div className={`flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-lg ${item.up ? 'text-success bg-success/10 border border-success/20' : 'text-error bg-error/10 border border-error/20'}`}>
                 {item.up ? <TrendingUp size={14} /> : <TrendingDown size={14} />} {item.trend}
               </div>
             </div>
 
-            <div className="relative z-10 flex-grow flex flex-col justify-center">
-              <div className="flex items-baseline gap-1">
-                <IndianRupee size={24} className={item.up ? 'text-success' : 'text-error'} strokeWidth={3} />
-                <span className="text-5xl font-black tracking-tighter">{item.price}</span>
+            <div className="relative z-10 flex-grow flex flex-col justify-center mb-10">
+              <div className="flex items-baseline gap-2">
+                <IndianRupee size={28} className={item.up ? 'text-success' : 'text-error'} strokeWidth={3} />
+                <span className="text-6xl font-black tracking-tighter">{item.price}</span>
+                <span className="text-text-muted font-black text-xs uppercase tracking-widest">{item.unit}</span>
               </div>
-              <span className="text-text-muted font-bold mt-1 text-sm">{item.unit}</span>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-text-muted relative z-10">
+            <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between text-[11px] text-text-muted relative z-10 font-bold">
               <div className="flex items-center gap-2">
-                <MapPin size={12} className="text-secondary" /> {item.location}
+                <MapPin size={14} className="text-secondary" /> {item.location}
               </div>
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => getForecast(item.crop)}
-                className="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 hover:bg-secondary/20 text-secondary rounded-full transition-colors font-bold"
+                className="flex items-center gap-2 px-4 py-2 bg-secondary/10 hover:bg-secondary/20 text-secondary rounded-xl transition-colors font-black uppercase tracking-widest"
               >
-                <Sparkles size={12} /> AI Forecast
-              </button>
+                <Sparkles size={14} /> AI Forecast
+              </motion.button>
             </div>
           </motion.div>
-        ))}
+        )) : (
+          <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted">
+            <Loader2 size={48} className="animate-spin mb-4" />
+            <p className="font-black uppercase tracking-widest text-sm">Syncing with Kerala Mandis...</p>
+          </div>
+        )}
       </div>
 
       {/* Forecast Modal */}

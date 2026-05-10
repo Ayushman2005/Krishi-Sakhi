@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard';
 import ChatInterface from './components/ChatInterface';
 import MLHub from './components/MLHub';
 import MarketInsights from './components/MarketInsights';
+import EnhancedBackground from './components/EnhancedBackground';
 import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -32,11 +33,16 @@ const AppContent = () => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen">
+    <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden">
+      <EnhancedBackground />
 
       {/* Floating Navbar */}
-      <div className="w-full flex justify-center z-50 sticky top-6 px-4 pointer-events-none">
-        <nav className="glass w-full max-w-6xl flex justify-between items-center px-4 py-3 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/70 backdrop-blur-xl">
+      <motion.div 
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="w-full flex justify-center z-50 sticky top-6 px-4 pointer-events-none"
+      >
+        <nav className="glass w-full max-w-6xl flex justify-between items-center px-4 py-3 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/70 backdrop-blur-2xl">
           {/* Logo */}
           <div className="flex items-center gap-4">
             <motion.div
@@ -297,9 +303,13 @@ const AppContent = () => {
             </div>
           </div>
           <div className="border-t border-white/5 pt-8">
-            <p className="text-xs text-text-muted/30 font-black uppercase tracking-[0.4em] text-center">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-xs text-text-muted/30 font-black uppercase tracking-[0.4em] text-center"
+            >
               © 2026 Krishi Sakhi AI • Built for SIH 2026 • Empowering the Roots of India
-            </p>
+            </motion.p>
           </div>
         </div>
       </footer>

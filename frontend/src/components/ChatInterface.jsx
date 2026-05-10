@@ -91,18 +91,20 @@ const ChatInterface = () => {
         <motion.button
           initial={{ scale: 0, x: 100 }}
           animate={{ scale: 1, x: 0 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.1, rotate: -5 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-primary to-primary-dark rounded-full shadow-[0_0_30px_rgba(16,185,129,0.5)] flex items-center justify-center text-white z-50 cursor-pointer group border border-white/20"
+          className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-primary to-primary-dark rounded-[24px] shadow-[0_20px_40px_rgba(16,185,129,0.4)] flex items-center justify-center text-white z-50 cursor-pointer group border border-white/20"
         >
-          <div className="absolute inset-0 bg-white/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+          <div className="absolute inset-0 bg-white/20 rounded-[24px] scale-0 group-hover:scale-100 transition-transform duration-300" />
           <MessageCircle size={30} className="relative z-10 group-hover:scale-110 transition-transform" />
           <motion.div 
-            animate={{ scale: [1, 1.2, 1] }}
+            animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
             transition={{ repeat: Infinity, duration: 2 }}
-            className="absolute top-0 right-0 w-4 h-4 bg-secondary rounded-full flex items-center justify-center border-2 border-background"
-          />
+            className="absolute -top-1 -right-1 w-5 h-5 bg-secondary rounded-full flex items-center justify-center border-2 border-background shadow-lg"
+          >
+            <Sparkles size={10} className="text-black" />
+          </motion.div>
         </motion.button>
       )}
 
@@ -118,29 +120,42 @@ const ChatInterface = () => {
             style={{ borderRadius: "40px 0 0 40px" }}
           >
             {/* Header */}
-            <div className="p-6 pt-8 border-b border-white/5 flex justify-between items-start bg-gradient-to-b from-primary/10 to-transparent">
+            <div className="p-8 pt-10 border-b border-white/5 flex justify-between items-start bg-gradient-to-b from-primary/10 via-primary/5 to-transparent relative">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary" />
               <div className="flex gap-4 items-center">
                 <div className="relative">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-accent p-[2px]">
-                    <div className="w-full h-full bg-background rounded-full flex items-center justify-center">
-                      <Sprout size={28} className="text-primary animate-float" />
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                    className="w-16 h-16 rounded-full bg-gradient-to-tr from-primary via-accent to-secondary p-[2px] shadow-2xl"
+                  >
+                    <div className="w-full h-full bg-[#020617] rounded-full flex items-center justify-center">
+                      <Sprout size={32} className="text-primary" />
                     </div>
-                  </div>
-                  <div className="absolute bottom-0 right-0 w-4 h-4 bg-success border-2 border-background rounded-full animate-pulse" />
+                  </motion.div>
+                  <div className="absolute bottom-0 right-0 w-4 h-4 bg-success border-2 border-background rounded-full shadow-lg" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 flex items-center gap-2">
+                  <h3 className="text-2xl font-black text-white flex items-center gap-2 tracking-tighter">
                     Krishi Sakhi
-                    <Sparkles size={18} className="text-secondary" />
+                    <motion.span
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                    >
+                      <Sparkles size={18} className="text-secondary" />
+                    </motion.span>
                   </h3>
-                  <p className="text-xs text-primary font-bold tracking-widest uppercase mt-1">AI Agronomist</p>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+                    <p className="text-[10px] text-primary font-black tracking-[0.2em] uppercase">Intelligence Online</p>
+                  </div>
                 </div>
               </div>
               <button 
                 onClick={() => setIsOpen(false)} 
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 hover:rotate-90 transition-all border border-white/5"
+                className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center hover:bg-white/10 hover:rotate-90 transition-all border border-white/10 group"
               >
-                <X size={20} className="text-text-muted hover:text-white" />
+                <X size={20} className="text-text-muted group-hover:text-white" />
               </button>
             </div>
 

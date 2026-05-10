@@ -6,7 +6,6 @@ import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
 import CropRecommender from './CropRecommender';
 import FertilizerRecommender from './FertilizerRecommender';
-import EnhancedBackground from './EnhancedBackground';
 
 const ML_TABS = [
   {
@@ -74,7 +73,6 @@ const MLHub = () => {
 
   return (
     <div className="main-container relative">
-      <EnhancedBackground />
       {/* Hub Header */}
       <header className="text-center">
         <motion.div

@@ -102,45 +102,52 @@ const Dashboard = () => {
           <motion.div 
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 mb-2"
+            className="flex items-center gap-2 mb-3"
           >
-            <LayoutGrid size={16} className="text-primary" />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">Farmer Dashboard</span>
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/80">Farm Central Intelligence</span>
           </motion.div>
           <motion.h1 
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className="text-6xl font-black mb-2 tracking-tighter"
+            className="text-7xl font-black mb-4 tracking-tighter leading-none"
           >
-            Hi, <span className="gradient-text">{profile?.name || 'Farmer'}</span>
+            Namaste, <span className="gradient-text">{profile?.name || 'Farmer'}</span>
           </motion.h1>
-          <div className="flex flex-wrap items-center gap-4 text-text-muted font-bold text-sm">
-            <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+          <div className="flex flex-wrap items-center gap-3">
+            <motion.span 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 backdrop-blur-md text-xs font-bold"
+            >
               <Calendar size={14} className="text-primary" /> {format(new Date(), 'EEEE, MMM d')}
-            </span>
-            <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-              <Sprout size={14} className="text-primary" /> {profile?.crop || 'Mixed'} Farm
-            </span>
-            <span className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-              <Clock size={14} className="text-primary" /> Last Sync: {format(new Date(), 'HH:mm')}
-            </span>
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-2xl border border-white/10 backdrop-blur-md text-xs font-bold"
+            >
+              <Sprout size={14} className="text-primary" /> {profile?.crop || 'Mixed'} Crop System
+            </motion.span>
           </div>
         </div>
         <div className="flex gap-3 w-full md:w-auto">
           <motion.button 
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, rotate: 15 }}
             whileTap={{ scale: 0.95 }}
             onClick={fetchData}
-            className="btn btn-secondary px-4 py-4 rounded-2xl"
+            className="btn btn-secondary w-14 h-14 rounded-2xl flex items-center justify-center p-0"
             title="Refresh Data"
           >
-            <RefreshCw size={20} className={isLoading ? 'animate-spin' : ''} />
+            <RefreshCw size={22} className={isLoading ? 'animate-spin' : ''} />
           </motion.button>
           <motion.button 
-            whileHover={{ scale: 1.05, boxShadow: "0 20px 40px var(--primary-glow)" }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px var(--primary-glow)" }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setShowLogModal(true)}
-            className="btn btn-primary flex-1 md:flex-none px-10 py-4 text-lg rounded-2xl font-black"
+            className="btn btn-primary px-10 h-14 text-lg rounded-2xl font-black shadow-xl shadow-primary/20"
           >
             <Plus size={24} /> Log Activity
           </motion.button>
@@ -171,17 +178,24 @@ const Dashboard = () => {
           <motion.div 
             key={i} 
             variants={itemVariants} 
-            whileHover={{ y: -10, transition: { duration: 0.2 } }}
-            className="glass-card flex flex-col p-6 border-b-4 border-b-transparent hover:border-b-primary transition-all"
+            whileHover={{ 
+              y: -10, 
+              scale: 1.02,
+              backgroundColor: 'rgba(255, 255, 255, 0.08)',
+              borderColor: 'rgba(16, 185, 129, 0.3)'
+            }}
+            className="glass-card flex flex-col p-6 border-2 border-transparent transition-all duration-300"
           >
-            <div className="flex justify-between items-start mb-4">
-              <div className={`p-3 bg-white/5 rounded-2xl ${stat.color}`}>
-                <stat.icon size={24} />
+            <div className="flex justify-between items-start mb-6">
+              <div className={`p-4 bg-white/5 rounded-2xl ${stat.color} shadow-inner`}>
+                <stat.icon size={28} />
               </div>
-              <span className="text-[10px] font-black opacity-30 uppercase tracking-widest">{stat.sub}</span>
+              <div className="text-right">
+                <span className="text-[10px] font-black opacity-30 uppercase tracking-widest block mb-1">{stat.label}</span>
+                <span className="text-xs font-black text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">{stat.sub}</span>
+              </div>
             </div>
-            <p className="text-sm text-text-muted font-bold uppercase tracking-widest mb-1">{stat.label}</p>
-            <p className="text-2xl font-black">{stat.value}</p>
+            <p className="text-3xl font-black tracking-tighter">{stat.value}</p>
           </motion.div>
         ))}
       </div>
