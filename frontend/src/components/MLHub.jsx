@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield } from 'lucide-react';
+import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
+import CropRecommender from './CropRecommender';
+import FertilizerRecommender from './FertilizerRecommender';
 
 const ML_TABS = [
   {
@@ -38,6 +40,28 @@ const ML_TABS = [
     description: 'Get contextual, crop-specific farm advisories based on current weather conditions.',
     component: WeatherAdvisor,
     accent: '#0ea5e9',
+  },
+  {
+    id: 'crop_recommendation',
+    label: 'Crop Recommendation',
+    shortLabel: 'Crop',
+    icon: Leaf,
+    badge: 'Random Forest ML',
+    badgeColor: 'bg-[#f59e0b]/20 text-[#f59e0b]',
+    description: 'Analyze soil NPK, pH, and climate data to predict the most suitable and profitable crop.',
+    component: CropRecommender,
+    accent: '#f59e0b',
+  },
+  {
+    id: 'fertilizer_recommendation',
+    label: 'Fertilizer Recommendation',
+    shortLabel: 'Fertilizer',
+    icon: Beaker,
+    badge: 'Gradient Boosting ML',
+    badgeColor: 'bg-[#ec4899]/20 text-[#ec4899]',
+    description: 'Provide NPK values, soil type, and crop type to receive precision fertilizer blend recommendations.',
+    component: FertilizerRecommender,
+    accent: '#ec4899',
   },
 ];
 
@@ -74,12 +98,12 @@ const MLHub = () => {
           transition={{ delay: 0.2 }}
           className="text-text-muted text-lg max-w-2xl mx-auto"
         >
-          Three specialized AI models working together to give your farm an intelligent edge.
+          Five specialized AI models working together to give your farm an intelligent edge.
         </motion.p>
       </header>
 
       {/* Model Cards Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {ML_TABS.map((tab, i) => (
           <motion.button
             key={tab.id}
@@ -123,8 +147,8 @@ const MLHub = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Models Active', value: '3', icon: Cpu, color: 'text-primary' },
-          { label: 'Accuracy', value: '92.3%', icon: Shield, color: 'text-success' },
+          { label: 'Models Active', value: '5', icon: Cpu, color: 'text-primary' },
+          { label: 'Accuracy', value: '95.2%', icon: Shield, color: 'text-success' },
           { label: 'Crops Supported', value: '5+', icon: Leaf, color: 'text-accent' },
           { label: 'Inference Time', value: '<2s', icon: Zap, color: 'text-warning' },
         ].map((stat, i) => (

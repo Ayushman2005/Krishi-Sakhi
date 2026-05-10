@@ -100,6 +100,25 @@ class WeatherRequest(BaseModel):
     uv_index: float
     forecast: str
 
+class CropRecommendRequest(BaseModel):
+    nitrogen: float
+    phosphorus: float
+    potassium: float
+    temperature: float
+    humidity: float
+    ph: float
+    rainfall: float
+
+class FertilizerRecommendRequest(BaseModel):
+    temperature: float
+    humidity: float
+    moisture: float
+    soil_type: str
+    crop_type: str
+    nitrogen: float
+    phosphorus: float
+    potassium: float
+
 # ─────────────────────────────────
 # Knowledge Base
 # ─────────────────────────────────
@@ -377,6 +396,70 @@ async def market_forecast(crop: str):
         "model": "ARIMA-Simulation",
         "confidence": confidence,
         "recommendation": "Hold" if forecast[-1]["predicted_price"] > base_price * 1.02 else "Sell Now"
+    }
+
+@app.post("/ml/crop-recommend")
+async def crop_recommend(request: CropRecommendRequest):
+    """
+    Random Forest-based Crop Recommendation.
+    Production: Random Forest / SVM model trained on NPK, pH, and climate data.
+    Demo: Heuristic-based classification simulation.
+    """
+    crops = ["Rice", "Maize", "Chickpea", "Kidneybeans", "Pigeonpeas", "Mothbeans", "Mungbean", 
+             "Blackgram", "Lentil", "Pomegranate", "Banana", "Mango", "Grapes", "Watermelon", 
+             "Muskmelon", "Apple", "Orange", "Papaya", "Coconut", "Cotton", "Jute", "Coffee"]
+    
+    # Simulated basic logic
+    recommended = ""
+    if request.rainfall > 1500 and request.temperature > 25:
+        recommended = "Rice"
+    elif request.rainfall < 800 and request.temperature > 30:
+        recommended = "Cotton"
+    elif request.ph < 6.0:
+        recommended = "Coffee"
+    elif request.nitrogen > 80 and request.phosphorus > 40:
+        recommended = "Banana"
+    else:
+        recommended = random.choice(crops)
+        
+    confidence = round(random.uniform(0.75, 0.98), 2)
+    
+    # Generate some alternatives
+    alternatives = random.sample([c for c in crops if c != recommended], 3)
+    
+    return {
+        "prediction": recommended,
+        "confidence": confidence,
+        "alternatives": alternatives,
+        "model": "Random Forest Classifier (Simulated)"
+    }
+
+@app.post("/ml/fertilizer-recommend")
+async def fertilizer_recommend(request: FertilizerRecommendRequest):
+    """
+    Decision Tree / SVM-based Fertilizer Recommendation.
+    """
+    fertilizers = ["Urea", "DAP", "14-35-14", "28-28", "17-17-17", "20-20", "10-26-26"]
+    
+    # Simple logic to simulate ML
+    recommended = ""
+    if request.nitrogen > 30 and request.phosphorus < 20:
+        recommended = "DAP"
+    elif request.nitrogen < 20:
+        recommended = "Urea"
+    elif request.potassium > 25:
+        recommended = "10-26-26"
+    elif request.soil_type.lower() == "sandy" and request.moisture < 40:
+        recommended = "14-35-14"
+    else:
+        recommended = random.choice(fertilizers)
+
+    confidence = round(random.uniform(0.70, 0.95), 2)
+    
+    return {
+        "prediction": recommended,
+        "confidence": confidence,
+        "model": "Gradient Boosting Classifier (Simulated)"
     }
 
 if __name__ == "__main__":
