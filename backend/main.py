@@ -30,7 +30,7 @@ api_key = os.getenv("GEMINI_API_KEY")
 if api_key and api_key != "your_gemini_api_key_here":
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        model = genai.GenerativeModel('gemini-pro')
         logger.info("✅ Gemini AI configured successfully.")
     except Exception as e:
         logger.error(f"❌ Failed to configure Gemini: {e}")

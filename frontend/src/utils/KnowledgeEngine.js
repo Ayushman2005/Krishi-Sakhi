@@ -48,3 +48,24 @@ export const getMarketTrends = async () => {
     return [];
   }
 };
+
+export const getWeather = async (location) => {
+  const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  if (!apiKey) {
+    return { error: "Missing Key" };
+  }
+  
+  try {
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric`);
+    const data = await response.json();
+    if (!response.ok) {
+      if (data.cod == 401) return { error: "Invalid Key (or not activated yet)" };
+      if (data.cod == 404) return { error: "Location Not Found" };
+      return { error: data.message || "Fetch Failed" };
+    }
+    return data;
+  } catch (error) {
+    console.error("Weather API error:", error);
+    return { error: "Network Error" };
+  }
+};

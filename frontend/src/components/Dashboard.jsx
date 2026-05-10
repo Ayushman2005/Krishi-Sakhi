@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFarmer } from '../context/FarmerContext';
-import { generateAdvisory, getMarketTrends } from '../utils/KnowledgeEngine';
+import { generateAdvisory, getMarketTrends, getWeather } from '../utils/KnowledgeEngine';
 import { 
   CloudRain, Sprout, Bug, Droplets, 
   Plus, Calendar, TrendingUp, AlertCircle,
@@ -14,6 +14,7 @@ const Dashboard = () => {
   const { profile, activities, addActivity } = useFarmer();
   const [advisories, setAdvisories] = useState([]);
   const [marketTrends, setMarketTrends] = useState([]);
+  const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLogModal, setShowLogModal] = useState(false);
@@ -25,12 +26,14 @@ const Dashboard = () => {
     setError(null);
     try {
       if (profile) {
-        const [adv, trends] = await Promise.all([
+        const [adv, trends, weather] = await Promise.all([
           generateAdvisory(profile),
-          getMarketTrends()
+          getMarketTrends(),
+          getWeather(profile.location || 'Kerala, IN')
         ]);
         setAdvisories(adv);
         setMarketTrends(trends);
+        setWeatherData(weather);
       }
     } catch (err) {
       setError("Unable to sync with farm data server.");
@@ -319,24 +322,36 @@ const Dashboard = () => {
             <div className="absolute top-4 right-4 animate-spin-slow">
               <Sun className="text-secondary opacity-20" size={80} />
             </div>
-            <h3 className="text-2xl font-black mb-8 relative z-10">Regional Climate</h3>
+            <h3 className="text-2xl font-black mb-8 relative z-10 flex items-center justify-between">
+              Regional Climate
+              {(!weatherData || weatherData.error) && <span className="text-[10px] bg-error/10 text-error px-2 py-1 rounded-full border border-error/20 ml-2">{weatherData?.error || "Loading..."}</span>}
+            </h3>
             <div className="flex items-center gap-10 mb-8 relative z-10">
               <div className="p-5 bg-white/10 rounded-[32px] shadow-2xl animate-float">
-                <CloudRain size={72} className="text-primary" />
+                {!weatherData || weatherData.error ? (
+                  <CloudRain size={72} className="text-text-muted opacity-50" />
+                ) : weatherData.weather?.[0]?.main === 'Rain' || weatherData.weather?.[0]?.main === 'Drizzle' || weatherData.weather?.[0]?.main === 'Thunderstorm' ? (
+                  <CloudRain size={72} className="text-primary" />
+                ) : weatherData.weather?.[0]?.main === 'Clear' ? (
+                  <Sun size={72} className="text-secondary" />
+                ) : (
+                  <Wind size={72} className="text-text-muted" />
+                )}
               </div>
               <div>
-                <p className="text-6xl font-black tracking-tighter">28°C</p>
-                <p className="text-text-muted font-bold text-xl tracking-tight">Showers expected</p>
+                <p className="text-6xl font-black tracking-tighter">{weatherData && !weatherData.error ? Math.round(weatherData.main.temp) : 28}°C</p>
+                <p className="text-text-muted font-bold text-xl tracking-tight capitalize">{weatherData && !weatherData.error ? weatherData.weather[0].description : 'Showers expected'}</p>
+                {weatherData && !weatherData.error && <p className="text-xs text-primary font-bold tracking-widest uppercase mt-1">{weatherData.name}</p>}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/5">
                 <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">Humidity</p>
-                <p className="font-black text-xl">84%</p>
+                <p className="font-black text-xl">{weatherData && !weatherData.error ? weatherData.main.humidity : 84}%</p>
               </div>
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/5">
-                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">UV Index</p>
-                <p className="font-black text-xl">Low</p>
+                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">Wind</p>
+                <p className="font-black text-xl">{weatherData && !weatherData.error ? weatherData.wind.speed : 12} <span className="text-sm font-bold text-text-muted">m/s</span></p>
               </div>
             </div>
           </motion.div>
