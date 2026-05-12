@@ -161,7 +161,7 @@ const AppContent = () => {
             </div>
           )}
         </nav>
-      </div>
+      </motion.div>
 
       {/* Mobile Nav Tabs */}
       {profile && (
