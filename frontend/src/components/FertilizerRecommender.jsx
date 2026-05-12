@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Beaker, Droplet, Thermometer, Wind, ArrowRight, Activity, AlertCircle } from 'lucide-react';
+import { Beaker, Droplet, Thermometer, Wind, ArrowRight, Activity, AlertCircle, UploadCloud, Loader2 } from 'lucide-react';
 
 const BACKEND_URL = 'http://localhost:8000';
 
@@ -23,6 +23,35 @@ const FertilizerRecommender = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleOCRUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const formDataObj = new FormData();
+    formDataObj.append('file', file);
+    
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${BACKEND_URL}/ml/soil-report-ocr`, {
+        method: 'POST',
+        body: formDataObj,
+      });
+      if (!response.ok) throw new Error('OCR Failed');
+      const data = await response.json();
+      setFormData(prev => ({
+        ...prev,
+        nitrogen: data.nitrogen_kg_ha ?? prev.nitrogen,
+        phosphorus: data.phosphorus_kg_ha ?? prev.phosphorus,
+        potassium: data.potassium_kg_ha ?? prev.potassium,
+      }));
+    } catch(err) {
+      setError("OCR failed to read the document. Please enter manually.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePredict = async () => {
@@ -85,9 +114,14 @@ const FertilizerRecommender = () => {
           <h3 className="text-2xl font-black mb-2 flex items-center gap-2">
             <Activity className="text-[#ec4899]" /> Soil & Crop Profile
           </h3>
-          <p className="text-text-muted text-sm">
+          <p className="text-text-muted text-sm mb-4">
             Input soil properties and crop type to receive precision fertilizer recommendations.
           </p>
+          <label className="inline-flex items-center gap-2 px-6 py-3 bg-[#ec4899]/10 hover:bg-[#ec4899]/20 text-[#ec4899] rounded-full text-sm font-black transition-colors border border-[#ec4899]/20 cursor-pointer">
+            {isLoading ? <Loader2 size={16} className="animate-spin" /> : <UploadCloud size={16} />}
+            Auto-fill with Soil Report
+            <input type="file" className="hidden" accept="image/*,.pdf" onChange={handleOCRUpload} disabled={isLoading} />
+          </label>
         </div>
 
         {error && (

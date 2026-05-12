@@ -50,6 +50,27 @@ const WeatherAdvisor = () => {
 
   const handleChange = (e) => setWeather(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
+  const handleFetchLiveWeather = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${BACKEND_URL}/weather/live`);
+      if (!response.ok) throw new Error('Server error');
+      const data = await response.json();
+      setWeather(prev => ({
+        ...prev,
+        temperature: data.temperature,
+        humidity: data.humidity,
+        rainfall_mm: data.rainfall_mm,
+        wind_speed: data.wind_speed,
+        forecast: data.description,
+      }));
+    } catch(err) {
+      setError("Failed to fetch live weather");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getWeatherRisk = (w, crop) => {
     const matrix = CROP_RISK_MATRIX[crop] || CROP_RISK_MATRIX.Paddy;
     const risks = [];
@@ -101,7 +122,15 @@ const WeatherAdvisor = () => {
           <Zap size={14} /> Weather NLP Advisor
         </div>
         <h2 className="text-4xl font-black tracking-tighter mb-2">Climate Risk Advisor</h2>
-        <p className="text-text-muted">Input current weather conditions to get AI-generated farm safety advisories</p>
+        <p className="text-text-muted mb-4">Input current weather conditions to get AI-generated farm safety advisories</p>
+        <button 
+          type="button"
+          onClick={handleFetchLiveWeather}
+          disabled={isLoading}
+          className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-white text-sm font-black transition-colors border border-white/10"
+        >
+          <Cloud size={16} /> Auto-fill via Live API
+        </button>
       </div>
 
       <form onSubmit={handleAnalyze} className="space-y-6">

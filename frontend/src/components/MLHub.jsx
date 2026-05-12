@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker } from 'lucide-react';
+import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
 import CropRecommender from './CropRecommender';
 import FertilizerRecommender from './FertilizerRecommender';
+import PestForecast from './PestForecast';
 
 const ML_TABS = [
   {
@@ -18,6 +19,17 @@ const ML_TABS = [
     description: 'Upload a leaf photo for instant AI disease diagnosis using a Convolutional Neural Network.',
     component: DiseaseDetector,
     accent: '#10b981',
+  },
+  {
+    id: 'pest',
+    label: 'Pest Forecasting',
+    shortLabel: 'Pests',
+    icon: Bug,
+    badge: 'Rules Engine',
+    badgeColor: 'bg-[#ef4444]/20 text-[#ef4444]',
+    description: 'Predict pest outbreaks based on crop type and current climatic conditions.',
+    component: PestForecast,
+    accent: '#ef4444',
   },
   {
     id: 'yield',

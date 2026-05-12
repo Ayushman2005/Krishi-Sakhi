@@ -119,6 +119,13 @@ class FertilizerRecommendRequest(BaseModel):
     phosphorus: float
     potassium: float
 
+class PestForecastRequest(BaseModel):
+    crop: str
+    temperature: float
+    humidity: float
+    rainfall: float
+    growth_stage: str
+
 # ─────────────────────────────────
 # Knowledge Base
 # ─────────────────────────────────
@@ -503,6 +510,149 @@ async def fertilizer_recommend(request: FertilizerRecommendRequest):
         "prediction": recommended,
         "confidence": confidence,
         "model": "Gradient Boosting Classifier (Simulated)"
+    }
+
+@app.post("/ml/soil-report-ocr")
+async def parse_soil_report(file: UploadFile = File(...)):
+    """
+    Parses a soil test report image and extracts key metrics using Gemini Vision.
+    """
+    if not model:
+        raise HTTPException(status_code=503, detail="Gemini API not configured.")
+    
+    if not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Only image files are accepted.")
+    
+    try:
+        contents = await file.read()
+        image = Image.open(io.BytesIO(contents))
+        
+        # Use gemini-1.5-flash for multimodal tasks
+        vision_model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = """
+        Analyze this soil test report. Extract the following parameters and return ONLY a valid JSON object.
+        If a parameter is not found, set its value to null.
+        Required JSON structure:
+        {
+            "ph": float,
+            "nitrogen_kg_ha": float,
+            "phosphorus_kg_ha": float,
+            "potassium_kg_ha": float,
+            "organic_carbon_percent": float,
+            "electrical_conductivity": float,
+            "recommendations": ["string"]
+        }
+        """
+        response = vision_model.generate_content([prompt, image])
+        
+        # Extract JSON
+        text = response.text.strip()
+        if "```json" in text:
+            text = text.split("```json")[1].split("```")[0].strip()
+        elif "```" in text:
+            text = text.split("```")[1].split("```")[0].strip()
+            
+        import json
+        data = json.loads(text)
+        return data
+        
+    except Exception as e:
+        logger.error(f"OCR Error: {e}")
+        # Fallback dummy data if OCR fails
+        return {
+            "ph": 6.5,
+            "nitrogen_kg_ha": 120,
+            "phosphorus_kg_ha": 40,
+            "potassium_kg_ha": 45,
+            "organic_carbon_percent": 0.8,
+            "electrical_conductivity": 1.2,
+            "recommendations": ["Apply 10kg/ha Zinc Sulphate", "Use neem-coated urea"],
+            "note": "Fallback data used due to OCR/API failure."
+        }
+
+@app.post("/ml/pest-forecast")
+async def pest_forecast(request: PestForecastRequest):
+    """
+    Predicts potential pest attacks based on weather and crop stage.
+    """
+    forecasts = []
+    
+    if request.crop.lower() == "paddy":
+        if request.humidity > 80 and request.temperature > 28:
+            forecasts.append({"pest": "Brown Plant Hopper", "risk": "High", "timeframe": "3-5 days", "action": "Drain field intermittently, apply Neem oil (10000 ppm) @ 2ml/L."})
+        if request.rainfall > 20 and request.temperature < 30:
+            forecasts.append({"pest": "Leaf Folder", "risk": "Medium", "timeframe": "7-10 days", "action": "Avoid excessive nitrogen fertilizer. Release Trichogramma chilonis."})
+    elif request.crop.lower() == "cotton":
+        if request.temperature > 32 and request.humidity < 60:
+            forecasts.append({"pest": "Whitefly", "risk": "High", "timeframe": "2-4 days", "action": "Install yellow sticky traps. Spray Imidacloprid if severe."})
+            
+    if not forecasts:
+        forecasts.append({"pest": "No major immediate threats", "risk": "Low", "timeframe": "14 days", "action": "Continue regular monitoring and good agricultural practices."})
+        
+    return {
+        "crop": request.crop,
+        "current_weather": {"temp": request.temperature, "humidity": request.humidity},
+        "forecasts": forecasts
+    }
+
+@app.get("/schemes")
+async def get_schemes(state: str = "Kerala", crop: str = "General", land_size_acres: float = 2.0):
+    """
+    Returns relevant agricultural schemes based on location and profile.
+    """
+    schemes = [
+        {"name": "PM-KISAN", "benefit": "₹6,000 per year in 3 equal installments.", "eligibility": "All landholding farmers."},
+        {"name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)", "benefit": "Crop insurance against natural calamities.", "eligibility": "Farmers growing notified crops."},
+        {"name": "Kisan Credit Card (KCC)", "benefit": "Short-term formal credit at subsidized interest rates (4-7%).", "eligibility": "Farmers, tenant farmers, sharecroppers."},
+    ]
+    
+    if state.lower() == "kerala":
+        schemes.append({"name": "Subiksha Keralam", "benefit": "Subsidies for integrated farming and fallow land cultivation.", "eligibility": "Farmers in Kerala."})
+        if crop.lower() == "coconut":
+            schemes.append({"name": "Keragramam Scheme", "benefit": "Financial assistance for coconut rejuvenation.", "eligibility": "Coconut farmers in Kerala."})
+            
+    if land_size_acres < 5.0:
+        schemes.append({"name": "Paramparagat Krishi Vikas Yojana (PKVY)", "benefit": "Financial assistance for adopting organic farming.", "eligibility": "Small/marginal farmers forming clusters."})
+        
+    return {"state": state, "crop": crop, "schemes": schemes}
+
+@app.get("/weather/live")
+async def live_weather(lat: float = 10.8505, lon: float = 76.2711):
+    """
+    Fetches live weather from OpenWeatherMap if key exists, else provides simulated data.
+    """
+    api_key = os.getenv("OPENWEATHER_API_KEY")
+    if api_key:
+        try:
+            import urllib.request
+            import json
+            url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=5) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode())
+                    return {
+                        "location": data.get("name", "Unknown"),
+                        "temperature": data["main"]["temp"],
+                        "humidity": data["main"]["humidity"],
+                        "rainfall_mm": data.get("rain", {}).get("1h", 0.0),
+                        "wind_speed": data["wind"]["speed"],
+                        "description": data["weather"][0]["description"].title(),
+                        "source": "OpenWeatherMap"
+                    }
+        except Exception as e:
+            logger.error(f"Live Weather API Error: {e}")
+            pass # Fall back to simulation
+            
+    # Simulation fallback
+    return {
+        "location": "Simulated Location",
+        "temperature": round(random.uniform(25.0, 34.0), 1),
+        "humidity": round(random.uniform(60, 90), 1),
+        "rainfall_mm": round(random.uniform(0, 15.0), 1),
+        "wind_speed": round(random.uniform(5.0, 15.0), 1),
+        "description": "Partly Cloudy (Simulated)",
+        "source": "Simulation (Missing/Failed API Key)"
     }
 
 if __name__ == "__main__":

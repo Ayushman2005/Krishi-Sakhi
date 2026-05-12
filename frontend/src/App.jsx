@@ -6,13 +6,15 @@ import Dashboard from './components/Dashboard';
 import ChatInterface from './components/ChatInterface';
 import MLHub from './components/MLHub';
 import MarketInsights from './components/MarketInsights';
+import SchemesLocator from './components/SchemesLocator';
 import EnhancedBackground from './components/EnhancedBackground';
-import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User } from 'lucide-react';
+import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User, Landmark } from 'lucide-react';
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'ml', label: 'AI Models', icon: Cpu },
   { id: 'market', label: 'Market Rates', icon: TrendingUp },
+  { id: 'schemes', label: 'Schemes', icon: Landmark },
 ];
 
 const AppContent = () => {
@@ -203,6 +205,11 @@ const AppContent = () => {
           ) : activePage === 'market' ? (
             <motion.div key="market" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <MarketInsights />
+              <ChatInterface />
+            </motion.div>
+          ) : activePage === 'schemes' ? (
+            <motion.div key="schemes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <SchemesLocator />
               <ChatInterface />
             </motion.div>
           ) : (
