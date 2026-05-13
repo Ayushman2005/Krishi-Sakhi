@@ -12,3 +12,6 @@ cors
 torch
 torchvision
 Pillow
+scikit-learn
+numpy
+pandas
