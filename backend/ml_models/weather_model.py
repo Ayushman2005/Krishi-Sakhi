@@ -3,6 +3,7 @@ from schemas import WeatherRequest
 import os
 import random
 import logging
+import urllib.parse
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

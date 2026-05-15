@@ -67,6 +67,7 @@ const ProfileForm = () => {
   const [formData, setFormData] = useState({
     name: '', location: '', landSize: '',
     crop: 'Paddy', soilType: 'Alluvial', irrigation: 'Drip',
+    lat: null, lon: null, locationDisplay: '',
   });
 
   // Location Autocomplete State
@@ -95,10 +96,22 @@ const ProfileForm = () => {
     }
     setIsSearchingLocation(true);
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&featuretype=city`);
+      // Use addressdetails=1 to get structured parts; featureType (note capitalisation) for cities
+      // We search broadly so small towns like Shōranūr are found, then filter by type client-side
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=7&addressdetails=1&accept-language=en`;
+      const response = await fetch(url, {
+        headers: { 'Accept-Language': 'en' }
+      });
       if (response.ok) {
         const data = await response.json();
-        setSuggestions(data);
+        // Prefer populated places / towns / villages over administrative areas
+        const sorted = data.sort((a, b) => {
+          const preferred = ['city', 'town', 'village', 'suburb', 'hamlet'];
+          const aScore = preferred.includes(a.type) ? 0 : 1;
+          const bScore = preferred.includes(b.type) ? 0 : 1;
+          return aScore - bScore;
+        });
+        setSuggestions(sorted);
         setShowSuggestions(true);
       }
     } catch (error) {
@@ -118,10 +131,23 @@ const ProfileForm = () => {
   };
 
   const selectLocation = (loc) => {
-    // Extract just the city and country/state for a clean display
-    const cleanName = loc.display_name.split(',').slice(0, 3).join(',');
-    setLocationQuery(cleanName);
-    set('location', cleanName);
+    // Use the structured address to build an accurate display name
+    const addr = loc.address || {};
+    const cityName = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || loc.display_name.split(',')[0];
+    const state = addr.state || '';
+    const country = addr.country || '';
+    const displayName = [cityName, state, country].filter(Boolean).join(', ');
+    
+    setLocationQuery(displayName);
+    // Store the clean city name as `location` (used for display + fallback weather search)
+    // Store lat/lon for precise weather API calls
+    setFormData(prev => ({
+      ...prev,
+      location: displayName,
+      locationDisplay: displayName,
+      lat: parseFloat(loc.lat),
+      lon: parseFloat(loc.lon),
+    }));
     setShowSuggestions(false);
   };
 
@@ -311,7 +337,18 @@ const ProfileForm = () => {
                                 className="px-4 py-3 hover:bg-white/5 cursor-pointer transition-colors border-b border-white/5 last:border-0 flex items-start gap-3"
                               >
                                 <MapPin size={16} className="text-primary mt-0.5 shrink-0" />
-                                <span className="text-sm font-bold leading-tight">{loc.display_name}</span>
+                                <div>
+                                  <span className="text-sm font-bold leading-tight block">
+                                    {(() => {
+                                      const addr = loc.address || {};
+                                      const city = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || loc.display_name.split(',')[0];
+                                      const state = addr.state || '';
+                                      const country = addr.country || '';
+                                      return [city, state, country].filter(Boolean).join(', ');
+                                    })()}
+                                  </span>
+                                  <span className="text-[10px] text-text-muted capitalize">{loc.type}</span>
+                                </div>
                               </div>
                             ))}
                           </motion.div>

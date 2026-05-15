@@ -30,7 +30,7 @@ const Dashboard = () => {
       if (profile) {
         const [adv, weather] = await Promise.all([
           generateAdvisory(profile),
-          getWeather(profile.location || 'Kerala, IN')
+          getWeather(profile.location || 'Kerala, IN', profile.lat || null, profile.lon || null)
         ]);
         setAdvisories(adv);
         setWeatherData(weather);

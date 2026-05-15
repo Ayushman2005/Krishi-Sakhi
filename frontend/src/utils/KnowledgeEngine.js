@@ -49,35 +49,27 @@ export const getMarketTrends = async () => {
   }
 };
 
-export const getWeather = async (location) => {
+export const getWeather = async (location, lat = null, lon = null) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/weather/live?q=${encodeURIComponent(location)}`);
+    // Always prefer GPS coordinates — they are 100% unambiguous
+    let url;
+    if (lat && lon) {
+      url = `${API_BASE_URL}/weather/live?lat=${lat}&lon=${lon}`;
+    } else {
+      // Fallback: use the city name string for search
+      url = `${API_BASE_URL}/weather/live?q=${encodeURIComponent(location)}`;
+    }
+    const response = await fetch(url);
     if (!response.ok) throw new Error('Weather API failed');
     const data = await response.json();
-    
-    // Map backend response back to the format Dashboard expects if needed
-    // The backend already returns temperature, humidity, etc.
-    // Dashboard uses weatherData.main.temp, weatherData.weather[0].description, etc.
-    // So let's normalize it for the Dashboard component.
-    
-    if (data.source === "Simulation (Missing/Failed API Key)") {
-      // If it's simulated, we should still provide the nested structure the Dashboard expects
-      return {
-        main: { temp: data.temperature, humidity: data.humidity },
-        wind: { speed: data.wind_speed },
-        weather: [{ description: data.description, main: 'Clouds' }],
-        name: data.location,
-        isSimulated: true
-      };
-    }
-    
-    // If it's real data from OpenWeather via backend, it might already have the nested structure
-    // But our backend live_weather function flattens it. Let's re-nest it for compatibility.
+
+    // Normalize the backend's flat response to the nested shape the Dashboard expects
     return {
       main: { temp: data.temperature, humidity: data.humidity },
       wind: { speed: data.wind_speed },
-      weather: [{ description: data.description, main: 'Clouds' }], // Simplified
-      name: data.location
+      weather: [{ description: data.description, main: data.description.includes('Rain') ? 'Rain' : data.description.includes('Clear') ? 'Clear' : 'Clouds' }],
+      name: data.location,
+      isSimulated: data.source?.includes('Simulation'),
     };
   } catch (error) {
     console.error("Weather proxy error:", error);
