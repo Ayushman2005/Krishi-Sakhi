@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFarmer } from '../context/FarmerContext';
-import { generateAdvisory, getMarketTrends, getWeather } from '../utils/KnowledgeEngine';
+import { generateAdvisory, getWeather } from '../utils/KnowledgeEngine';
 import { 
   CloudRain, Sprout, Bug, Droplets, 
-  Plus, Calendar, TrendingUp, AlertCircle,
-  CheckCircle2, Clock, ArrowUpRight, Sun, Wind,
+  Plus, Calendar, AlertCircle,
+  CheckCircle2, Sun, Wind,
   AlertTriangle, RefreshCw, LayoutGrid, CalendarCheck, MoreHorizontal
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { profile, activities, addActivity } = useFarmer();
   const [advisories, setAdvisories] = useState([]);
-  const [marketTrends, setMarketTrends] = useState([]);
+
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,16 +28,14 @@ const Dashboard = () => {
     setError(null);
     try {
       if (profile) {
-        const [adv, trends, weather] = await Promise.all([
+        const [adv, weather] = await Promise.all([
           generateAdvisory(profile),
-          getMarketTrends(),
           getWeather(profile.location || 'Kerala, IN')
         ]);
         setAdvisories(adv);
-        setMarketTrends(trends);
         setWeatherData(weather);
       }
-    } catch (err) {
+    } catch {
       setError("Unable to sync with farm data server.");
     } finally {
       setIsLoading(false);
@@ -43,7 +43,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile, activities]);
 
   const handleLogActivity = (e) => {
@@ -112,7 +114,7 @@ const Dashboard = () => {
             animate={{ x: 0, opacity: 1 }}
             className="text-7xl font-black mb-4 tracking-tighter leading-none"
           >
-            Namaste, <span className="gradient-text">{profile?.name || 'Farmer'}</span>
+            {t('welcome')}, <span className="gradient-text">{profile?.name || 'Farmer'}</span>
           </motion.h1>
           <div className="flex flex-wrap items-center gap-3">
             <motion.span 
@@ -149,7 +151,7 @@ const Dashboard = () => {
             onClick={() => setShowLogModal(true)}
             className="btn btn-primary px-10 h-14 text-lg rounded-2xl font-black shadow-xl shadow-primary/20"
           >
-            <Plus size={24} /> Log Activity
+            <Plus size={24} /> {t('log_activity')}
           </motion.button>
         </div>
       </header>
@@ -170,10 +172,10 @@ const Dashboard = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
-          { label: 'Health Index', value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100` },
-          { label: 'Soil Health', value: profile?.soilType === 'Alluvial' ? 'Optimum' : 'Balanced', icon: LayoutGrid, color: 'text-primary', sub: 'pH 6.5' },
-          { label: 'Daily Water', value: 'Optimal', icon: Droplets, color: 'text-primary', sub: profile?.irrigation === 'Drip' ? 'Efficient Use' : 'Standard' },
-          { label: 'Pest Risk', value: 'Low', icon: Bug, color: 'text-warning', sub: 'No outbreaks' },
+          { label: t('health_index'), value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100` },
+          { label: t('soil_health'), value: profile?.soilType === 'Alluvial' ? 'Optimum' : 'Balanced', icon: LayoutGrid, color: 'text-primary', sub: 'pH 6.5' },
+          { label: t('daily_water'), value: 'Optimal', icon: Droplets, color: 'text-primary', sub: profile?.irrigation === 'Drip' ? 'Efficient Use' : 'Standard' },
+          { label: t('pest_risk'), value: 'Low', icon: Bug, color: 'text-warning', sub: 'No outbreaks' },
         ].map((stat, i) => (
           <motion.div 
             key={i} 
@@ -207,7 +209,7 @@ const Dashboard = () => {
           <section>
             <h2 className="text-3xl font-black mb-8 flex items-center gap-4">
               <span className="w-3 h-3 bg-primary rounded-full pulse-primary" />
-              Personalized Guidance
+              {t('personalized_guidance')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {isLoading ? (
@@ -220,7 +222,7 @@ const Dashboard = () => {
                   No urgent advisories for your profile today.
                 </div>
               ) : (
-                advisories.map((adv, idx) => (
+                advisories.map((adv) => (
                   <motion.div 
                     key={adv.id}
                     variants={itemVariants}
@@ -253,7 +255,7 @@ const Dashboard = () => {
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-black flex items-center gap-4">
                 <span className="w-3 h-3 bg-accent rounded-full" />
-                Farm Activity Timeline
+                {t('farm_timeline')}
               </h2>
               <span className="text-xs font-bold text-text-muted uppercase tracking-widest">{activities.length} Events Total</span>
             </div>
@@ -264,7 +266,7 @@ const Dashboard = () => {
                   <p className="italic font-medium">Your activity feed is empty. Start by logging your first task!</p>
                 </div>
               ) : (
-                activities.map((act, idx) => (
+                activities.map((act) => (
                   <motion.div 
                     key={act.id}
                     variants={itemVariants}
@@ -302,7 +304,7 @@ const Dashboard = () => {
           <motion.div variants={itemVariants} className="glass p-10 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl -mr-24 -mt-24 group-hover:bg-primary/10 transition-colors" />
             <h3 className="text-2xl font-black mb-8 flex items-center gap-4">
-              <CalendarCheck className="text-primary" /> Upcoming Tasks
+              <CalendarCheck className="text-primary" /> {t('upcoming_tasks')}
             </h3>
             <div className="space-y-4">
               {[
@@ -337,7 +339,7 @@ const Dashboard = () => {
               <Sun className="text-secondary opacity-20" size={80} />
             </div>
             <h3 className="text-2xl font-black mb-8 relative z-10 flex items-center justify-between">
-              Regional Climate
+              {t('regional_climate')}
               {(!weatherData || weatherData.error) && <span className="text-[10px] bg-error/10 text-error px-2 py-1 rounded-full border border-error/20 ml-2">{weatherData?.error || "Loading..."}</span>}
             </h3>
             <div className="flex items-center gap-10 mb-8 relative z-10">
@@ -360,11 +362,11 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/5">
-                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">Humidity</p>
+                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">{t('humidity')}</p>
                 <p className="font-black text-xl">{weatherData && !weatherData.error ? weatherData.main.humidity : 84}%</p>
               </div>
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/5">
-                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">Wind</p>
+                <p className="text-[10px] text-text-muted uppercase font-black tracking-widest mb-1">{t('wind')}</p>
                 <p className="font-black text-xl">{weatherData && !weatherData.error ? weatherData.wind.speed : 12} <span className="text-sm font-bold text-text-muted">m/s</span></p>
               </div>
             </div>
@@ -439,7 +441,7 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] bg-success/20 border border-success/30 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-3 text-success font-bold shadow-[0_10px_30px_rgba(52,211,153,0.3)]"
+            className="fixed bottom-32 md:bottom-10 left-1/2 -translate-x-1/2 z-[200] bg-success/20 border border-success/30 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-3 text-success font-bold shadow-[0_10px_30px_rgba(52,211,153,0.3)]"
           >
             <CheckCircle2 size={20} />
             {toast}

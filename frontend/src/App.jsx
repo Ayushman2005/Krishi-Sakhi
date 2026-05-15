@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FarmerProvider, useFarmer } from './context/FarmerContext';
 import ProfileForm from './components/ProfileForm';
@@ -8,16 +8,44 @@ import MLHub from './components/MLHub';
 import MarketInsights from './components/MarketInsights';
 import SchemesLocator from './components/SchemesLocator';
 import EnhancedBackground from './components/EnhancedBackground';
-import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User, Landmark } from 'lucide-react';
+import { Sprout, Settings, Bell, ShieldCheck, ArrowUpRight, LayoutDashboard, Cpu, LogOut, TrendingUp, X, User, Landmark, Languages } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'ml', label: 'AI Models', icon: Cpu },
-  { id: 'market', label: 'Market Rates', icon: TrendingUp },
-  { id: 'schemes', label: 'Schemes', icon: Landmark },
+  { id: 'dashboard', label: 'dashboard', icon: LayoutDashboard },
+  { id: 'ml', label: 'ai_models', icon: Cpu },
+  { id: 'market', label: 'market_rates', icon: TrendingUp },
+  { id: 'schemes', label: 'schemes', icon: Landmark },
+];
+
+const LANGUAGES = [
+  { code: 'en', name: 'English' },
+  { code: 'hi', name: 'हिंदी' },
+  { code: 'ml', name: 'മലയാളം' },
+  { code: 'ta', name: 'தமிழ்' },
+  { code: 'te', name: 'తెలుగు' },
+  { code: 'kn', name: 'ಕನ್ನಡ' },
+  { code: 'mr', name: 'मराठी' },
+  { code: 'bn', name: 'বাংলা' },
+  { code: 'pa', name: 'ਪੰਜਾਬੀ' },
+  { code: 'gu', name: 'ગુજરાતી' },
+  { code: 'or', name: 'ଓଡ଼ିଆ' },
+  { code: 'as', name: 'অসমীয়া' },
+  { code: 'ur', name: 'اردو' },
+  { code: 'ks', name: 'کٲشُر' },
+  { code: 'ne', name: 'नेपाली' },
+  { code: 'sa', name: 'संस्कृतम्' },
+  { code: 'kok', name: 'कोंकणी' },
+  { code: 'doi', name: 'डोगरी' },
+  { code: 'mai', name: 'मैथिली' },
+  { code: 'sat', name: 'ᱥᱟᱱᱛᱟᱲᱤ' },
+  { code: 'mni', name: 'ꯃꯩꯇꯩꯂꯣꯟ' },
+  { code: 'brx', name: 'बर’' },
+  { code: 'sd', name: 'سنڌي' },
 ];
 
 const AppContent = () => {
+  const { t, i18n } = useTranslation();
   const { profile, clearProfile } = useFarmer();
   const [activePage, setActivePage] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
@@ -58,7 +86,7 @@ const AppContent = () => {
                 <Sprout size={20} className="relative z-10" />
               </div>
               <div className="hidden sm:block">
-                <span className="text-lg font-black tracking-tight leading-none">Krishi Sakhi</span>
+                <span className="text-lg font-black tracking-tight leading-none">{t('app_name')}</span>
               </div>
             </motion.div>
 
@@ -81,7 +109,7 @@ const AppContent = () => {
                     }`}
                   >
                     <item.icon size={16} />
-                    {item.label}
+                    {t(item.label)}
                   </button>
                 ))}
               </motion.div>
@@ -131,6 +159,16 @@ const AppContent = () => {
                 </AnimatePresence>
               </div>
 
+              <div className="relative flex items-center">
+                <button 
+                  onClick={() => setShowSettings(true)}
+                  className="p-2.5 bg-white/5 text-text-muted hover:bg-white/10 border border-white/5 rounded-full hover:text-white transition-all"
+                  title={t('language')}
+                >
+                  <Languages size={18} />
+                </button>
+              </div>
+
               <button 
                 onClick={() => setShowSettings(true)}
                 className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors mr-2 text-left"
@@ -165,24 +203,34 @@ const AppContent = () => {
         </nav>
       </motion.div>
 
-      {/* Mobile Nav Tabs */}
-      {profile && (
-        <div className="md:hidden flex w-full bg-background/80 border-b border-white/5 px-4">
-          {NAV_ITEMS.map(item => (
-            <button
-              key={item.id}
-              onClick={() => setActivePage(item.id)}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-bold border-b-2 transition-all ${
-                activePage === item.id
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-text-muted'
-              }`}
-            >
-              <item.icon size={15} />{item.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Mobile Floating Bottom Nav */}
+      <AnimatePresence>
+        {profile && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="md:hidden fixed bottom-6 left-6 right-6 z-50 pointer-events-none flex justify-center"
+          >
+            <div className="glass w-full max-w-sm flex justify-around items-center p-2 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/80 backdrop-blur-3xl">
+              {NAV_ITEMS.map(item => (
+                  <button
+                  key={item.id}
+                  onClick={() => setActivePage(item.id)}
+                  className={`flex flex-col items-center gap-1.5 px-5 py-2.5 rounded-2xl transition-all duration-300 ${
+                    activePage === item.id
+                      ? 'bg-primary/20 text-primary'
+                      : 'text-text-muted hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <item.icon size={20} className={activePage === item.id ? 'scale-110' : ''} />
+                  <span className="text-[10px] font-black uppercase tracking-widest">{t(item.label)}</span>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <main className="flex-1 relative">
@@ -240,7 +288,7 @@ const AppContent = () => {
             >
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl font-black flex items-center gap-3">
-                  <Settings className="text-primary" size={28} /> Preferences
+                  <Settings className="text-primary" size={28} /> {t('preferences')}
                 </h2>
                 <button onClick={() => setShowSettings(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
                   <X size={20} />
@@ -248,6 +296,29 @@ const AppContent = () => {
               </div>
 
               <div className="space-y-6">
+                {/* Language Selector */}
+                <div className="p-5 bg-white/5 rounded-3xl border border-white/5 space-y-4">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Languages className="text-primary" size={20} />
+                    <h3 className="font-black text-sm uppercase tracking-widest">{t('language')}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {LANGUAGES.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => i18n.changeLanguage(lang.code)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
+                          i18n.language === lang.code
+                            ? 'bg-primary border-primary text-white'
+                            : 'bg-white/5 border-white/10 text-text-muted hover:bg-white/10'
+                        }`}
+                      >
+                        {lang.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="p-5 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-5">
                   <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary font-black text-2xl border-2 border-primary/30">
                     {profile.name.charAt(0)}
@@ -271,7 +342,7 @@ const AppContent = () => {
                     onClick={() => { clearProfile(); setShowSettings(false); }}
                     className="w-full btn py-4 justify-start bg-error/10 text-error hover:bg-error/20 border border-error/10"
                   >
-                    <LogOut size={16} /> Factory Reset (Clear Data)
+                    <LogOut size={16} /> {t('reset_profile')} (Clear Data)
                   </button>
                 </div>
               </div>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sprout, Droplets, Thermometer, FlaskConical, Wind, ArrowRight, BarChart3, AlertCircle } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const CropRecommender = () => {
   const [formData, setFormData] = useState({

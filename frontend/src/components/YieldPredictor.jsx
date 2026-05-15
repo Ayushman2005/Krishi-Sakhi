@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, Sprout, Loader2, BarChart3, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, Sprout, Loader2, BarChart3, CheckCircle2 } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const CROP_BENCHMARKS = {
   Paddy: { unit: 'quintals/acre', avg: 20, good: 25, excellent: 30 },
@@ -30,7 +30,6 @@ const YieldPredictor = () => {
   const { profile } = useFarmer();
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     crop: profile?.crop || 'Paddy',
@@ -50,7 +49,6 @@ const YieldPredictor = () => {
   const handlePredict = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
     setResult(null);
 
     try {

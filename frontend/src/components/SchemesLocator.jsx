@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Landmark, MapPin, CheckCircle2, Loader2, ArrowRight } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const SchemesLocator = () => {
   const { profile } = useFarmer();
@@ -25,7 +25,7 @@ const SchemesLocator = () => {
         if (!response.ok) throw new Error('Failed to fetch schemes');
         const data = await response.json();
         setSchemes(data.schemes || []);
-      } catch (err) {
+      } catch {
         setError("Failed to load government schemes at this moment.");
       } finally {
         setIsLoading(false);

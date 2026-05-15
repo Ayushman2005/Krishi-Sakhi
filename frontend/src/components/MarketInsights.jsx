@@ -1,19 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, TrendingUp, TrendingDown, RefreshCcw, Landmark, MapPin, IndianRupee, Sparkles, X, Loader2 } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 import { useEffect } from 'react';
 
-const BACKEND_URL = 'http://localhost:8000';
-
-const MARKET_DATA = [
-  { id: 1, crop: 'Paddy (Grade A)', price: 2350, unit: 'per Quintal', trend: '+2.4%', up: true, location: 'Palakkad Mandi' },
-  { id: 2, crop: 'Coconut (Raw)', price: 34, unit: 'per Nut', trend: '-1.2%', up: false, location: 'Kozhikode Market' },
-  { id: 3, crop: 'Rubber (RSS-4)', price: 168, unit: 'per Kg', trend: '+5.1%', up: true, location: 'Kottayam Board' },
-  { id: 4, crop: 'Cardamom', price: 1850, unit: 'per Kg', trend: '+0.8%', up: true, location: 'Idukki Spices Board' },
-  { id: 5, crop: 'Banana (Nendran)', price: 55, unit: 'per Kg', trend: '-4.3%', up: false, location: 'Thrissur Market' },
-  { id: 6, crop: 'Black Pepper', price: 540, unit: 'per Kg', trend: '+1.5%', up: true, location: 'Wayanad Traders' },
-];
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const MarketInsights = () => {
   const { profile } = useFarmer();
@@ -38,7 +29,20 @@ const MarketInsights = () => {
   };
 
   useEffect(() => {
-    fetchMarketRates();
+    let isMounted = true;
+    const fetchMarketRatesEffect = async () => {
+      // Avoid calling setState synchronously here if it's considered bad practice by ESLint
+      try {
+        const location = profile?.location || 'Kerala';
+        const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
+        const data = await response.json();
+        if (isMounted) setMarketData(data);
+      } catch (err) {
+        console.error("Failed to fetch market rates", err);
+      }
+    };
+    fetchMarketRatesEffect();
+    return () => { isMounted = false; };
   }, [profile?.location]);
 
   const handleRefresh = () => {

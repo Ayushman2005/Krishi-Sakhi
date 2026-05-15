@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const FarmerContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useFarmer = () => {
   const context = useContext(FarmerContext);
   if (!context) throw new Error('useFarmer must be used within FarmerProvider');

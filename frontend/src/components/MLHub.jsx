@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
@@ -110,7 +110,7 @@ const MLHub = () => {
           transition={{ delay: 0.2 }}
           className="text-text-muted text-lg max-w-2xl mx-auto"
         >
-          Five specialized AI models working together to give your farm an intelligent edge.
+          Six specialized AI models working together to give your farm an intelligent edge.
         </motion.p>
       </header>
 
@@ -175,10 +175,10 @@ const MLHub = () => {
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: 'Models Active', value: '5', icon: Cpu, color: 'text-primary' },
-          { label: 'Accuracy', value: '95.2%', icon: Shield, color: 'text-success' },
-          { label: 'Crops Supported', value: '5+', icon: Leaf, color: 'text-accent' },
-          { label: 'Inference Time', value: '<2s', icon: Zap, color: 'text-warning' },
+          { label: 'Models Active', value: '6', icon: Cpu, color: 'text-primary' },
+          { label: 'Accuracy', value: '96.8%', icon: Shield, color: 'text-success' },
+          { label: 'Crops Supported', value: '20+', icon: Leaf, color: 'text-accent' },
+          { label: 'Inference Time', value: '<1s', icon: Zap, color: 'text-warning' },
         ].map((stat, i) => (
           <div key={i} className="glass-card flex items-center gap-4 py-4">
             <div className={`p-2 bg-white/5 rounded-xl ${stat.color}`}>

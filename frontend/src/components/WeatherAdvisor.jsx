@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cloud, Thermometer, Wind, Droplets, Loader2, AlertTriangle, Sun, CloudRain, Zap, Eye } from 'lucide-react';
+import { Cloud, Thermometer, Wind, Droplets, Loader2, Sun, CloudRain, Zap, Eye } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const CROP_RISK_MATRIX = {
   Paddy: {
@@ -46,7 +46,6 @@ const WeatherAdvisor = () => {
   });
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => setWeather(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -64,8 +63,8 @@ const WeatherAdvisor = () => {
         wind_speed: data.wind_speed,
         forecast: data.description,
       }));
-    } catch(err) {
-      setError("Failed to fetch live weather");
+    } catch {
+      console.error("Failed to fetch live weather");
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +85,6 @@ const WeatherAdvisor = () => {
   const handleAnalyze = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
     setResult(null);
 
     try {

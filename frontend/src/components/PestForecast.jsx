@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bug, Thermometer, Droplet, CloudRain, AlertTriangle, Loader2 } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const PestForecast = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const PestForecast = () => {
 
       if (!response.ok) throw new Error('Failed to forecast pests');
       setForecast(await response.json());
-    } catch (err) {
+    } catch {
       setError("An error occurred during forecasting.");
     } finally {
       setIsLoading(false);

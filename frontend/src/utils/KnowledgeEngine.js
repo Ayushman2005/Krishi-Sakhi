@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 export const generateAdvisory = async (profile) => {
   if (!profile) return [];
@@ -50,22 +50,37 @@ export const getMarketTrends = async () => {
 };
 
 export const getWeather = async (location) => {
-  const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
-  if (!apiKey) {
-    return { error: "Missing Key" };
-  }
-  
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric`);
+    const response = await fetch(`${API_BASE_URL}/weather/live?q=${encodeURIComponent(location)}`);
+    if (!response.ok) throw new Error('Weather API failed');
     const data = await response.json();
-    if (!response.ok) {
-      if (data.cod == 401) return { error: "Invalid Key (or not activated yet)" };
-      if (data.cod == 404) return { error: "Location Not Found" };
-      return { error: data.message || "Fetch Failed" };
+    
+    // Map backend response back to the format Dashboard expects if needed
+    // The backend already returns temperature, humidity, etc.
+    // Dashboard uses weatherData.main.temp, weatherData.weather[0].description, etc.
+    // So let's normalize it for the Dashboard component.
+    
+    if (data.source === "Simulation (Missing/Failed API Key)") {
+      // If it's simulated, we should still provide the nested structure the Dashboard expects
+      return {
+        main: { temp: data.temperature, humidity: data.humidity },
+        wind: { speed: data.wind_speed },
+        weather: [{ description: data.description, main: 'Clouds' }],
+        name: data.location,
+        isSimulated: true
+      };
     }
-    return data;
+    
+    // If it's real data from OpenWeather via backend, it might already have the nested structure
+    // But our backend live_weather function flattens it. Let's re-nest it for compatibility.
+    return {
+      main: { temp: data.temperature, humidity: data.humidity },
+      wind: { speed: data.wind_speed },
+      weather: [{ description: data.description, main: 'Clouds' }], // Simplified
+      name: data.location
+    };
   } catch (error) {
-    console.error("Weather API error:", error);
-    return { error: "Network Error" };
+    console.error("Weather proxy error:", error);
+    return { error: "Sync Error" };
   }
 };

@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, Leaf, AlertTriangle, CheckCircle2, Loader2, X, Camera, Info } from 'lucide-react';
+import { Leaf, AlertTriangle, CheckCircle2, Loader2, X, Camera, Info } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 // Disease info reference
 const DISEASE_GUIDE = {
@@ -16,10 +16,25 @@ const DISEASE_GUIDE = {
     treatment: 'Apply Buprofezin 25 SC @ 1ml/L. Avoid flood irrigation temporarily.',
     prevention: 'Maintain field hygiene. Encourage natural predators.'
   },
-  'Healthy': { 
-    severity: 'None', 
+  'Healthy': {
+    severity: 'None',
     treatment: 'No treatment required.',
     prevention: 'Continue current agronomic practices.'
+  },
+  'Neck Rot': {
+    severity: 'High',
+    treatment: 'Apply Tricyclazole @0.6g/L. Ensure seeds are treated before sowing.',
+    prevention: 'Avoid excess nitrogen and maintain proper spacing.'
+  },
+  'Sheath Blight': {
+    severity: 'Medium',
+    treatment: 'Spray Hexaconazole 5% EC @ 2ml/L or Validamycin 3L @ 2ml/L.',
+    prevention: 'Remove weeds and maintain field sanitation. Avoid high plant density.'
+  },
+  'Tungro Virus': {
+    severity: 'Extreme',
+    treatment: 'Control green leafhoppers with Clothianidin 50 WDG @ 0.4g/L. Rogue out infected plants.',
+    prevention: 'Use resistant varieties. Maintain a fallow period between crops.'
   },
 };
 
@@ -70,7 +85,7 @@ const DiseaseDetector = () => {
       if (!response.ok) throw new Error('Analysis failed on server.');
       const data = await response.json();
       setResult(data);
-    } catch (err) {
+    } catch {
       // Graceful offline fallback - simulate for demo
       setResult({
         prediction: 'Leaf Blast',

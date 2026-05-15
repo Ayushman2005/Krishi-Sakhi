@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Send, X, Mic, User, Sparkles, Command } from 'lucide-react';
+import { MessageCircle, Send, X, Mic, Sparkles, Command } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 import { getAIResponse } from '../utils/KnowledgeEngine';
 
@@ -164,7 +164,7 @@ const ChatInterface = () => {
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide"
             >
-              {messages.map((msg, idx) => (
+              {messages.map((msg) => (
                 <motion.div 
                   key={msg.id} 
                   initial={{ opacity: 0, x: msg.sender === 'user' ? 20 : -20, y: 10 }}

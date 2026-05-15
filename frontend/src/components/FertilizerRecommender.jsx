@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Beaker, Droplet, Thermometer, Wind, ArrowRight, Activity, AlertCircle, UploadCloud, Loader2 } from 'lucide-react';
 
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const FertilizerRecommender = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ const FertilizerRecommender = () => {
         phosphorus: data.phosphorus_kg_ha ?? prev.phosphorus,
         potassium: data.potassium_kg_ha ?? prev.potassium,
       }));
-    } catch(err) {
+    } catch {
       setError("OCR failed to read the document. Please enter manually.");
     } finally {
       setIsLoading(false);
