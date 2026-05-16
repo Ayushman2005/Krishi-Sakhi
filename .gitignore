@@ -40,4 +40,6 @@ Thumbs.db
 backend/dataset/
 backend/__pycache__/
 frontend/.env
-backend/.env
+backend/.
+backend/PlantVillage-Dataset
+backend/TRAINING_GUIDE.md

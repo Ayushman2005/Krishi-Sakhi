@@ -1,18 +1,54 @@
-fastapi
-uvicorn
-pydantic
-python-dotenv
-google-generativeai
-langchain
-langchain-google-genai
-chromadb
-sentence-transformers
-requests
-cors
-torch
-torchvision
-Pillow
-scikit-learn
-numpy
-pandas
-python-multipart
+# ──────────────────────────────────────────────
+# Krishi-Sakhi Backend — Python Dependencies
+# Install with:
+#   pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
+# ──────────────────────────────────────────────
+
+# ── Web Framework ──────────────────────────────
+fastapi==0.136.1
+uvicorn==0.47.0
+starlette==1.0.0
+python-multipart==0.0.28
+
+# ── Data Validation ────────────────────────────
+pydantic==2.13.4
+pydantic-settings==2.14.1
+
+# ── Environment ────────────────────────────────
+python-dotenv==1.2.2
+
+# ── Google AI / Gemini ─────────────────────────
+google-generativeai==0.8.6
+google-genai==1.75.0
+
+# ── LangChain ─────────────────────────────────
+langchain==1.3.0
+langchain-core==1.4.0
+langchain-google-genai==4.2.2
+
+# ── Vector DB / Embeddings ─────────────────────
+chromadb==1.5.9
+sentence-transformers==5.5.0
+
+# ── HTTP ──────────────────────────────────────
+requests==2.34.2
+httpx==0.28.1
+
+# ── Machine Learning ───────────────────────────
+scikit-learn==1.8.0
+numpy==2.4.4
+pandas==3.0.3
+scipy==1.17.1
+
+# ── Deep Learning (CPU-only, stable build) ─────
+# IMPORTANT: Always install from the PyTorch index to avoid broken nightly builds
+# pip install torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cpu
+torch==2.7.0
+torchvision==0.22.0
+
+# ── Image Processing ───────────────────────────
+Pillow==12.2.0
+
+# ── Utilities ─────────────────────────────────
+tqdm==4.67.3
+joblib==1.5.3

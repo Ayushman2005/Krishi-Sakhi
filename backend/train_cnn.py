@@ -280,7 +280,7 @@ def run_epoch(model, loader, criterion, optimizer, scheduler, scaler,
             inputs, targets_oh = mixup_cutmix_collate(raw_batch, num_classes)
             inputs   = inputs.to(device, non_blocking=True)
             targets  = targets_oh.to(device, non_blocking=True)
-            soft_labels = True
+            soft_labels = True 
         else:
             inputs, targets = batch
             inputs  = inputs.to(device, non_blocking=True)
