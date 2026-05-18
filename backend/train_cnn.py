@@ -326,8 +326,12 @@ def run_epoch(model, loader, criterion, optimizer, scheduler, scaler,
 def train(cfg: dict):
     set_seed(cfg["seed"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if device.type == "cpu":
+        cfg["num_workers"] = 0
     print(f"\n{'='*60}")
-    print(f"  Krishi-Sakhi Plant Disease Training — {device}")
+    print(f"  Krishi-Sakhi Plant Disease Training - {device}")
+    if device.type == "cpu":
+        print("  [INFO] CPU detected: num_workers set to 0 to bypass Windows multiprocessing overhead.")
     print(f"{'='*60}")
 
     # ── Data ─────────────────────────────────────────────────────────────────
@@ -349,7 +353,7 @@ def train(cfg: dict):
     best_model_wts = copy.deepcopy(model.state_dict())
 
     # ── PHASE 1: Train head only ───────────────────────────────────────────
-    print("\n[3/4] Phase 1 — Training classifier head (backbone frozen)...")
+    print("\n[3/4] Phase 1 - Training classifier head (backbone frozen)...")
     freeze_backbone(model)
     optimizer = optim.AdamW(
         filter(lambda p: p.requires_grad, model.parameters()),
@@ -383,7 +387,7 @@ def train(cfg: dict):
             best_model_wts = copy.deepcopy(model.state_dict())
 
     # ── PHASE 2: Fine-tune entire network ────────────────────────────────────
-    print(f"\n[4/4] Phase 2 — Fine-tuning all layers...")
+    print(f"\n[4/4] Phase 2 - Fine-tuning all layers...")
     unfreeze_all(model)
     # Discriminative LR: lower for backbone, higher for head
     param_groups = [
@@ -410,7 +414,7 @@ def train(cfg: dict):
                                     num_classes, cfg["use_amp"])
         elapsed = time.time() - t0
         lr_now  = scheduler.get_last_lr()[0]
-        improved = "✅" if vl_acc > best_val_acc else ""
+        improved = "[IMPROVED]" if vl_acc > best_val_acc else ""
         print(f"  P2 Epoch {epoch+1:02d}/{cfg['phase2_epochs']} | "
               f"Train {tr_acc*100:.2f}% | Val {vl_acc*100:.2f}% | "
               f"LR {lr_now:.2e} | {elapsed:.0f}s {improved}")
@@ -448,7 +452,7 @@ def train(cfg: dict):
         json.dump(history, f, indent=2)
 
     print(f"\n{'='*60}")
-    print(f"  ✅ Training complete!")
+    print(f"  [SUCCESS] Training complete!")
     print(f"  Best Val Accuracy : {best_val_acc*100:.4f}%")
     print(f"  Model saved to    : {cfg['model_save_path']}")
     print(f"  Classes           : {num_classes}")

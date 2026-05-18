@@ -24,27 +24,50 @@ DISEASE_CLASSES = ["Healthy", "Leaf Blast", "Brown Plant Hopper",
 cnn_model = None
 device = None
 transform = None
+model_name = "MobileNetV2 (PyTorch)"
 
 if TORCH_AVAILABLE:
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        cnn_model = models.mobilenet_v2(pretrained=False)
-        cnn_model.classifier[1] = nn.Linear(
-            cnn_model.last_channel, len(DISEASE_CLASSES))
 
         if os.path.exists("plant_disease_model.pth"):
-            cnn_model.load_state_dict(torch.load(
-                "plant_disease_model.pth", map_location=device))
+            checkpoint = torch.load("plant_disease_model.pth", map_location=device)
+            
+            # Check if this is an EfficientNetV2 checkpoint from train_cnn.py
+            if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
+                num_classes = checkpoint["num_classes"]
+                # Override default classes with the classes trained in the model
+                if "class_names" in checkpoint:
+                    DISEASE_CLASSES = checkpoint["class_names"]
+                
+                logger.info(f"Loading custom EfficientNetV2-S model with {num_classes} classes...")
+                cnn_model = models.efficientnet_v2_s(weights=None)
+                in_features = cnn_model.classifier[1].in_features
+                cnn_model.classifier = nn.Sequential(
+                    nn.Dropout(p=0.0, inplace=True),
+                    nn.Linear(in_features, num_classes),
+                )
+                cnn_model.load_state_dict(checkpoint["state_dict"])
+                model_name = "EfficientNetV2-S (PyTorch)"
+                logger.info("✅ Production EfficientNetV2-S model loaded successfully.")
+            else:
+                # Legacy / standard loading of raw MobileNetV2 state dict
+                logger.info("Loading legacy MobileNetV2 model...")
+                cnn_model = models.mobilenet_v2(weights=None)
+                cnn_model.classifier[1] = nn.Linear(
+                    cnn_model.last_channel, len(DISEASE_CLASSES))
+                cnn_model.load_state_dict(checkpoint)
+                model_name = "MobileNetV2 (PyTorch)"
+                logger.info("✅ Legacy MobileNetV2 loaded successfully.")
+
             cnn_model.to(device)
             cnn_model.eval()
-            logger.info("✅ PyTorch CNN Model loaded successfully.")
 
             transform = transforms.Compose([
                 transforms.Resize(256),
                 transforms.CenterCrop(224),
                 transforms.ToTensor(),
-                transforms.Normalize([0.485, 0.456, 0.406], [
-                                     0.229, 0.224, 0.225])
+                transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
             ])
         else:
             logger.warning(
@@ -92,7 +115,7 @@ async def disease_detect(file: UploadFile = File(...)):
                 "confidence": round(float(confidence), 2),
                 "all_predictions": all_preds[:4],
                 "mode": "production",
-                "model": "MobileNetV2 (PyTorch)"
+                "model": model_name
             }
         except Exception as e:
             logger.error(f"PyTorch inference failed: {e}")

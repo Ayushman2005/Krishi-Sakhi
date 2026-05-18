@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 import datetime
 import logging
@@ -29,8 +29,8 @@ load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
 if api_key and api_key != "your_gemini_api_key_here":
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-pro')
+        gemini_client = genai.Client(api_key=api_key)
+        model = gemini_client
         logger.info("✅ Gemini AI configured successfully.")
     except Exception as e:
         logger.error(f"❌ Failed to configure Gemini: {e}")
@@ -125,7 +125,7 @@ Context: {context}
 User: {request.message}"""
 
     try:
-        response = model.generate_content(prompt)
+        response = model.models.generate_content(model="gemini-2.0-flash", contents=prompt)
         return {"response": response.text}
     except Exception as e:
         logger.error(f"Gemini error: {e}")

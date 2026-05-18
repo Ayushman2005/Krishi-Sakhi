@@ -4,18 +4,17 @@ import random
 import math
 import os
 import logging
-import google.generativeai as genai
+from google import genai
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
 # Configure Gemini for Market Rates
 api_key = os.getenv("GEMINI_API_KEY")
-gemini_model = None
+gemini_client = None
 if api_key and api_key != "your_gemini_api_key_here":
     try:
-        genai.configure(api_key=api_key)
-        gemini_model = genai.GenerativeModel('gemini-pro')
+        gemini_client = genai.Client(api_key=api_key)
     except Exception as e:
         logger.error(f"Failed to configure Gemini in Market Model: {e}")
 
@@ -81,7 +80,7 @@ async def get_market_rates(location: str = "Kerala"):
     """
     Returns accurate, live market rates based on location using AI reasoning.
     """
-    if not gemini_model:
+    if not gemini_client:
         return [{"id": 1,
                  "crop": "Paddy",
                  "price": 3100,
@@ -118,7 +117,7 @@ async def get_market_rates(location: str = "Kerala"):
     """
 
     try:
-        response = gemini_model.generate_content(prompt)
+        response = gemini_client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
         import json
         text = response.text.strip()
         if "```json" in text:
