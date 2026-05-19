@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
@@ -78,15 +78,10 @@ const ML_TABS = [
 ];
 
 const MLHub = () => {
-  const [activeTab, setActiveTab] = useState('disease');
-
-  const activeModel = ML_TABS.find(t => t.id === activeTab);
-  const ActiveComponent = activeModel.component;
-
   return (
     <div className="main-container relative">
       {/* Hub Header */}
-      <header className="text-center">
+      <header className="text-center mb-12">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,66 +109,8 @@ const MLHub = () => {
         </motion.p>
       </header>
 
-      {/* Model Cards Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-        {ML_TABS.map((tab, i) => (
-          <motion.button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            whileHover={{ 
-              y: -8, 
-              scale: 1.02,
-              boxShadow: `0 25px 60px -15px ${tab.accent}60`,
-              borderColor: `${tab.accent}40`
-            }}
-            whileTap={{ scale: 0.98 }}
-            className={`glass-card text-left relative overflow-hidden group transition-all duration-500 border-2 ${
-              activeTab === tab.id ? 'border-white/30 shadow-2xl bg-white/10' : 'border-white/5 hover:border-white/10'
-            }`}
-            style={activeTab === tab.id ? { borderColor: `${tab.accent}60` } : {}}
-          >
-            {activeTab === tab.id && (
-              <motion.div
-                layoutId="active-tab-glow"
-                className="absolute inset-0 opacity-20"
-                style={{ background: `radial-gradient(circle at center, ${tab.accent}, transparent)` }}
-              />
-            )}
-            
-            <div className="relative z-10">
-              <div className="flex justify-between items-start mb-6">
-                <motion.div 
-                  animate={activeTab === tab.id ? { scale: [1, 1.1, 1] } : {}}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="p-4 rounded-2xl" 
-                  style={{ background: `${tab.accent}20` }}
-                >
-                  <tab.icon size={28} style={{ color: tab.accent }} />
-                </motion.div>
-                <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${tab.badgeColor} border border-white/10 backdrop-blur-md`}>
-                  {tab.badge}
-                </span>
-              </div>
-              <h3 className="text-xl font-black mb-2 group-hover:translate-x-1 transition-transform">{tab.label}</h3>
-              <p className="text-text-muted text-xs leading-relaxed line-clamp-2 group-hover:text-text transition-colors">{tab.description}</p>
-            </div>
-
-            {/* Decorative background element */}
-            <div 
-              className="absolute -right-4 -bottom-4 w-16 h-16 opacity-10 group-hover:opacity-20 transition-opacity rotate-12"
-              style={{ color: tab.accent }}
-            >
-              <tab.icon size={64} />
-            </div>
-          </motion.button>
-        ))}
-      </div>
-
       {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {[
           { label: 'Models Active', value: '6', icon: Cpu, color: 'text-primary' },
           { label: 'Accuracy', value: '96.8%', icon: Shield, color: 'text-success' },
@@ -192,33 +129,52 @@ const MLHub = () => {
         ))}
       </div>
 
-      {/* Active Model Panel */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.35 }}
-          className="glass p-10 relative overflow-hidden"
-        >
-          {/* Top accent line */}
-          <div className="absolute top-0 inset-x-0 h-1"
-            style={{ background: `linear-gradient(90deg, transparent, ${activeModel.accent}, transparent)` }}
-          />
-          <ActiveComponent />
-          
-          {/* Animated background element in panel */}
+      {/* Models Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {ML_TABS.map((model, i) => (
           <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-            className="absolute -right-20 -bottom-20 w-80 h-80 opacity-[0.03] pointer-events-none"
-            style={{ color: activeModel.accent }}
+            key={model.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="glass p-8 relative overflow-hidden flex flex-col h-full"
           >
-            <activeModel.icon size={320} />
+            {/* Top accent line */}
+            <div className="absolute top-0 inset-x-0 h-1"
+              style={{ background: `linear-gradient(90deg, transparent, ${model.accent}, transparent)` }}
+            />
+            
+            {/* Header for the model */}
+            <div className="flex items-start justify-between mb-8">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl" style={{ background: `${model.accent}20`, color: model.accent }}>
+                  <model.icon size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black">{model.label}</h3>
+                  <p className="text-text-muted text-sm mt-1 max-w-sm">{model.description}</p>
+                </div>
+              </div>
+              <span className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full ${model.badgeColor} border border-white/10 shrink-0 hidden sm:block`}>
+                {model.badge}
+              </span>
+            </div>
+
+            {/* The Model Component */}
+            <div className="flex-1 relative z-10 w-full overflow-hidden">
+              <model.component />
+            </div>
+
+            {/* Background Icon */}
+            <div
+              className="absolute -right-10 -bottom-10 w-64 h-64 opacity-[0.03] pointer-events-none"
+              style={{ color: model.accent }}
+            >
+              <model.icon size={256} />
+            </div>
           </motion.div>
-        </motion.div>
-      </AnimatePresence>
+        ))}
+      </div>
     </div>
   );
 };

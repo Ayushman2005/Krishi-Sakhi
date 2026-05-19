@@ -16,7 +16,7 @@ const SchemesLocator = () => {
       setIsLoading(true);
       try {
         const queryParams = new URLSearchParams({
-          state: profile?.location?.includes(',') ? profile.location.split(',')[1].trim() : 'Kerala',
+          state: profile?.location?.includes(',') ? profile.location.split(',')[1].trim() : 'Global',
           crop: profile?.crop || 'General',
           land_size_acres: 2.0 // Assuming a default or get from profile if available
         });

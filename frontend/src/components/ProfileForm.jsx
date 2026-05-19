@@ -48,7 +48,7 @@ const Field = ({ label, icon: Icon, children }) => (
   </div>
 );
 
-// ── Branded Kerala stat card (left panel) ─────────────────
+// ── Branded Global stat card (left panel) ─────────────────
 const StatPill = ({ label, value, color }) => (
   <div className="flex items-center gap-3 bg-white/5 rounded-2xl px-4 py-3 border border-white/5">
     <div className={`w-2 h-2 rounded-full ${color}`} />
@@ -214,7 +214,7 @@ const ProfileForm = () => {
         <div className="relative z-10 space-y-3">
           <StatPill label="Farmers Onboarded" value="12,400+" color="bg-primary" />
           <StatPill label="Advisories Sent" value="3.2M" color="bg-accent" />
-          <StatPill label="Kerala Districts" value="14 Supported" color="bg-secondary" />
+          <StatPill label="Global Reach" value="Worldwide" color="bg-secondary" />
         </div>
 
         {/* Bottom: step display */}
@@ -369,7 +369,7 @@ const ProfileForm = () => {
                     </div>
                     <div>
                       <p className="font-black">{formData.name}</p>
-                      <p className="text-sm text-text-muted">{formData.location || 'Kerala, India'}</p>
+                      <p className="text-sm text-text-muted">{formData.location || 'Global'}</p>
                     </div>
                     <CheckCircle2 size={22} className="text-primary ml-auto" />
                   </motion.div>

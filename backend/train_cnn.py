@@ -27,6 +27,8 @@ import json
 import random
 import argparse
 import warnings
+import urllib.request
+import zipfile
 
 import numpy as np
 import torch
@@ -126,16 +128,26 @@ def get_transforms(img_size: int, phase: str) -> transforms.Compose:
         ])
 
 
-def build_datasets(data_dir: str, img_size: int):
+def reporthook(blocknum, blocksize, totalsize):
+    readsofar = blocknum * blocksize
+    if totalsize > 0:
+        percent = readsofar * 1e2 / totalsize
+        sys.stdout.write(f"\r[INFO] Downloading dataset: {percent:.1f}% ({readsofar / 1024 / 1024:.1f} MB / {totalsize / 1024 / 1024:.1f} MB)")
+        if readsofar >= totalsize:
+            sys.stdout.write("\n")
+    else:
+        sys.stdout.write(f"\r[INFO] Downloading dataset: {readsofar / 1024 / 1024:.1f} MB")
+    sys.stdout.flush()
+
+def build_datasets(data_dir: str, img_size: int, cfg: dict = None):
     """
     Expects the PlantVillage data_dir to contain one sub-folder per class.
     We split the single colour folder into train/val using random_split.
     """
     if not os.path.isdir(data_dir):
         print(f"\n[ERROR] Dataset not found at: {data_dir}")
-        print("  Download PlantVillage:")
-        print("  git clone https://github.com/spMohanty/PlantVillage-Dataset")
-        print("  Then point CFG['data_dir'] to the 'raw/color' folder.\n")
+        print("  Please clone the PlantVillage dataset manually using the following command:")
+        print("  git clone https://github.com/spMohanty/PlantVillage-Dataset dataset/PlantVillage-Dataset\n")
         sys.exit(1)
 
     # Load the full dataset with train transforms first to count classes
@@ -336,7 +348,7 @@ def train(cfg: dict):
 
     # ── Data ─────────────────────────────────────────────────────────────────
     print("\n[1/4] Loading dataset...")
-    train_ds, val_ds, class_names = build_datasets(cfg["data_dir"], cfg["img_size"])
+    train_ds, val_ds, class_names = build_datasets(cfg["data_dir"], cfg["img_size"], cfg)
     num_classes = len(class_names)
     train_loader, val_loader = build_loaders(
         train_ds, val_ds, cfg["batch_size"], cfg["num_workers"]

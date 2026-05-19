@@ -76,7 +76,7 @@ async def market_forecast(crop: str):
 
 
 @router.get("/market-rates")
-async def get_market_rates(location: str = "Kerala"):
+async def get_market_rates(location: str = "Global"):
     """
     Returns accurate, live market rates based on location using AI reasoning.
     """

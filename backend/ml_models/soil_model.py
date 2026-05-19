@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 import logging
 import io
 import os
-import google.generativeai as genai
+from google import genai
 from PIL import Image
 
 router = APIRouter()
@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 # Configure Gemini
 api_key = os.getenv("GEMINI_API_KEY")
 gemini_configured = False
+gemini_client = None
 if api_key and api_key != "your_gemini_api_key_here":
     try:
-        genai.configure(api_key=api_key)
+        gemini_client = genai.Client(api_key=api_key)
         gemini_configured = True
     except Exception as e:
         logger.error(f"Failed to configure Gemini in Soil Model: {e}")
@@ -36,7 +37,6 @@ async def parse_soil_report(file: UploadFile = File(...)):
         contents = await file.read()
         image = Image.open(io.BytesIO(contents))
 
-        vision_model = genai.GenerativeModel('gemini-1.5-flash')
         prompt = """
         Analyze this soil test report. Extract the following parameters and return ONLY a valid JSON object.
         If a parameter is not found, set its value to null.
@@ -51,7 +51,10 @@ async def parse_soil_report(file: UploadFile = File(...)):
             "recommendations": ["string"]
         }
         """
-        response = vision_model.generate_content([prompt, image])
+        response = gemini_client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=[prompt, image]
+        )
 
         text = response.text.strip()
         if "```json" in text:

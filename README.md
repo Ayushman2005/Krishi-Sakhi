@@ -1,12 +1,12 @@
 # 🌱 Krishi Sakhi AI | Smart Farming Assistant
 
-**Krishi Sakhi** is a highly advanced, full-stack AI-powered personal farming assistant tailored for modern agriculture. Built initially for the SIH 2026 initiative, it empowers farmers with hyper-personalized agronomic intelligence, integrating RAG-based LLMs, Computer Vision, and dynamic global APIs within a premium glassmorphism interface.
+**Krishi Sakhi** is a highly advanced, full-stack AI-powered personal farming assistant tailored for modern agriculture. It empowers farmers with hyper-personalized agronomic intelligence, integrating RAG-based LLMs, Computer Vision, and dynamic global APIs within a premium glassmorphism interface.
 
 ## 🚀 Key Features
 
 *   **Premium Glassmorphism UI**: A cutting-edge frontend built with React, Framer Motion, and Tailwind CSS. Features animated aurora backgrounds, multi-layer frosted glass panels, and dynamic shimmers.
 *   **Global Location Intelligence**: Integrated with the OpenStreetMap (Nominatim) API for 100% accurate, debounced global city and country autocomplete without requiring user API keys.
-*   **RAG-Powered Conversational AI**: A robust chatbot interface backed by Google's Gemini 2.0 Flash and a localized Kerala-specific agricultural Knowledge Base.
+*   **RAG-Powered Conversational AI**: A robust chatbot interface backed by Google's Gemini 2.0 Flash and a globally applicable agricultural Knowledge Base.
 *   **Live Market Economics**: Real-time regional mandi prices, commodity trend charting, and a "Smart Revenue Estimator" calculator for harvest financial planning.
 *   **Farm Task Scheduling**: Dynamic scheduling widget allowing users to track critical and routine agronomic tasks visually.
 *   **Advanced ML Hub**:
@@ -59,7 +59,7 @@ npm run dev
 ## 📦 Project Structure
 
 ```
-SIH 2026/
+Krishi-Sakhi/
 ├── backend/
 │   ├── main.py              # FastAPI server & ML endpoints
 │   └── .env                 # API keys
@@ -74,4 +74,4 @@ SIH 2026/
 ```
 
 ## 🤝 Contribution
-Built for SIH 2026. Empowering the roots of India through technology.
+Empowering agriculture worldwide through technology.

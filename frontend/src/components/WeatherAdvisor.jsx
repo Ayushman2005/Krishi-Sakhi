@@ -91,7 +91,7 @@ const WeatherAdvisor = () => {
       const response = await fetch(`${BACKEND_URL}/ml/weather-advisory`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...weather, crop: profile?.crop || 'Paddy', location: profile?.location || 'Kerala' }),
+        body: JSON.stringify({ ...weather, crop: profile?.crop || 'Paddy', location: profile?.location || 'Global' }),
       });
       if (!response.ok) throw new Error('Server error');
       setResult(await response.json());

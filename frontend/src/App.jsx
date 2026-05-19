@@ -72,7 +72,9 @@ const AppContent = () => {
         animate={{ y: 0, opacity: 1 }}
         className="w-full flex justify-center z-50 sticky top-6 px-4 pointer-events-none"
       >
-        <nav className="glass w-full max-w-6xl flex justify-between items-center px-4 py-3 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/70 backdrop-blur-2xl">
+        <nav className="w-full max-w-6xl flex justify-between items-center px-6 py-3 pointer-events-auto rounded-full shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] border border-white/10 bg-[#020617]/75 backdrop-blur-2xl relative overflow-hidden">
+          {/* Subtle top reflection */}
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           {/* Logo */}
           <div className="flex items-center gap-4">
             <motion.div
@@ -96,18 +98,25 @@ const AppContent = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="hidden md:flex items-center gap-1 ml-6 bg-white/5 rounded-full p-1 border border-white/5"
+                className="hidden md:flex items-center gap-1 ml-6 bg-white/5 rounded-full p-1 border border-white/5 relative"
               >
                 {NAV_ITEMS.map(item => (
                   <button
                     key={item.id}
                     onClick={() => setActivePage(item.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-200 ${
+                    className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10 ${
                       activePage === item.id
-                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                        : 'text-text-muted hover:text-white hover:bg-white/10'
+                        ? 'text-white'
+                        : 'text-text-muted hover:text-white'
                     }`}
                   >
+                    {activePage === item.id && (
+                      <motion.div
+                        layoutId="desktop-active-nav"
+                        className="absolute inset-0 bg-primary rounded-full shadow-[0_0_15px_rgba(16,185,129,0.4)] -z-10"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
                     <item.icon size={16} />
                     {t(item.label)}
                   </button>
@@ -123,12 +132,11 @@ const AppContent = () => {
               <div className="relative flex items-center" ref={notificationRef}>
                 <button 
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className={`relative p-2.5 rounded-full transition-colors border ${showNotifications ? 'bg-primary/20 text-primary border-primary/30' : 'bg-white/5 text-text-muted hover:bg-white/10 border-white/5 hover:text-white'}`} 
+                  className={`relative p-2.5 rounded-full transition-all duration-300 border ${showNotifications ? 'bg-primary/20 text-primary border-primary/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-white/5 text-text-muted hover:bg-white/10 border-transparent hover:text-white hover:scale-105'}`} 
                   aria-label="Notifications"
                 >
                   <Bell size={18} />
-                  {/* Notification dot */}
-                  <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border-2 border-background animate-pulse"></span>
+                  <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border-2 border-[#020617] animate-pulse"></span>
                 </button>
                 
                 {/* Notifications Dropdown */}
@@ -162,7 +170,7 @@ const AppContent = () => {
               <div className="relative flex items-center">
                 <button 
                   onClick={() => setShowSettings(true)}
-                  className="p-2.5 bg-white/5 text-text-muted hover:bg-white/10 border border-white/5 rounded-full hover:text-white transition-all"
+                  className="p-2.5 bg-white/5 text-text-muted hover:bg-white/10 border border-transparent rounded-full hover:text-white transition-all duration-300 hover:scale-105"
                   title={t('language')}
                 >
                   <Languages size={18} />
@@ -171,13 +179,13 @@ const AppContent = () => {
 
               <button 
                 onClick={() => setShowSettings(true)}
-                className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 transition-colors mr-2 text-left"
+                className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 mr-2 text-left group"
               >
                 <div>
-                  <p className="text-xs font-black leading-none">{profile.name}</p>
-                  <p className="text-[9px] text-primary font-bold uppercase tracking-widest">{profile.crop}</p>
+                  <p className="text-xs font-black leading-none group-hover:text-primary transition-colors">{profile.name}</p>
+                  <p className="text-[9px] text-text-muted group-hover:text-primary/70 font-bold uppercase tracking-widest transition-colors">{profile.crop}</p>
                 </div>
-                <div className="w-7 h-7 bg-primary/20 rounded-full border border-primary/50 flex items-center justify-center text-primary font-black text-xs">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)] flex items-center justify-center text-white font-black text-xs border border-white/20">
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
               </button>
@@ -185,7 +193,7 @@ const AppContent = () => {
               {clearProfile && (
                 <button
                   onClick={clearProfile}
-                  className="p-2.5 bg-error/10 rounded-full hover:bg-error/20 transition-colors border border-error/10 ml-1"
+                  className="p-2.5 bg-error/10 rounded-full hover:bg-error/20 transition-colors border border-error/10 ml-1 hover:scale-105"
                   title="Reset Profile"
                   aria-label="Log out"
                 >
@@ -212,19 +220,28 @@ const AppContent = () => {
             exit={{ y: 100, opacity: 0 }}
             className="md:hidden fixed bottom-6 left-6 right-6 z-50 pointer-events-none flex justify-center"
           >
-            <div className="glass w-full max-w-sm flex justify-around items-center p-2 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/10 bg-[#020617]/80 backdrop-blur-3xl">
+            <div className="w-full max-w-md flex justify-between items-center p-2 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-white/10 bg-[#020617]/95 backdrop-blur-3xl relative overflow-hidden">
+              {/* Subtle top reflection */}
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               {NAV_ITEMS.map(item => (
                   <button
                   key={item.id}
                   onClick={() => setActivePage(item.id)}
-                  className={`flex flex-col items-center gap-1.5 px-5 py-2.5 rounded-2xl transition-all duration-300 ${
+                  className={`relative flex-1 flex flex-col items-center justify-center gap-1.5 py-3 rounded-[1.25rem] transition-colors duration-300 z-10 ${
                     activePage === item.id
-                      ? 'bg-primary/20 text-primary'
-                      : 'text-text-muted hover:text-white hover:bg-white/5'
+                      ? 'text-primary'
+                      : 'text-text-muted hover:text-white'
                   }`}
                 >
-                  <item.icon size={20} className={activePage === item.id ? 'scale-110' : ''} />
-                  <span className="text-[10px] font-black uppercase tracking-widest">{t(item.label)}</span>
+                  {activePage === item.id && (
+                    <motion.div
+                      layoutId="mobile-active-nav"
+                      className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-[1.25rem] -z-10"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <item.icon size={20} className={`transition-transform duration-300 ${activePage === item.id ? 'scale-110 drop-shadow-md' : ''}`} />
+                  <span className="text-[9px] font-black uppercase tracking-widest">{t(item.label)}</span>
                 </button>
               ))}
             </div>
@@ -357,10 +374,9 @@ const AppContent = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left mb-12">
             <div className="space-y-4">
               <h4 className="font-black text-xl">Krishi Sakhi</h4>
-              <p className="text-sm text-text-muted leading-relaxed">Empowering Kerala's farmers with AI-powered intelligence and local wisdom.</p>
+              <p className="text-sm text-text-muted leading-relaxed">Empowering farmers worldwide with AI-powered intelligence and local wisdom.</p>
               <div className="flex gap-2">
                 <span className="px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest rounded-full">v2.0</span>
-                <span className="px-3 py-1 bg-white/5 border border-white/10 text-text-muted text-[10px] font-black uppercase tracking-widest rounded-full">SIH 2026</span>
               </div>
             </div>
             <div className="space-y-4">
@@ -386,7 +402,7 @@ const AppContent = () => {
               whileInView={{ opacity: 1 }}
               className="text-xs text-text-muted/30 font-black uppercase tracking-[0.4em] text-center"
             >
-              © 2026 Krishi Sakhi AI • Built for SIH 2026 • Empowering the Roots of India
+              © 2026 Krishi Sakhi AI • Empowering Agriculture Worldwide
             </motion.p>
           </div>
         </div>

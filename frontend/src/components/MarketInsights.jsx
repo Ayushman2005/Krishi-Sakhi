@@ -17,7 +17,7 @@ const MarketInsights = () => {
   const fetchMarketRates = async () => {
     setIsRefreshing(true);
     try {
-      const location = profile?.location || 'Kerala';
+      const location = profile?.location || 'Global';
       const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
       const data = await response.json();
       setMarketData(data);
@@ -33,7 +33,7 @@ const MarketInsights = () => {
     const fetchMarketRatesEffect = async () => {
       // Avoid calling setState synchronously here if it's considered bad practice by ESLint
       try {
-        const location = profile?.location || 'Kerala';
+        const location = profile?.location || 'Global';
         const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
         const data = await response.json();
         if (isMounted) setMarketData(data);
@@ -158,7 +158,7 @@ const MarketInsights = () => {
         )) : (
           <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted">
             <Loader2 size={48} className="animate-spin mb-4" />
-            <p className="font-black uppercase tracking-widest text-sm">Syncing with Kerala Mandis...</p>
+            <p className="font-black uppercase tracking-widest text-sm">Syncing with Global Markets...</p>
           </div>
         )}
       </div>

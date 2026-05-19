@@ -82,12 +82,11 @@ async def global_exception_handler(request: Request, exc: Exception):
 # ─────────────────────────────────
 KNOWLEDGE_BASE = """
 Krishi Sakhi Expert Agricultural Knowledge:
-- Paddy NPK: 90:45:45 kg/ha. Zinc deficiency → yellowing of leaves.
-- Blast disease: Spindle-shaped spots. Apply Tricyclazole @0.6g/L.
-- Kerala districts: Palakkad (heat), Kuttanad (submerged fields), Idukki (spices), Wayanad (tribal farming).
-- Organic: Jeevamrutham (cow-based), Panchagavya, Neem cake, Vermiculture.
-- Monsoons: South-West (June–Sept), North-East (Oct–Nov).
-- Rubber tapping: Best done early morning (5–8 AM).
+- General NPK ratios vary by crop. Always test soil for exact requirements.
+- Common diseases: Blight, Rust, Mildew. Early detection is key.
+- Weather adaptations: Use drought-resistant varieties in dry areas, improve drainage in flood-prone zones.
+- Organic: Compost, Neem extracts, and crop rotation enhance soil health globally.
+- Seasonal: Align planting with local seasonal shifts (e.g., monsoons, spring thaw).
 """
 
 # ─────────────────────────────────
@@ -117,9 +116,9 @@ async def chat_endpoint(request: ChatRequest):
     context = f"Profile: {
         request.profile}\nActivities: {
         request.activities}\n\nKnowledge:\n{KNOWLEDGE_BASE}"
-    prompt = f"""You are Krishi Sakhi, a highly experienced agricultural AI for Kerala farmers.
+    prompt = f"""You are Krishi Sakhi, a highly experienced agricultural AI for farmers worldwide.
 Use the context to answer accurately. Be concise, practical, and warm.
-If asked in Malayalam, reply in Malayalam.
+Reply in the user's preferred language based on their prompt.
 
 Context: {context}
 User: {request.message}"""
@@ -136,21 +135,21 @@ User: {request.message}"""
 @app.get("/advisories")
 async def get_advisories(crop: str, location: str):
     advisories = []
-    if "Palakkad" in location:
+    if "dry" in location.lower() or "desert" in location.lower() or "arid" in location.lower():
         advisories.append({
             "id": "adv_heat",
             "type": "weather",
-            "title": "Severe Heat Advisory",
-            "content": "Palakkad is experiencing 38°C. Apply heavy mulch to preserve soil moisture.",
+            "title": "Severe Heat/Drought Advisory",
+            "content": "High temperatures detected. Apply heavy mulch and use drip irrigation to preserve soil moisture.",
             "priority": "high",
             "icon": "Sun"
         })
-    if any(k in location for k in ["Alappuzha", "Kuttanad"]):
+    if "coast" in location.lower() or "rain" in location.lower() or "flood" in location.lower():
         advisories.append({
             "id": "adv_flood",
             "type": "weather",
-            "title": "Submerged Field Alert",
-            "content": "Water levels rising. Check bund integrity immediately.",
+            "title": "Heavy Rain/Flood Alert",
+            "content": "Potential heavy rains. Ensure proper drainage and check bund integrity.",
             "priority": "high",
             "icon": "CloudRain"
         })
@@ -177,19 +176,19 @@ async def get_advisories(crop: str, location: str):
 @app.get("/market-trends")
 async def get_market_trends():
     return [
-        {"name": "Paddy (Jaya)", "price": "₹28.80",
+        {"name": "Wheat", "price": "$280.00/MT",
          "trend": "up", "change": "+1.8%"},
-        {"name": "Coconut (Dry)", "price": "₹31.50",
+        {"name": "Corn", "price": "$175.50/MT",
          "trend": "down", "change": "-1.5%"},
-        {"name": "Rubber (RSS-4)", "price": "₹164.00",
+        {"name": "Soybeans", "price": "$430.00/MT",
          "trend": "up", "change": "+2.1%"},
-        {"name": "Arecanut", "price": "₹420.00", "trend": "up", "change": "+0.8%"},
+        {"name": "Rice", "price": "$420.00/MT", "trend": "up", "change": "+0.8%"},
     ]
 
 
 @app.get("/schemes")
 async def get_schemes(
-        state: str = "Kerala",
+        state: str = "Global",
         crop: str = "General",
         land_size_acres: float = 2.0):
     schemes = [{"name": "PM-KISAN",
@@ -203,14 +202,14 @@ async def get_schemes(
                 "eligibility": "Farmers, tenant farmers, sharecroppers."},
                ]
 
-    if state.lower() == "kerala":
-        schemes.append({"name": "Subiksha Keralam",
-                        "benefit": "Subsidies for integrated farming and fallow land cultivation.",
-                        "eligibility": "Farmers in Kerala."})
-        if crop.lower() == "coconut":
-            schemes.append({"name": "Keragramam Scheme",
-                            "benefit": "Financial assistance for coconut rejuvenation.",
-                            "eligibility": "Coconut farmers in Kerala."})
+    if state.lower() == "global" or state.lower() == "india":
+        schemes.append({"name": "Sustainable Agriculture Mission",
+                        "benefit": "Subsidies for integrated farming and sustainable practices.",
+                        "eligibility": "Farmers worldwide / National guidelines."})
+        if crop.lower() == "wheat" or crop.lower() == "rice":
+            schemes.append({"name": "Staple Crop Protection Scheme",
+                            "benefit": "Financial assistance for staple crop rejuvenation.",
+                            "eligibility": "Staple crop farmers."})
 
     if land_size_acres < 5.0:
         schemes.append({"name": "Paramparagat Krishi Vikas Yojana (PKVY)",
