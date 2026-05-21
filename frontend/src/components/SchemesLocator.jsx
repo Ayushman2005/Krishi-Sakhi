@@ -18,7 +18,7 @@ const SchemesLocator = () => {
         const queryParams = new URLSearchParams({
           state: profile?.location?.includes(',') ? profile.location.split(',')[1].trim() : 'Global',
           crop: profile?.crop || 'General',
-          land_size_acres: 2.0 // Assuming a default or get from profile if available
+          land_size_acres: parseFloat(profile?.landSize) || 2.0
         });
         
         const response = await fetch(`${BACKEND_URL}/schemes?${queryParams.toString()}`);

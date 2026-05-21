@@ -5,7 +5,7 @@ export const generateAdvisory = async (profile) => {
   try {
     const response = await fetch(`${API_BASE_URL}/advisories?crop=${profile.crop}&location=${profile.location}`);
     if (!response.ok) throw new Error('Backend failed');
-    return await response.ok ? response.json() : [];
+    return response.json();
   } catch (error) {
     console.error('Advisory Fetch Error:', error);
     // Fallback to basic logic if backend is down

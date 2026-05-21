@@ -249,8 +249,8 @@ const ChatInterface = () => {
   );
 };
 
-const Sprout = ({ size, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+const Sprout = ({ size, color = "currentColor", ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <path d="M7 20h10" /><path d="M10 20V8a2 2 0 0 0-2-2 5 5 0 0 1-5-5" /><path d="M14 20V12a2 2 0 0 1 2-2 5 5 0 0 0 5-5" />
   </svg>
 );

@@ -3,6 +3,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Cloud, Thermometer, Wind, Droplets, Loader2, Sun, CloudRain, Zap, Eye } from 'lucide-react';
 import { useFarmer } from '../context/FarmerContext';
 
+const ICON_MAP = {
+  Cloud,
+  Thermometer,
+  Wind,
+  Droplets,
+  Loader2,
+  Sun,
+  CloudRain,
+  Zap,
+  Eye
+};
+
+const getIcon = (iconProp) => {
+  if (!iconProp) return <Sun size={26} />;
+  if (typeof iconProp === 'string') {
+    const Component = ICON_MAP[iconProp] || Sun;
+    return <Component size={26} />;
+  }
+  const Component = iconProp;
+  return <Component size={26} />;
+};
+
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const CROP_RISK_MATRIX = {
@@ -192,7 +214,7 @@ const WeatherAdvisor = () => {
                   className={`glass-card border-l-4 ${alert.risk === 'high' ? 'border-l-error' : alert.risk === 'medium' ? 'border-l-warning' : 'border-l-success'} flex gap-6`}
                 >
                   <div className={`p-4 rounded-2xl shrink-0 ${alert.risk === 'high' ? 'bg-error/10 text-error' : alert.risk === 'medium' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'}`}>
-                    <alert.icon size={26} />
+                    {getIcon(alert.icon)}
                   </div>
                   <div>
                     <h4 className="font-black text-lg mb-1">{alert.label}</h4>
