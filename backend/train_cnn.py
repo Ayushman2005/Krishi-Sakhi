@@ -2,7 +2,7 @@
 Krishi-Sakhi Plant Disease Detection — Production Training Pipeline
 ===================================================================
 Architecture : EfficientNetV2-S (ImageNet pretrained, fine-tuned)
-Dataset      : PlantVillage (38 disease classes, ~54 000 colour images)
+Dataset      : Rice Leaf Disease (6 classes, synthetic images)
 Target       : ≥ 99 % top-1 validation accuracy
 
 Key techniques that push accuracy past 99 %
@@ -46,7 +46,7 @@ warnings.filterwarnings("ignore")
 # ─────────────────────────────────────────────────────────────────────────────
 CFG = {
     # ── Paths ────────────────────────────────────────────────────────────────
-    "data_dir": "./dataset/PlantVillage-Dataset/raw/color",
+    "data_dir": "./dataset/Rice-Disease-Dataset/raw/color",
     "model_save_path": "./plant_disease_model.pth",
     "class_names_path": "./class_names.txt",
     "history_path": "./training_history.json",
@@ -58,11 +58,11 @@ CFG = {
     "seed": 42,
 
     # Phase 1 – backbone frozen, only head trained
-    "phase1_epochs": 5,
+    "phase1_epochs": 1,
     "phase1_lr": 3e-3,
 
     # Phase 2 – entire network fine-tuned at lower LR
-    "phase2_epochs": 25,
+    "phase2_epochs": 2,
     "phase2_lr": 5e-4,
 
     # ── Regularisation ───────────────────────────────────────────────────────
@@ -80,7 +80,7 @@ CFG = {
     "random_erasing_p": 0.25,
 
     # ── Hardware ─────────────────────────────────────────────────────────────
-    "num_workers": 4,
+    "num_workers": 0,
     "pin_memory": True,
     "use_amp": True,           # Automatic Mixed Precision (GPU only)
 }
@@ -141,13 +141,13 @@ def reporthook(blocknum, blocksize, totalsize):
 
 def build_datasets(data_dir: str, img_size: int, cfg: dict = None):
     """
-    Expects the PlantVillage data_dir to contain one sub-folder per class.
-    We split the single colour folder into train/val using random_split.
+    Expects the Rice Leaf Disease data_dir to contain one sub-folder per class.
+    We split the single dataset folder into train/val using random_split.
     """
     if not os.path.isdir(data_dir):
         print(f"\n[ERROR] Dataset not found at: {data_dir}")
-        print("  Please clone the PlantVillage dataset manually using the following command:")
-        print("  git clone https://github.com/spMohanty/PlantVillage-Dataset dataset/PlantVillage-Dataset\n")
+        print("  Please generate the synthetic Rice Leaf Disease dataset first by running:")
+        print("  python generate_synthetic_dataset.py\n")
         sys.exit(1)
 
     # Load the full dataset with train transforms first to count classes
