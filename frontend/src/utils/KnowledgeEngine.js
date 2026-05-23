@@ -8,7 +8,7 @@ export const generateAdvisory = async (profile) => {
     return response.json();
   } catch (error) {
     console.error('Advisory Fetch Error:', error);
-    // Fallback to basic logic if backend is down
+
     return [
       {
         id: 'fallback-1',
@@ -29,7 +29,7 @@ export const getAIResponse = async (query, profile, activities) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: query, profile, activities })
     });
-    
+
     if (!response.ok) throw new Error('Chat API failed');
     const data = await response.json();
     return data.response;
@@ -51,19 +51,18 @@ export const getMarketTrends = async () => {
 
 export const getWeather = async (location, lat = null, lon = null) => {
   try {
-    // Always prefer GPS coordinates — they are 100% unambiguous
+
     let url;
     if (lat && lon) {
       url = `${API_BASE_URL}/weather/live?lat=${lat}&lon=${lon}`;
     } else {
-      // Fallback: use the city name string for search
+
       url = `${API_BASE_URL}/weather/live?q=${encodeURIComponent(location)}`;
     }
     const response = await fetch(url);
     if (!response.ok) throw new Error('Weather API failed');
     const data = await response.json();
 
-    // Normalize the backend's flat response to the nested shape the Dashboard expects
     return {
       main: { temp: data.temperature, humidity: data.humidity },
       wind: { speed: data.wind_speed },

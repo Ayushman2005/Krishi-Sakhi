@@ -4,7 +4,6 @@ import { Leaf, AlertTriangle, CheckCircle2, Loader2, X, Camera, Info } from 'luc
 
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-// Disease info reference
 const DISEASE_GUIDE = {
   'Leaf Blast': { 
     severity: 'High', 
@@ -86,7 +85,7 @@ const DiseaseDetector = () => {
       const data = await response.json();
       setResult(data);
     } catch {
-      // Graceful offline fallback - simulate for demo
+
       setResult({
         prediction: 'Leaf Blast',
         confidence: 0.87,
@@ -125,7 +124,6 @@ const DiseaseDetector = () => {
       <AnimatePresence mode="wait">
         {!result ? (
           <motion.div key="upload" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            {/* Drop Zone */}
             <motion.div
               onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
               onDragLeave={() => setIsDragging(false)}
@@ -138,7 +136,7 @@ const DiseaseDetector = () => {
               }`}
             >
               <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile(e.target.files[0])} />
-              
+
               {imagePreview ? (
                 <div className="relative p-8">
                   <motion.button 
@@ -198,12 +196,11 @@ const DiseaseDetector = () => {
               </div>
             )}
 
-            {/* Main Result */}
             <div className={`glass rounded-[40px] p-10 border-l-8 overflow-hidden relative group ${isHealthy ? 'border-l-success' : 'border-l-warning'}`}>
               <div className="absolute top-0 right-0 w-64 h-64 opacity-[0.05] pointer-events-none group-hover:opacity-[0.1] transition-opacity">
                 {isHealthy ? <CheckCircle2 size={256} /> : <AlertTriangle size={256} />}
               </div>
-              
+
               <div className="flex items-center gap-8 mb-10 relative z-10">
                 <motion.div 
                   initial={{ scale: 0 }}
@@ -222,8 +219,7 @@ const DiseaseDetector = () => {
                   </div>
                 </div>
               </div>
-              
-              {/* Confidence Bars */}
+
               <div className="space-y-4 relative z-10">
                 {result.all_predictions?.map((pred, i) => (
                   <div key={i} className="space-y-2">
@@ -246,7 +242,6 @@ const DiseaseDetector = () => {
               </div>
             </div>
 
-            {/* Treatment Guide */}
             {diseaseInfo && (
               <div className="glass-card space-y-4">
                 <h4 className="font-black flex items-center gap-2"><Info size={18} className="text-primary" /> Treatment Protocol</h4>

@@ -20,7 +20,7 @@ const SchemesLocator = () => {
           crop: profile?.crop || 'General',
           land_size_acres: parseFloat(profile?.landSize) || 2.0
         });
-        
+
         const response = await fetch(`${BACKEND_URL}/schemes?${queryParams.toString()}`);
         if (!response.ok) throw new Error('Failed to fetch schemes');
         const data = await response.json();
@@ -90,9 +90,9 @@ const SchemesLocator = () => {
                 <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
                   <Landmark size={80} className="text-yellow-500" />
                 </div>
-                
+
                 <h3 className="text-xl font-black mb-4 pr-10">{scheme.name}</h3>
-                
+
                 <div className="space-y-4 flex-1">
                   <div>
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-1"><CheckCircle2 size={12} className="text-success" /> Key Benefit</h4>

@@ -19,7 +19,7 @@ const PolycultureSolver = () => {
     if (selectedCrops.includes(crop)) {
       setSelectedCrops(prev => prev.filter(c => c !== crop));
     } else {
-      if (selectedCrops.length >= 6) return; // Cap at 6 selected
+      if (selectedCrops.length >= 6) return; 
       setSelectedCrops(prev => [...prev, crop]);
     }
   };
@@ -45,8 +45,7 @@ const PolycultureSolver = () => {
 
       if (!response.ok) throw new Error('Solver error.');
       const data = await response.json();
-      
-      // Artificial dynamic solve animation
+
       setTimeout(() => {
         setResult(data);
         setIsSolving(false);
@@ -54,7 +53,7 @@ const PolycultureSolver = () => {
 
     } catch (err) {
       setError('Computational solver offline. Initiating native genetic solver routine.');
-      // Local fallback
+
       setTimeout(() => {
         setResult({
           acreage: acreage,
@@ -119,8 +118,7 @@ const PolycultureSolver = () => {
   return (
     <div className="space-y-6">
       <div className="glass-card p-6 md:p-8 space-y-6 relative overflow-hidden">
-        
-        {/* Form Inputs Grid */}
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Plot Acreage</label>
@@ -161,7 +159,6 @@ const PolycultureSolver = () => {
           </div>
         </div>
 
-        {/* Crop Pool Selector */}
         <div className="space-y-3">
           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-text-muted">
             <span>Crop Synergy Pool Selection (Pick 3 to 6)</span>
@@ -199,7 +196,6 @@ const PolycultureSolver = () => {
           )}
         </button>
 
-        {/* Solver Results output */}
         <AnimatePresence>
           {result && !isSolving && (
             <motion.div
@@ -207,13 +203,11 @@ const PolycultureSolver = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8 pt-4 border-t border-white/5"
             >
-              {/* Synergy Meter & 3x3 Grid Split */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                
-                {/* 3x3 Planting Grid Visualizer */}
+
                 <div className="lg:col-span-7 space-y-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block text-center lg:text-left">Companion Spatial Matrix Layout</span>
-                  
+
                   <div className="grid grid-cols-3 gap-3 p-3 bg-black/40 border border-white/5 rounded-[36px] max-w-sm mx-auto lg:mx-0">
                     {result.grid_layout.map((row, rIdx) => 
                       row.map((cell, cIdx) => (
@@ -228,11 +222,11 @@ const PolycultureSolver = () => {
                           <div className="absolute top-0 right-0 w-8 h-8 opacity-[0.05] pointer-events-none group-hover:opacity-[0.1] transition-opacity">
                             <Star size={32} />
                           </div>
-                          
+
                           <span className="text-[8px] font-black uppercase text-text-muted leading-none tracking-widest">
                             Cell {rIdx},{cIdx}
                           </span>
-                          
+
                           <h4 className="text-sm font-black text-white text-center leading-none my-auto">
                             {cell.crop}
                           </h4>
@@ -252,13 +246,11 @@ const PolycultureSolver = () => {
                   </div>
                 </div>
 
-                {/* Score Gauge */}
                 <div className="lg:col-span-5 flex flex-col items-center p-6 bg-white/5 border border-white/5 rounded-3xl text-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-                  
+
                   <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Companion Synergy Index</span>
-                  
-                  {/* Synergy Gauge */}
+
                   <div className="relative w-40 h-40 flex items-center justify-center my-6">
                     <svg className="w-full h-full transform -rotate-90">
                       <circle cx="80" cy="80" r="66" className="stroke-white/5" strokeWidth="12" fill="transparent" />
@@ -287,7 +279,6 @@ const PolycultureSolver = () => {
                 </div>
               </div>
 
-              {/* Dynamic Benefits Log */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-5 bg-white/5 border border-white/5 rounded-3xl space-y-3">
                   <h4 className="text-xs font-black uppercase tracking-widest text-primary flex items-center gap-2">
@@ -317,7 +308,6 @@ const PolycultureSolver = () => {
                 </div>
               </div>
 
-              {/* 3-Year Crop Rotation Timeline */}
               <div className="p-6 bg-white/5 border border-white/5 rounded-[36px] space-y-6">
                 <div className="text-center md:text-left">
                   <span className="text-[10px] font-black uppercase tracking-widest text-text-muted block mb-1">Sustainable Multi-Year Agronomy</span>
@@ -325,14 +315,12 @@ const PolycultureSolver = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-                  
-                  {/* Timeline connecting bar (hidden on mobile) */}
+
                   <div className="hidden md:block absolute top-12 left-12 right-12 h-0.5 bg-white/10 z-0" />
-                  
+
                   {result.rotation_plan.map((stage, i) => (
                     <div key={i} className="bg-black/30 border border-white/5 p-5 rounded-3xl space-y-4 relative z-10 hover:border-primary/20 transition-all duration-300">
-                      
-                      {/* Timeline Dot */}
+
                       <div className="w-10 h-10 bg-primary/20 border border-primary text-primary rounded-full flex items-center justify-center font-black text-sm shadow-[0_0_10px_rgba(16,185,129,0.2)]">
                         Yr {stage.year}
                       </div>

@@ -66,16 +66,13 @@ const AppContent = () => {
     <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden">
       <EnhancedBackground />
 
-      {/* Floating Navbar */}
       <motion.div 
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         className="w-full flex justify-center z-50 sticky top-6 px-4 pointer-events-none"
       >
         <nav className="w-full max-w-6xl flex justify-between items-center px-6 py-3 pointer-events-auto rounded-full shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] border border-white/10 bg-[#020617]/75 backdrop-blur-2xl relative overflow-hidden">
-          {/* Subtle top reflection */}
           <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          {/* Logo */}
           <div className="flex items-center gap-4">
             <motion.div
               initial={{ x: -20, opacity: 0 }}
@@ -92,7 +89,6 @@ const AppContent = () => {
               </div>
             </motion.div>
 
-            {/* Nav Links — show only when profile exists */}
             {profile && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -125,10 +121,9 @@ const AppContent = () => {
             )}
           </div>
 
-          {/* Right side */}
           {profile ? (
             <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3 pr-1">
-              
+
               <div className="relative flex items-center" ref={notificationRef}>
                 <button 
                   onClick={() => setShowNotifications(!showNotifications)}
@@ -138,8 +133,7 @@ const AppContent = () => {
                   <Bell size={18} />
                   <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border-2 border-[#020617] animate-pulse"></span>
                 </button>
-                
-                {/* Notifications Dropdown */}
+
                 <AnimatePresence>
                   {showNotifications && (
                     <motion.div 
@@ -211,7 +205,6 @@ const AppContent = () => {
         </nav>
       </motion.div>
 
-      {/* Mobile Floating Bottom Nav */}
       <AnimatePresence>
         {profile && (
           <motion.div
@@ -221,7 +214,6 @@ const AppContent = () => {
             className="md:hidden fixed bottom-6 left-6 right-6 z-50 pointer-events-none flex justify-center"
           >
             <div className="w-full max-w-md flex justify-between items-center p-2 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-white/10 bg-[#020617]/95 backdrop-blur-3xl relative overflow-hidden">
-              {/* Subtle top reflection */}
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               {NAV_ITEMS.map(item => (
                   <button
@@ -249,7 +241,6 @@ const AppContent = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
       <main className="flex-1 relative">
         <AnimatePresence mode="wait">
           {!profile ? (
@@ -286,7 +277,6 @@ const AppContent = () => {
         </AnimatePresence>
       </main>
 
-      {/* Settings Modal */}
       <AnimatePresence>
         {showSettings && profile && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
@@ -313,7 +303,6 @@ const AppContent = () => {
               </div>
 
               <div className="space-y-6">
-                {/* Language Selector */}
                 <div className="p-5 bg-white/5 rounded-3xl border border-white/5 space-y-4">
                   <div className="flex items-center gap-3 mb-2">
                     <Languages className="text-primary" size={20} />
@@ -368,7 +357,6 @@ const AppContent = () => {
         )}
       </AnimatePresence>
 
-      {/* Footer */}
       <footer className="w-full flex justify-center border-t border-white/5 mt-20 relative overflow-hidden bg-black/20">
         <div className="w-full max-w-[1300px] p-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left mb-12">

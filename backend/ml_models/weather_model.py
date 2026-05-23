@@ -8,12 +8,9 @@ import urllib.parse
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-
 @router.post("/ml/weather-advisory")
 async def weather_advisory(request: WeatherRequest):
-    """
-    Advanced NLP/Rules-Engine Weather Advisory.
-    """
+
     alerts = []
 
     if request.rainfall_mm > 50:
@@ -68,12 +65,9 @@ async def weather_advisory(request: WeatherRequest):
         "irrigation_needed": request.rainfall_mm < 5 and request.humidity < 60,
     }
 
-
 @router.get("/weather/live")
 async def live_weather(lat: float = 10.8505, lon: float = 76.2711, q: str = None):
-    """
-    Fetches live weather from OpenWeatherMap if key exists, else provides simulated data.
-    """
+
     api_key = os.getenv("OPENWEATHER_API_KEY")
     if api_key:
         try:
@@ -104,9 +98,8 @@ async def live_weather(lat: float = 10.8505, lon: float = 76.2711, q: str = None
                         "source": "OpenWeatherMap"}
         except Exception as e:
             logger.error(f"Live Weather API Error: {e}")
-            pass  # Fall back to simulation
+            pass
 
-    # Simulation fallback
     return {
         "location": "Simulated Location",
         "temperature": round(random.uniform(25.0, 34.0), 1),

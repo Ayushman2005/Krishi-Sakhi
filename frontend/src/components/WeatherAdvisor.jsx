@@ -118,7 +118,7 @@ const WeatherAdvisor = () => {
       if (!response.ok) throw new Error('Server error');
       setResult(await response.json());
     } catch {
-      // Offline demo using local risk matrix
+
       const risks = getWeatherRisk(weather, profile?.crop || 'Paddy');
       const overallRisk = risks.some(r => r.risk === 'high') ? 'high' : risks.some(r => r.risk === 'medium') ? 'medium' : 'low';
       setResult({
@@ -180,7 +180,6 @@ const WeatherAdvisor = () => {
           </div>
         </div>
 
-        {/* Live Preview Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           <WeatherCard icon={Thermometer} label="Temperature" value={weather.temperature} unit="°C" colorClass="text-orange-400" />
           <WeatherCard icon={Droplets} label="Humidity" value={weather.humidity} unit="%" colorClass="text-blue-400" />

@@ -28,10 +28,10 @@ const FertilizerRecommender = () => {
   const handleOCRUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    
+
     const formDataObj = new FormData();
     formDataObj.append('file', file);
-    
+
     setIsLoading(true);
     setError(null);
     try {
@@ -55,7 +55,7 @@ const FertilizerRecommender = () => {
   };
 
   const handlePredict = async () => {
-    // Basic validation for numbers
+
     const numFields = ['temperature', 'humidity', 'moisture', 'nitrogen', 'phosphorus', 'potassium'];
     for (const key of numFields) {
       if (formData[key] === '') {
@@ -108,7 +108,6 @@ const FertilizerRecommender = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
-      {/* Input Form Column */}
       <div className="flex-1 space-y-6">
         <div>
           <h3 className="text-2xl font-black mb-2 flex items-center gap-2">
@@ -150,7 +149,7 @@ const FertilizerRecommender = () => {
               ))}
             </select>
           </motion.div>
-          
+
           <motion.div 
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -220,10 +219,8 @@ const FertilizerRecommender = () => {
         </motion.button>
       </div>
 
-      {/* Results Column */}
       <div className="flex-1 lg:max-w-md">
         <div className="h-full glass rounded-3xl p-8 flex flex-col relative overflow-hidden group">
-          {/* Subtle background glow */}
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#ec4899]/5 rounded-full blur-[80px] group-hover:bg-[#ec4899]/10 transition-colors" />
 
           <h4 className="text-xs font-black uppercase tracking-widest text-text-muted mb-8 flex items-center gap-2 relative z-10">

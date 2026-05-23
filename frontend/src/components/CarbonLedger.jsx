@@ -9,7 +9,7 @@ const CarbonLedger = () => {
   const [crop, setCrop] = useState('Paddy');
   const [tillage, setTillage] = useState('no-till');
   const [coverCropping, setCoverCropping] = useState(true);
-  const [organicInput, setOrganicInput] = useState(4.0); // tons
+  const [organicInput, setOrganicInput] = useState(4.0); 
   const [isCalculating, setIsCalculating] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ const CarbonLedger = () => {
 
       if (!response.ok) throw new Error('Carbon computation failure.');
       const data = await response.json();
-      
+
       setTimeout(() => {
         setResult(data);
         setIsCalculating(false);
@@ -44,13 +44,13 @@ const CarbonLedger = () => {
 
     } catch (err) {
       setError('Soil ledger computational network offline. Resolving via local biogeochemical constants.');
-      // Local fallback
+
       setTimeout(() => {
         const rate = tillage === 'no-till' ? 0.95 : tillage === 'minimum-till' ? 0.72 : 0.45;
         const finalRate = coverCropping ? rate + 0.28 : rate;
         const sequestered = finalRate * acreage;
         const usdVal = sequestered * 25.00;
-        
+
         setResult({
           sequestration_rate_tco2e_per_acre: finalRate,
           annual_co2_sequestered_tons: sequestered,
@@ -86,8 +86,7 @@ const CarbonLedger = () => {
   return (
     <div className="space-y-6">
       <div className="glass-card p-6 md:p-8 space-y-6 relative overflow-hidden">
-        
-        {/* Form Inputs Grid */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Land Size (Acres)</label>
@@ -124,7 +123,6 @@ const CarbonLedger = () => {
             />
           </div>
 
-          {/* Toggle Switches */}
           <div className="flex flex-col justify-end pb-1.5 space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-text-muted">Cover Cropping Active</label>
             <button
@@ -152,7 +150,6 @@ const CarbonLedger = () => {
           )}
         </button>
 
-        {/* Results Panel */}
         <AnimatePresence>
           {result && !isCalculating && (
             <motion.div
@@ -160,9 +157,8 @@ const CarbonLedger = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8 pt-4 border-t border-white/5"
             >
-              {/* Financial Balance Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                
+
                 <div className="p-5 bg-white/5 border border-white/5 rounded-3xl relative overflow-hidden flex flex-col justify-between">
                   <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-full filter blur-md pointer-events-none" />
                   <span className="text-[9px] font-black uppercase tracking-widest text-text-muted">CO2 Sequestered (Annual)</span>
@@ -194,30 +190,27 @@ const CarbonLedger = () => {
 
               </div>
 
-              {/* 5-Year Projection Bar Graph */}
               <div className="p-6 bg-black/40 border border-white/5 rounded-[36px] space-y-4">
                 <span className="text-[10px] font-black uppercase tracking-widest text-text-muted block">5-Year Ecological Financial Projections</span>
-                
+
                 <div className="h-44 flex items-end gap-3 px-4 relative mt-6">
                   {result.five_year_projection.map((yearData, idx) => {
                     const maxCumulative = result.five_year_projection[4].cumulative_tco2e;
                     const heightPercent = (yearData.cumulative_tco2e / maxCumulative) * 100;
                     return (
                       <div key={idx} className="flex-1 flex flex-col items-center gap-2 group z-10">
-                        {/* Hover values tooltip */}
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 border border-white/10 px-2.5 py-1.5 rounded-xl absolute -top-12 z-20 text-center text-[10px] leading-tight">
                           <p className="font-black text-white">{yearData.cumulative_tco2e.toFixed(1)} tCO2e</p>
                           <p className="text-success font-bold">${yearData.cumulative_usd.toFixed(0)}</p>
                         </div>
-                        
-                        {/* Projection bar */}
+
                         <div 
                           className="w-full rounded-t-2xl bg-gradient-to-t from-primary/10 via-primary to-accent relative overflow-hidden"
                           style={{ height: `${Math.max(10, heightPercent)}px`, minHeight: '30px' }}
                         >
                           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
-                        
+
                         <span className="text-[9px] font-black text-text-muted uppercase tracking-widest mt-1">Year {yearData.year}</span>
                       </div>
                     );
@@ -225,13 +218,11 @@ const CarbonLedger = () => {
                 </div>
               </div>
 
-              {/* Verified Carbon Certificate Display */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                
-                {/* Cryptographic Compliance Ledger Transactions */}
+
                 <div className="lg:col-span-7 space-y-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block">Cryptographic Compliance Audit Log</span>
-                  
+
                   <div className="bg-black/30 border border-white/5 rounded-3xl overflow-hidden divide-y divide-white/5">
                     {result.ledger_entries.map((entry, idx) => (
                       <div key={idx} className="p-4 flex items-center justify-between text-xs hover:bg-white/5 transition-colors">
@@ -251,10 +242,8 @@ const CarbonLedger = () => {
                   </div>
                 </div>
 
-                {/* Deluxe Certificate Mock Widget */}
                 <div className="lg:col-span-5 relative p-6 bg-gradient-to-br from-primary/10 via-primary-dark/20 to-accent/15 border border-primary/30 rounded-[36px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),0_0_30px_-5px_rgba(16,185,129,0.25)] flex flex-col justify-between min-h-[300px] group overflow-hidden">
-                  
-                  {/* Subtle watermarked badge logo */}
+
                   <div className="absolute -bottom-16 -right-16 w-48 h-48 opacity-[0.03] pointer-events-none text-primary">
                     <Award size={192} />
                   </div>

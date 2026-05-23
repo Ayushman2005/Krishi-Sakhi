@@ -43,31 +43,29 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [profile, activities]);
 
   const handleLogActivity = (e) => {
     e.preventDefault();
     const note = e.target.note.value;
-    if (!note.trim()) return; // Prevent empty logs
-    
+    if (!note.trim()) return; 
+
     addActivity({ type: logType, note });
     setShowLogModal(false);
-    
-    // Show Toast
+
     setToast(`Successfully logged ${logType.replace('-', ' ')} activity`);
     setTimeout(() => setToast(null), 3000);
   };
 
-  // Dynamic Health Calculations
   const calculateHealth = () => {
     const baseHealth = 70;
     const bonus = Math.min(activities.length * 2, 28);
     return baseHealth + bonus;
   };
-  
+
   const healthScore = calculateHealth();
   const healthLabel = healthScore > 90 ? 'Excellent' : healthScore > 80 ? 'Good' : 'Needs Care';
   const healthColor = healthScore > 90 ? 'text-success' : healthScore > 80 ? 'text-primary' : 'text-warning';
@@ -98,7 +96,6 @@ const Dashboard = () => {
       variants={containerVariants}
       className="main-container"
     >
-      {/* Dynamic Header */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 relative">
         <div className="z-10">
           <motion.div 
@@ -156,7 +153,6 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Error State */}
       {error && (
         <motion.div 
           initial={{ opacity: 0, height: 0 }}
@@ -169,7 +165,6 @@ const Dashboard = () => {
         </motion.div>
       )}
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
           { label: t('health_index'), value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100` },
@@ -203,8 +198,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Advisories Column */}
+
         <div className="lg:col-span-2 space-y-10">
           <section>
             <h2 className="text-3xl font-black mb-8 flex items-center gap-4">
@@ -299,7 +293,6 @@ const Dashboard = () => {
           </section>
         </div>
 
-        {/* Sidebar Info Column */}
         <div className="space-y-10">
           <motion.div variants={itemVariants} className="glass p-10 relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl -mr-24 -mt-24 group-hover:bg-primary/10 transition-colors" />
@@ -374,7 +367,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Log Activity Modal - Enhanced */}
       <AnimatePresence>
         {showLogModal && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
@@ -434,7 +426,6 @@ const Dashboard = () => {
         )}
       </AnimatePresence>
 
-      {/* Dynamic Toast Notification */}
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -452,7 +443,6 @@ const Dashboard = () => {
   );
 };
 
-// Helper components for stats
 const ShieldCheck = ({ size }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" />

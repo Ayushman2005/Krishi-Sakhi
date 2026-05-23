@@ -163,7 +163,6 @@ const MLHub = () => {
 
   return (
     <div className="main-container relative">
-      {/* Hub Header */}
       <header className="text-center mb-12">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -192,7 +191,6 @@ const MLHub = () => {
         </motion.p>
       </header>
 
-      {/* Global Intelligence Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {[
           { label: 'Models Active', value: '10', icon: Cpu, color: 'text-primary' },
@@ -213,13 +211,12 @@ const MLHub = () => {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        {/* Left Side: interactive high-tech model console */}
         <div className="xl:col-span-4 space-y-4">
           <div className="flex flex-col gap-1 mb-4 pl-2">
             <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">AI COMMAND CENTER</span>
             <h2 className="text-2xl font-black tracking-tight">Select Intelligence Model</h2>
           </div>
-          
+
           <motion.div 
             variants={containerVariants}
             initial="hidden"
@@ -246,7 +243,6 @@ const MLHub = () => {
                     boxShadow: isActive ? `0 10px 30px -10px ${tab.accentGlow}` : ''
                   }}
                 >
-                  {/* Left accent vertical pill */}
                   {isActive && (
                     <motion.div 
                       layoutId="active-bar"
@@ -256,7 +252,6 @@ const MLHub = () => {
                     />
                   )}
 
-                  {/* Icon container */}
                   <div 
                     className="p-3.5 rounded-2xl transition-all duration-300 relative z-10"
                     style={{ 
@@ -284,7 +279,6 @@ const MLHub = () => {
           </motion.div>
         </div>
 
-        {/* Right Side: focused single-model inference workspace panel */}
         <div className="xl:col-span-8">
           <AnimatePresence mode="wait">
             <motion.div
@@ -298,21 +292,18 @@ const MLHub = () => {
                 boxShadow: `0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px ${selectedModel.accentGlow}`
               }}
             >
-              {/* Dynamic top colorful mesh accent */}
               <div 
                 className="absolute top-0 inset-x-0 h-[3px] transition-colors duration-500"
                 style={{ 
                   background: `linear-gradient(90deg, transparent, ${selectedModel.accent}, transparent)` 
                 }}
               />
-              
-              {/* Radial subtle glow inside workspace */}
+
               <div 
                 className="absolute -top-40 -right-40 w-96 h-96 rounded-full pointer-events-none filter blur-[100px] opacity-[0.08] transition-all duration-500"
                 style={{ backgroundColor: selectedModel.accent }}
               />
 
-              {/* Workspace Header Panel */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-8 mb-8 relative z-10">
                 <div className="flex items-center gap-4">
                   <div 
@@ -342,12 +333,10 @@ const MLHub = () => {
                 </div>
               </div>
 
-              {/* Inference Application Workspace Container */}
               <div className="relative z-10 w-full overflow-hidden min-h-[300px]">
                 <ActiveComponent />
               </div>
 
-              {/* Subtle tech watermark logo */}
               <div
                 className="absolute -right-16 -bottom-16 w-80 h-80 opacity-[0.015] pointer-events-none transition-all duration-500"
                 style={{ color: selectedModel.accent }}

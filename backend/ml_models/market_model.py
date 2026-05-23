@@ -9,7 +9,6 @@ from google import genai
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Configure Gemini for Market Rates
 api_key = os.getenv("GEMINI_API_KEY")
 gemini_client = None
 if api_key and api_key != "your_gemini_api_key_here":
@@ -18,12 +17,9 @@ if api_key and api_key != "your_gemini_api_key_here":
     except Exception as e:
         logger.error(f"Failed to configure Gemini in Market Model: {e}")
 
-
 @router.get("/market-forecast")
 async def market_forecast(crop: str):
-    """
-    Time-Series Market Forecasting using Advanced Simulation (Simulating ARIMA/Prophet).
-    """
+
     import pandas as pd
 
     base_price = 0
@@ -42,7 +38,6 @@ async def market_forecast(crop: str):
     current_date = datetime.datetime.now()
     trend_direction = 1 if random.random() > 0.4 else -1
 
-    # Advanced simulation using pandas Series for moving average effect
     prices = []
     for i in range(-5, 8):
         future_date = current_date + datetime.timedelta(days=i)
@@ -74,12 +69,9 @@ async def market_forecast(crop: str):
         "recommendation": "Hold" if forecast[-1]["predicted_price"] > base_price * 1.02 else "Sell Now"
     }
 
-
 @router.get("/market-rates")
 async def get_market_rates(location: str = "Global"):
-    """
-    Returns accurate, live market rates based on location using AI reasoning.
-    """
+
     if not gemini_client:
         return [{"id": 1,
                  "crop": "Paddy",
@@ -110,10 +102,15 @@ async def get_market_rates(location: str = "Global"):
 
     Return ONLY a JSON array with this structure:
     [
+      
+
       {"id": 1, "crop": "Crop Name", "price": 3200, "unit": "per Quintal", "trend": "+1.2%", "up": true, "location": "Specific Mandi Name"} ,
       ...
     ]
-    Ensure the Mandi names are real locations within or near {location}.
+    Ensure the Mandi names are real locations within or near 
+
+                                                             {location}.
+    
     """
 
     try:

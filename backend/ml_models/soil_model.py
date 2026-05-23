@@ -8,7 +8,6 @@ from PIL import Image
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Configure Gemini
 api_key = os.getenv("GEMINI_API_KEY")
 gemini_configured = False
 gemini_client = None
@@ -19,12 +18,9 @@ if api_key and api_key != "your_gemini_api_key_here":
     except Exception as e:
         logger.error(f"Failed to configure Gemini in Soil Model: {e}")
 
-
 @router.post("/soil-report-ocr")
 async def parse_soil_report(file: UploadFile = File(...)):
-    """
-    Parses a soil test report image and extracts key metrics using Gemini Vision.
-    """
+
     if not gemini_configured:
         raise HTTPException(
             status_code=503, detail="Gemini API not configured.")
@@ -51,6 +47,7 @@ async def parse_soil_report(file: UploadFile = File(...)):
             "recommendations": ["string"]
         }
         """
+
         response = gemini_client.models.generate_content(
             model='gemini-2.0-flash',
             contents=[prompt, image]

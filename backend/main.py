@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import datetime
 import logging
 
-# Import Schemas
 from schemas import ChatRequest
 
 from ml_models.disease_model import router as disease_router
@@ -22,13 +21,11 @@ from ml_models.acoustic_monitor import router as acoustic_router
 from ml_models.polyculture_solver import router as polyculture_router
 from ml_models.carbon_ledger import router as carbon_router
 
-# Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-# Configure Gemini
 api_key = os.getenv("GEMINI_API_KEY")
 if api_key and api_key != "your_gemini_api_key_here":
     try:
@@ -48,7 +45,6 @@ app = FastAPI(
     description="AI-Powered Farming Assistant Backend"
 )
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -57,7 +53,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include Routers
 app.include_router(disease_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(yield_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(weather_router, tags=["Weather & Advisories"])
@@ -71,8 +66,6 @@ app.include_router(acoustic_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(polyculture_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(carbon_router, prefix="/ml", tags=["Machine Learning"])
 
-
-# Global Error Handler
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Global Error on {request.url}: {exc}")
@@ -84,9 +77,6 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 
-# ─────────────────────────────────
-# Knowledge Base
-# ─────────────────────────────────
 KNOWLEDGE_BASE = """
 Krishi Sakhi Expert Agricultural Knowledge:
 - General NPK ratios vary by crop. Always test soil for exact requirements.
@@ -95,11 +85,6 @@ Krishi Sakhi Expert Agricultural Knowledge:
 - Organic: Compost, Neem extracts, and crop rotation enhance soil health globally.
 - Seasonal: Align planting with local seasonal shifts (e.g., monsoons, spring thaw).
 """
-
-# ─────────────────────────────────
-# Core Routes
-# ─────────────────────────────────
-
 
 @app.get("/health")
 async def health_check():
@@ -110,14 +95,12 @@ async def health_check():
         "ai_enabled": model is not None
     }
 
-
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     if not model:
         return {
             "response": (
-                "Demo Mode: I'm running without an AI key. Based on your profile, "
-                "I suggest applying Jeevamrutham this week for organic yield boost. "
+
                 "Set your GEMINI_API_KEY in backend/.env for full AI capabilities.")}
 
     context = f"Profile: {
@@ -127,8 +110,11 @@ async def chat_endpoint(request: ChatRequest):
 Use the context to answer accurately. Be concise, practical, and warm.
 Reply in the user's preferred language based on their prompt.
 
-Context: {context}
-User: {request.message}"""
+Context: 
+
+         {context}
+User: 
+      {request.message}"""
 
     try:
         response = model.models.generate_content(model="gemini-2.0-flash", contents=prompt)
@@ -137,7 +123,6 @@ User: {request.message}"""
         logger.error(f"Gemini error: {e}")
         raise HTTPException(
             status_code=500, detail="AI engine temporarily unavailable.")
-
 
 @app.get("/advisories")
 async def get_advisories(crop: str, location: str):
@@ -179,7 +164,6 @@ async def get_advisories(crop: str, location: str):
     })
     return advisories
 
-
 @app.get("/market-trends")
 async def get_market_trends():
     return [
@@ -191,7 +175,6 @@ async def get_market_trends():
          "trend": "up", "change": "+2.1%"},
         {"name": "Rice", "price": "$420.00/MT", "trend": "up", "change": "+0.8%"},
     ]
-
 
 @app.get("/schemes")
 async def get_schemes(

@@ -6,16 +6,15 @@ from PIL import Image
 def test_future_decay():
     print("[TEST] Testing Future Decay Predictor endpoint...")
     url = "http://localhost:8000/ml/future-decay"
-    
-    # Create a dummy image
+
     img = Image.new("RGB", (200, 200), (45, 138, 70))
     img_byte_arr = io.BytesIO()
     img.save(img_byte_arr, format='PNG')
     img_byte_arr.seek(0)
-    
+
     files = {"file": ("test_leaf.png", img_byte_arr, "image/png")}
     data = {"deficit_type": "Nitrogen Deficiency"}
-    
+
     try:
         response = requests.post(url, files=files, data=data)
         if response.status_code == 200:
@@ -32,11 +31,10 @@ def test_future_decay():
 def test_acoustic_analyze():
     print("\n[TEST] Testing Bio-Acoustic Monitor endpoint...")
     url = "http://localhost:8000/ml/acoustic-analyze"
-    
-    # Create mock WAV file bytes
+
     wav_bytes = b"RIFF\x24\x00\x00\x00WAVEfmt \x10\x00\x00\x00\x01\x00\x01\x00\x40\x1f\x00\x00\x80\x3e\x00\x00\x02\x00\x10\x00data\x00\x00\x00\x00"
     files = {"file": ("locust_swarm.wav", io.BytesIO(wav_bytes), "audio/wav")}
-    
+
     try:
         response = requests.post(url, files=files)
         if response.status_code == 200:
@@ -53,14 +51,14 @@ def test_acoustic_analyze():
 def test_polyculture_solve():
     print("\n[TEST] Testing Spatial Polyculture Solver endpoint...")
     url = "http://localhost:8000/ml/polyculture-solve"
-    
+
     payload = {
         "acreage": 2.5,
         "soil_type": "Clay Loam",
         "target_season": "Kharif / Monsoon",
         "selected_crops": ["Maize", "Beans", "Soybeans"]
     }
-    
+
     try:
         response = requests.post(url, json=payload)
         if response.status_code == 200:
@@ -77,7 +75,7 @@ def test_polyculture_solve():
 def test_carbon_estimate():
     print("\n[TEST] Testing Soil Carbon Credit Ledger endpoint...")
     url = "http://localhost:8000/ml/carbon-estimate"
-    
+
     payload = {
         "acreage": 12.0,
         "crop": "Paddy",
@@ -85,7 +83,7 @@ def test_carbon_estimate():
         "cover_cropping": True,
         "organic_input_tons": 4.5
     }
-    
+
     try:
         response = requests.post(url, json=payload)
         if response.status_code == 200:

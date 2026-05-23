@@ -33,13 +33,11 @@ CROPS = [
 FERTILIZERS = ["Urea", "DAP", "14-35-14",
                "28-28", "17-17-17", "20-20", "10-26-26"]
 
-# Train dummy models to act as advanced ML models
 crop_clf = RandomForestClassifier(n_estimators=50, random_state=42)
 fert_clf = RandomForestClassifier(n_estimators=50, random_state=42)
 
-
 def train_dummy_classifiers():
-    # Crop
+
     X_crop, y_crop = [], []
     for _ in range(500):
         N = random.uniform(0, 140)
@@ -50,7 +48,6 @@ def train_dummy_classifiers():
         ph = random.uniform(3.5, 9.9)
         rain = random.uniform(20, 300)
 
-        # Simple logical label assignment to simulate pattern learning
         if rain > 200 and temp > 25:
             label = "Rice"
         elif rain < 50 and temp > 30:
@@ -67,7 +64,6 @@ def train_dummy_classifiers():
 
     crop_clf.fit(X_crop, y_crop)
 
-    # Fertilizer
     X_fert, y_fert = [], []
     for _ in range(500):
         temp = random.uniform(20, 40)
@@ -91,9 +87,7 @@ def train_dummy_classifiers():
 
     fert_clf.fit(X_fert, y_fert)
 
-
 train_dummy_classifiers()
-
 
 @router.post("/crop-recommend")
 async def crop_recommend(request: CropRecommendRequest):
@@ -120,7 +114,6 @@ async def crop_recommend(request: CropRecommendRequest):
         "alternatives": alternatives,
         "model": "RandomForestClassifier (scikit-learn)"
     }
-
 
 @router.post("/fertilizer-recommend")
 async def fertilizer_recommend(request: FertilizerRecommendRequest):

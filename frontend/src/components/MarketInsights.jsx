@@ -31,7 +31,7 @@ const MarketInsights = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchMarketRatesEffect = async () => {
-      // Avoid calling setState synchronously here if it's considered bad practice by ESLint
+
       try {
         const location = profile?.location || 'Global';
         const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
@@ -65,7 +65,6 @@ const MarketInsights = () => {
 
   return (
     <div className="main-container">
-      {/* Header section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
         <div className="flex-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-[10px] font-black uppercase tracking-widest mb-4">
@@ -74,7 +73,7 @@ const MarketInsights = () => {
           <h2 className="text-4xl font-black tracking-tighter">Live <span className="text-secondary">Market Rates</span></h2>
           <p className="text-text-muted mt-2">Check accurate commodity prices for any district in India.</p>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <div className="relative group min-w-[250px]">
             <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-secondary transition-colors" />
@@ -110,7 +109,6 @@ const MarketInsights = () => {
         </div>
       </div>
 
-      {/* Grid of Market Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {marketData.length > 0 ? marketData.map((item, index) => (
           <motion.div
@@ -121,7 +119,6 @@ const MarketInsights = () => {
             whileHover={{ y: -8, transition: { duration: 0.2 } }}
             className="glass rounded-3xl flex flex-col group relative overflow-hidden p-8 border border-white/5 hover:border-white/20 transition-all duration-300"
           >
-            {/* Background glowing orb for up/down trend */}
             <div className={`absolute -right-20 -top-20 w-48 h-48 rounded-full blur-[100px] opacity-10 transition-all duration-700 group-hover:opacity-30 ${item.up ? 'bg-success' : 'bg-error'}`} />
 
             <div className="flex justify-between items-start mb-8 relative z-10">
@@ -163,7 +160,6 @@ const MarketInsights = () => {
         )}
       </div>
 
-      {/* Forecast Modal */}
       <AnimatePresence>
         {selectedCrop && (
           <motion.div 
@@ -201,7 +197,6 @@ const MarketInsights = () => {
                 </div>
               ) : forecastData ? (
                 <div className="space-y-6">
-                  {/* Recommendation Banner */}
                   <div className={`p-4 rounded-2xl flex items-center justify-between border ${
                     forecastData.recommendation === 'Hold' ? 'bg-warning/10 border-warning/20' : 'bg-success/10 border-success/20'
                   }`}>
@@ -217,14 +212,13 @@ const MarketInsights = () => {
                     </div>
                   </div>
 
-                  {/* Graph visualization (Simulated using CSS widths) */}
                   <div className="space-y-3">
                     {forecastData.forecast_7_days.map((day, i) => {
-                      // Normalize width for basic bar chart look
+
                       const minPrice = Math.min(...forecastData.forecast_7_days.map(d => d.predicted_price));
                       const maxPrice = Math.max(...forecastData.forecast_7_days.map(d => d.predicted_price));
                       const widthPercent = ((day.predicted_price - minPrice * 0.95) / (maxPrice - minPrice * 0.95)) * 100;
-                      
+
                       return (
                         <div key={i} className="flex items-center gap-4">
                           <span className="w-10 text-xs font-bold text-text-muted">{day.day}</span>
@@ -251,7 +245,6 @@ const MarketInsights = () => {
         )}
       </AnimatePresence>
 
-      {/* Revenue Estimator Banner */}
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -19,7 +19,6 @@ const AcousticMonitor = () => {
   const [visualizerBars, setVisualizerBars] = useState(Array(32).fill(15));
   const [animationFrameId, setAnimationFrameId] = useState(null);
 
-  // Spectral Equalizer Bar Animation when analyzing or playing
   useEffect(() => {
     if (isPlaying || isAnalyzing) {
       const animate = () => {
@@ -38,7 +37,7 @@ const AcousticMonitor = () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
-      // Return to baseline spectrogram heights
+
       setVisualizerBars(result?.spectrogram_data || Array(32).fill(10));
     }
     return () => {
@@ -52,7 +51,6 @@ const AcousticMonitor = () => {
     setError(null);
     setResult(null);
 
-    // Create a mock WAV file in memory to send to the backend so the pipeline actually processes it
     const mockWavContent = new Blob([`RIFF....WAVEfmt ....data${presetFilename}`], { type: 'audio/wav' });
     const formData = new FormData();
     formData.append('file', mockWavContent, presetFilename);
@@ -65,19 +63,18 @@ const AcousticMonitor = () => {
 
       if (!response.ok) throw new Error('Acoustic parsing error.');
       const data = await response.json();
-      
-      // Simulate real-time signal intake before rendering results
+
       setTimeout(() => {
         setResult(data);
         setIsAnalyzing(false);
-        // Momentarily play sound visualizer as "auditory sweep"
+
         setIsPlaying(true);
         setTimeout(() => setIsPlaying(false), 2000);
       }, 1500);
 
     } catch (err) {
       setError('Acoustic backend temporarily offline. Resolving local DSP fallback calculations.');
-      // Local Heuristic fallback
+
       setTimeout(() => {
         const mockResponse = presetFilename.includes('bee') 
           ? {
@@ -138,8 +135,7 @@ const AcousticMonitor = () => {
   return (
     <div className="space-y-6">
       <div className="glass-card p-6 md:p-8 space-y-8 relative overflow-hidden">
-        
-        {/* Preset Selectors */}
+
         <div className="space-y-3">
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block">Audio Ingest Stream Presets</label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -166,12 +162,10 @@ const AcousticMonitor = () => {
           </div>
         </div>
 
-        {/* High Tech Spectrum Visualizer */}
         <div className="relative p-6 bg-black/40 border border-white/5 rounded-3xl overflow-hidden flex flex-col items-center justify-center">
-          
-          {/* Animated Glow backdrops */}
+
           <div className="absolute inset-0 bg-gradient-to-t from-primary/5 via-transparent to-transparent pointer-events-none" />
-          
+
           <div className="w-full h-32 flex items-end gap-1 px-4 z-10 relative">
             {visualizerBars.map((height, idx) => (
               <div
@@ -191,7 +185,6 @@ const AcousticMonitor = () => {
             <span>8,000 Hz</span>
           </div>
 
-          {/* Loader Overlay */}
           <AnimatePresence>
             {isAnalyzing && (
               <motion.div 
@@ -207,7 +200,6 @@ const AcousticMonitor = () => {
           </AnimatePresence>
         </div>
 
-        {/* Acoustic Summary */}
         <AnimatePresence>
           {result && !isAnalyzing && (
             <motion.div
@@ -215,10 +207,8 @@ const AcousticMonitor = () => {
               animate={{ opacity: 1, y: 0 }}
               className="grid grid-cols-1 md:grid-cols-12 gap-6"
             >
-              {/* Gauges & Alerts Column */}
               <div className="md:col-span-7 space-y-4">
-                
-                {/* Metric Strip */}
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 bg-white/5 border border-white/5 rounded-2xl flex items-center gap-3">
                     <div className="p-2.5 bg-white/5 text-primary rounded-xl">
@@ -241,7 +231,6 @@ const AcousticMonitor = () => {
                   </div>
                 </div>
 
-                {/* Alerts log */}
                 {result.alerts.length > 0 ? (
                   result.alerts.map((alert, i) => (
                     <div key={i} className="p-5 bg-error/10 border border-error/15 rounded-3xl flex gap-4">
@@ -262,7 +251,6 @@ const AcousticMonitor = () => {
                   </div>
                 )}
 
-                {/* Recommendations */}
                 <div className="p-5 bg-white/5 border border-white/5 rounded-3xl space-y-3">
                   <h4 className="text-xs font-black uppercase tracking-widest text-primary">Agronomic Canopy Advisories</h4>
                   <ul className="space-y-2">
@@ -276,14 +264,12 @@ const AcousticMonitor = () => {
                 </div>
               </div>
 
-              {/* Biomarker Gauge Column */}
               <div className="md:col-span-5 flex flex-col justify-between p-6 bg-white/5 border border-white/5 rounded-3xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full filter blur-xl pointer-events-none" />
-                
+
                 <div className="text-center space-y-4">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block">Ecosystem Vitality Indicator</span>
-                  
-                  {/* Circle Progress Gauge */}
+
                   <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
                     <svg className="w-full h-full transform -rotate-90">
                       <circle cx="72" cy="72" r="60" className="stroke-white/5" strokeWidth="10" fill="transparent" />

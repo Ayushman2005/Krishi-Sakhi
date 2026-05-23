@@ -3,12 +3,9 @@ from schemas import PestForecastRequest
 
 router = APIRouter()
 
-
 @router.post("/pest-forecast")
 async def pest_forecast(request: PestForecastRequest):
-    """
-    Predicts potential pest attacks based on weather and crop stage.
-    """
+
     forecasts = []
 
     if request.crop.lower() == "paddy":

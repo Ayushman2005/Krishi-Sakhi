@@ -32,14 +32,13 @@ if TORCH_AVAILABLE:
 
         if os.path.exists("plant_disease_model.pth"):
             checkpoint = torch.load("plant_disease_model.pth", map_location=device)
-            
-            # Check if this is an EfficientNetV2 checkpoint from train_cnn.py
+
             if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
                 num_classes = checkpoint["num_classes"]
-                # Override default classes with the classes trained in the model
+
                 if "class_names" in checkpoint:
                     DISEASE_CLASSES = checkpoint["class_names"]
-                
+
                 logger.info(f"Loading custom EfficientNetV2-S model with {num_classes} classes...")
                 cnn_model = models.efficientnet_v2_s(weights=None)
                 in_features = cnn_model.classifier[1].in_features
@@ -51,7 +50,7 @@ if TORCH_AVAILABLE:
                 model_name = "EfficientNetV2-S (PyTorch)"
                 logger.info("✅ Production EfficientNetV2-S model loaded successfully.")
             else:
-                # Legacy / standard loading of raw MobileNetV2 state dict
+
                 logger.info("Loading legacy MobileNetV2 model...")
                 cnn_model = models.mobilenet_v2(weights=None)
                 cnn_model.classifier[1] = nn.Linear(
@@ -76,7 +75,6 @@ if TORCH_AVAILABLE:
     except Exception as e:
         logger.error(f"❌ Failed to load PyTorch model: {e}")
         cnn_model = None
-
 
 @router.post("/disease-detect")
 async def disease_detect(file: UploadFile = File(...)):
@@ -120,7 +118,6 @@ async def disease_detect(file: UploadFile = File(...)):
         except Exception as e:
             logger.error(f"PyTorch inference failed: {e}")
 
-    # Advanced Demo simulation with realistic distribution
     weights = [0.35, 0.25, 0.15, 0.10, 0.10, 0.05]
     predicted_idx = random.choices(
         range(len(DISEASE_CLASSES)), weights=weights, k=1)[0]

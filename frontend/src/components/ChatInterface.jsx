@@ -50,7 +50,7 @@ const ChatInterface = () => {
     if (isListening) {
       recognitionRef.current.stop();
     } else {
-      setInput(''); // clear input before listening
+      setInput(''); 
       recognitionRef.current.start();
       setIsListening(true);
     }
@@ -79,14 +79,13 @@ const ChatInterface = () => {
     setIsTyping(true);
 
     const response = await getAIResponse(input, profile, activities);
-    
+
     setIsTyping(false);
     setMessages(prev => [...prev, { id: Date.now() + 1, text: response, sender: 'ai' }]);
   };
 
   return (
     <>
-      {/* Chat Toggle Button */}
       {!isOpen && (
         <motion.button
           initial={{ scale: 0, x: 100 }}
@@ -108,7 +107,6 @@ const ChatInterface = () => {
         </motion.button>
       )}
 
-      {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -119,7 +117,6 @@ const ChatInterface = () => {
             className="fixed top-0 right-0 w-full sm:w-[380px] h-screen bg-background/95 backdrop-blur-3xl flex flex-col z-[100] overflow-hidden shadow-[-30px_0_100px_rgba(0,0,0,0.6)] border-l border-white/10 rounded-l-[40px] rounded-r-none"
             style={{ borderRadius: "40px 0 0 40px" }}
           >
-            {/* Header */}
             <div className="p-8 pt-10 border-b border-white/5 flex justify-between items-start bg-gradient-to-b from-primary/10 via-primary/5 to-transparent relative">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary" />
               <div className="flex gap-4 items-center">
@@ -159,7 +156,6 @@ const ChatInterface = () => {
               </button>
             </div>
 
-            {/* Messages Area */}
             <div 
               ref={scrollRef}
               className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide"
@@ -208,7 +204,6 @@ const ChatInterface = () => {
               )}
             </div>
 
-            {/* Input Area */}
             <div className="p-6 bg-background/80 backdrop-blur-2xl border-t border-white/5 relative z-10 pb-8">
               <form onSubmit={handleSend} className="flex gap-3 items-center">
                 <div className="relative flex-1 group">

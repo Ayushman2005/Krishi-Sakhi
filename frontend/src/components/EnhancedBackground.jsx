@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 const EnhancedBackground = () => {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-      {/* Primary Glow Orb */}
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
@@ -19,7 +18,6 @@ const EnhancedBackground = () => {
         className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px]"
       />
 
-      {/* Secondary Glow Orb */}
       <motion.div
         animate={{
           scale: [1, 1.1, 1],
@@ -35,7 +33,6 @@ const EnhancedBackground = () => {
         className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-accent rounded-full blur-[140px]"
       />
 
-      {/* Tertiary Glow Orb */}
       <motion.div
         animate={{
           scale: [1, 1.3, 1],
@@ -51,7 +48,6 @@ const EnhancedBackground = () => {
         className="absolute top-[30%] right-[20%] w-[400px] h-[400px] bg-secondary rounded-full blur-[100px]"
       />
 
-      {/* Animated Mesh Grid */}
       <div 
         className="absolute inset-0 opacity-[0.03]"
         style={{

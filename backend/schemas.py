@@ -1,25 +1,21 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-
 class Profile(BaseModel):
     name: str
     location: str
     crop: str
     irrigation: str
 
-
 class Activity(BaseModel):
     type: str
     note: str
     timestamp: str
 
-
 class ChatRequest(BaseModel):
     message: str
     profile: Optional[Profile] = None
     activities: Optional[List[Activity]] = []
-
 
 class YieldRequest(BaseModel):
     crop: str
@@ -33,7 +29,6 @@ class YieldRequest(BaseModel):
     irrigation_type: str
     growth_stage: str
 
-
 class WeatherRequest(BaseModel):
     crop: str
     location: str
@@ -44,7 +39,6 @@ class WeatherRequest(BaseModel):
     uv_index: float
     forecast: str
 
-
 class CropRecommendRequest(BaseModel):
     nitrogen: float
     phosphorus: float
@@ -53,7 +47,6 @@ class CropRecommendRequest(BaseModel):
     humidity: float
     ph: float
     rainfall: float
-
 
 class FertilizerRecommendRequest(BaseModel):
     temperature: float
@@ -65,7 +58,6 @@ class FertilizerRecommendRequest(BaseModel):
     phosphorus: float
     potassium: float
 
-
 class PestForecastRequest(BaseModel):
     crop: str
     temperature: float
@@ -73,13 +65,11 @@ class PestForecastRequest(BaseModel):
     rainfall: float
     growth_stage: str
 
-
 class PolycultureRequest(BaseModel):
     acreage: float
     soil_type: str
     target_season: str
     selected_crops: List[str] = []
-
 
 class CarbonLedgerRequest(BaseModel):
     acreage: float
@@ -87,4 +77,3 @@ class CarbonLedgerRequest(BaseModel):
     tillage: str
     cover_cropping: bool
     organic_input_tons: float
-

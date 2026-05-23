@@ -14,10 +14,7 @@ CROP_BENCHMARKS = {
     "Banana": {"unit": "bunches/acre", "avg": 700, "good": 900, "excellent": 1100},
 }
 
-# Train a simple proxy model at startup to act as a more advanced predictor
-# In a real scenario, this would load a pre-trained .pkl file.
 yield_models = {}
-
 
 def train_dummy_models():
     for crop, bench in CROP_BENCHMARKS.items():
@@ -31,7 +28,6 @@ def train_dummy_models():
             p = random.uniform(20, 80)
             k = random.uniform(20, 80)
 
-            # Formulate yield
             rain_f = min(rain / 1500, 1.2)
             temp_f = 1.0 if 20 <= temp <= 32 else 0.85
             ph_f = 1.0 if 6.0 <= ph <= 7.0 else 0.88
@@ -46,9 +42,7 @@ def train_dummy_models():
         reg.fit(X, y)
         yield_models[crop] = reg
 
-
 train_dummy_models()
-
 
 @router.post("/yield-predict")
 async def yield_predict(request: YieldRequest):
@@ -56,7 +50,7 @@ async def yield_predict(request: YieldRequest):
 
     model = yield_models.get(request.crop)
     if model:
-        # Use ML Model
+
         X_test = np.array([[
             request.rainfall_mm,
             request.temperature_avg,
@@ -67,7 +61,7 @@ async def yield_predict(request: YieldRequest):
         ]])
         raw_per_unit = model.predict(X_test)[0]
     else:
-        # Fallback
+
         rainfall_factor = min(request.rainfall_mm / 1500, 1.2)
         temp_factor = 1.0 if 20 <= request.temperature_avg <= 32 else 0.85
         ph_factor = 1.0 if 6.0 <= request.soil_ph <= 7.0 else 0.88

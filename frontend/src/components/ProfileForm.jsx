@@ -7,7 +7,6 @@ import {
   AlertCircle, Leaf, Cloud, Zap, TreePine, Loader2
 } from 'lucide-react';
 
-// ── Crop option cards ─────────────────────────────────────
 const CROPS = [
   { value: 'Paddy',      label: 'Paddy Rice',        emoji: '🌾', desc: 'Kharif & Rabi' },
   { value: 'Coconut',    label: 'Coconut',            emoji: '🥥', desc: 'Perennial crop' },
@@ -16,7 +15,6 @@ const CROPS = [
   { value: 'Banana',     label: 'Banana',             emoji: '🍌', desc: 'Plantation crop' },
 ];
 
-// ── Irrigation pill selectors ─────────────────────────────
 const IRRIGATION = [
   { value: 'Drip',      label: 'Drip',      icon: Droplets, desc: '92% efficient' },
   { value: 'Sprinkler', label: 'Sprinkler', icon: Cloud,    desc: 'Even coverage' },
@@ -24,7 +22,6 @@ const IRRIGATION = [
   { value: 'Flood',     label: 'Flood',     icon: Layers,   desc: 'Paddy fields' },
 ];
 
-// ── Soil type options ─────────────────────────────────────
 const SOIL_TYPES = [
   { value: 'Alluvial', label: 'Alluvial', icon: Layers },
   { value: 'Laterite', label: 'Laterite', icon: TreePine },
@@ -32,13 +29,11 @@ const SOIL_TYPES = [
   { value: 'Clay',     label: 'Clay',     icon: Leaf },
 ];
 
-// ── Step progress indicator ───────────────────────────────
 const STEPS = [
   { id: 1, label: 'Identity',  sub: 'Who are you?' },
   { id: 2, label: 'Your Farm', sub: 'Tell us about your land' },
 ];
 
-// ── Floating input field ──────────────────────────────────
 const Field = ({ label, icon: Icon, children }) => (
   <div className="space-y-2">
     <label className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-text-muted">
@@ -48,7 +43,6 @@ const Field = ({ label, icon: Icon, children }) => (
   </div>
 );
 
-// ── Branded Global stat card (left panel) ─────────────────
 const StatPill = ({ label, value, color }) => (
   <div className="flex items-center gap-3 bg-white/5 rounded-2xl px-4 py-3 border border-white/5">
     <div className={`w-2 h-2 rounded-full ${color}`} />
@@ -59,7 +53,6 @@ const StatPill = ({ label, value, color }) => (
   </div>
 );
 
-// ─────────────────────────────────────────────────────────
 const ProfileForm = () => {
   const { updateProfile } = useFarmer();
   const [step, setStep] = useState(1);
@@ -70,7 +63,6 @@ const ProfileForm = () => {
     lat: null, lon: null, locationDisplay: '',
   });
 
-  // Location Autocomplete State
   const [locationQuery, setLocationQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isSearchingLocation, setIsSearchingLocation] = useState(false);
@@ -78,7 +70,6 @@ const ProfileForm = () => {
   const searchTimeoutRef = useRef(null);
   const locationRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (locationRef.current && !locationRef.current.contains(event.target)) {
@@ -96,15 +87,14 @@ const ProfileForm = () => {
     }
     setIsSearchingLocation(true);
     try {
-      // Use addressdetails=1 to get structured parts; featureType (note capitalisation) for cities
-      // We search broadly so small towns like Shōranūr are found, then filter by type client-side
+
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=7&addressdetails=1&accept-language=en`;
       const response = await fetch(url, {
         headers: { 'Accept-Language': 'en' }
       });
       if (response.ok) {
         const data = await response.json();
-        // Prefer populated places / towns / villages over administrative areas
+
         const sorted = data.sort((a, b) => {
           const preferred = ['city', 'town', 'village', 'suburb', 'hamlet'];
           const aScore = preferred.includes(a.type) ? 0 : 1;
@@ -124,23 +114,22 @@ const ProfileForm = () => {
   const handleLocationChange = (e) => {
     const val = e.target.value;
     setLocationQuery(val);
-    set('location', val); // Keep it synced if they just type
-    
+    set('location', val); 
+
     if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
     searchTimeoutRef.current = setTimeout(() => searchLocation(val), 500);
   };
 
   const selectLocation = (loc) => {
-    // Use the structured address to build an accurate display name
+
     const addr = loc.address || {};
     const cityName = addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || loc.display_name.split(',')[0];
     const state = addr.state || '';
     const country = addr.country || '';
     const displayName = [cityName, state, country].filter(Boolean).join(', ');
-    
+
     setLocationQuery(displayName);
-    // Store the clean city name as `location` (used for display + fallback weather search)
-    // Store lat/lon for precise weather API calls
+
     setFormData(prev => ({
       ...prev,
       location: displayName,
@@ -174,21 +163,18 @@ const ProfileForm = () => {
   };
 
   return (
-    // Full-screen split layout
+
     <div className="min-h-[calc(100vh-80px)] w-full flex items-stretch">
 
-      {/* ── LEFT: Brand panel ─────────────────── */}
       <div className="hidden lg:flex flex-col justify-between w-[420px] shrink-0 p-12 relative overflow-hidden"
            style={{ background: 'linear-gradient(160deg, #033d2e 0%, #022c22 60%, #01190f 100%)' }}>
 
-        {/* Animated orbs */}
         <div className="orb-animate absolute top-16 left-16 w-64 h-64 rounded-full opacity-30"
              style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, transparent 70%)' }} />
         <div className="orb-animate-r absolute bottom-24 right-8 w-48 h-48 rounded-full opacity-20"
              style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.6) 0%, transparent 70%)' }} />
         <div className="absolute inset-0 border-r border-white/5" />
 
-        {/* Top */}
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-12">
             <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/30">
@@ -210,14 +196,12 @@ const ProfileForm = () => {
           </p>
         </div>
 
-        {/* Mid: stats */}
         <div className="relative z-10 space-y-3">
           <StatPill label="Farmers Onboarded" value="12,400+" color="bg-primary" />
           <StatPill label="Advisories Sent" value="3.2M" color="bg-accent" />
           <StatPill label="Global Reach" value="Worldwide" color="bg-secondary" />
         </div>
 
-        {/* Bottom: step display */}
         <div className="relative z-10">
           <div className="space-y-4">
             {STEPS.map((s) => (
@@ -234,7 +218,6 @@ const ProfileForm = () => {
               </div>
             ))}
           </div>
-          {/* Progress bar */}
           <div className="mt-6 h-1.5 bg-white/10 rounded-full overflow-hidden">
             <motion.div animate={{ width: step === 1 ? '50%' : '100%' }} transition={{ duration: 0.6, ease: 'easeInOut' }}
               className="h-full bg-primary rounded-full shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
@@ -243,16 +226,13 @@ const ProfileForm = () => {
         </div>
       </div>
 
-      {/* ── RIGHT: Form panel ─────────────────── */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-16 relative overflow-hidden">
 
-        {/* Subtle background glow */}
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full opacity-10 pointer-events-none"
              style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.4) 0%, transparent 70%)' }} />
 
         <div className="w-full max-w-2xl">
 
-          {/* Mobile step indicator */}
           <div className="flex items-center gap-3 mb-8 lg:hidden">
             {STEPS.map((s, i) => (
               <React.Fragment key={s.id}>
@@ -269,7 +249,6 @@ const ProfileForm = () => {
 
           <AnimatePresence mode="wait">
 
-            {/* ── STEP 1 ── */}
             {step === 1 && (
               <motion.form
                 key="step1"
@@ -320,7 +299,7 @@ const ProfileForm = () => {
                       {isSearchingLocation && (
                         <Loader2 size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-primary animate-spin pointer-events-none" />
                       )}
-                      
+
                       {/* Dropdown Suggestions */}
                       <AnimatePresence>
                         {showSuggestions && suggestions.length > 0 && (

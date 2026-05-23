@@ -61,7 +61,6 @@ const PestForecast = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
-      {/* Input Form */}
       <div className="flex-1 space-y-6">
         <div>
           <h3 className="text-2xl font-black mb-2 flex items-center gap-2">
@@ -85,7 +84,7 @@ const PestForecast = () => {
               {['Paddy', 'Cotton', 'Wheat', 'Sugarcane'].map(c => <option key={c} value={c} className="bg-background">{c}</option>)}
             </select>
           </div>
-          
+
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-text-muted uppercase">Growth Stage</label>
             <select name="growth_stage" value={formData.growth_stage} onChange={handleInputChange} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white">
@@ -110,7 +109,6 @@ const PestForecast = () => {
         </form>
       </div>
 
-      {/* Results Box */}
       <div className="flex-1 lg:max-w-md">
         <div className="h-full glass rounded-3xl p-8 relative overflow-hidden">
           <h4 className="text-xs font-black uppercase tracking-widest text-text-muted mb-6 flex items-center gap-2">

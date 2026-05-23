@@ -17,7 +17,7 @@ const FutureDecayPredictor = () => {
   const [result, setResult] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState(null);
-  const [sliderPosition, setSliderPosition] = useState(50); // percentage 0-100
+  const [sliderPosition, setSliderPosition] = useState(50); 
   const fileInputRef = useRef(null);
   const sliderContainerRef = useRef(null);
 
@@ -75,10 +75,10 @@ const FutureDecayPredictor = () => {
       setResult(data);
     } catch (err) {
       setError('Failed to connect to the backend visual engine. Running dynamic offline simulator.');
-      // Local fallback simulation
+
       setTimeout(() => {
         setResult({
-          image_b64: imagePreview, // Fallback preview directly
+          image_b64: imagePreview, 
           mode: 'offline_demo',
           deficit: selectedDeficit,
           description: `Visual simulation of ${selectedDeficit} mapped locally. Yellowing and localized cellular leaf margin decay generated successfully.`
@@ -101,8 +101,7 @@ const FutureDecayPredictor = () => {
   return (
     <div className="space-y-6">
       <div className="glass-card p-6 md:p-8 space-y-6 relative overflow-hidden">
-        
-        {/* Selector Grid */}
+
         <div className="space-y-3">
           <label className="text-[10px] font-black uppercase tracking-[0.2em] text-text-muted block">Deficiency Pathology Target</label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -111,7 +110,7 @@ const FutureDecayPredictor = () => {
                 key={deficit.id}
                 onClick={() => {
                   setSelectedDeficit(deficit.id);
-                  if (result) setResult(null); // reset results if user switches parameters to force new simulation
+                  if (result) setResult(null); 
                 }}
                 className={`px-4 py-3 rounded-2xl text-xs font-bold border transition-all duration-300 ${
                   selectedDeficit === deficit.id
@@ -125,7 +124,6 @@ const FutureDecayPredictor = () => {
           </div>
         </div>
 
-        {/* Content Panel */}
         <AnimatePresence mode="wait">
           {!result ? (
             <motion.div
@@ -135,7 +133,6 @@ const FutureDecayPredictor = () => {
               exit={{ opacity: 0 }}
               className="space-y-6"
             >
-              {/* Dropzone */}
               <div
                 onClick={() => !imagePreview && fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-[32px] p-12 text-center transition-all duration-500 cursor-pointer relative overflow-hidden group ${
@@ -143,7 +140,7 @@ const FutureDecayPredictor = () => {
                 }`}
               >
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile(e.target.files[0])} />
-                
+
                 {imagePreview ? (
                   <div className="relative">
                     <button
@@ -195,14 +192,12 @@ const FutureDecayPredictor = () => {
               exit={{ opacity: 0 }}
               className="space-y-6"
             >
-              {/* Interactive Split Slider Viewer */}
               <div 
                 ref={sliderContainerRef}
                 className="relative w-full h-[320px] sm:h-[400px] overflow-hidden rounded-[32px] border border-white/10 select-none bg-black/40 cursor-ew-resize"
                 onMouseDown={startDrag}
                 onTouchStart={startDrag}
               >
-                {/* Left Side: Healthy Original (shows full width, clipped by sliderPosition) */}
                 <div className="absolute inset-0 z-10 w-full h-full pointer-events-none">
                   <img 
                     src={imagePreview} 
@@ -211,7 +206,6 @@ const FutureDecayPredictor = () => {
                   />
                 </div>
 
-                {/* Right Side: Decayed Mutated (overlaid absolute, width controlled by sliderPosition) */}
                 <div 
                   className="absolute inset-y-0 right-0 z-20 overflow-hidden pointer-events-none bg-black/40"
                   style={{ left: `${sliderPosition}%` }}
@@ -228,7 +222,6 @@ const FutureDecayPredictor = () => {
                   </div>
                 </div>
 
-                {/* Divider Line & Handle */}
                 <div 
                   className="absolute inset-y-0 z-30 w-1 bg-primary cursor-ew-resize flex items-center justify-center"
                   style={{ left: `${sliderPosition}%` }}
@@ -238,7 +231,6 @@ const FutureDecayPredictor = () => {
                   </div>
                 </div>
 
-                {/* Corner Badges */}
                 <span className="absolute bottom-4 left-4 z-40 bg-success/20 text-success text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-success/30 backdrop-blur-md">
                   Healthy Leaf
                 </span>
@@ -247,7 +239,6 @@ const FutureDecayPredictor = () => {
                 </span>
               </div>
 
-              {/* Simulation Insights */}
               <div className="p-5 bg-white/5 rounded-2xl border border-white/5 space-y-3">
                 <h4 className="text-sm font-black flex items-center gap-2 text-white">
                   <Info size={16} className="text-primary" /> Visual Simulation Report

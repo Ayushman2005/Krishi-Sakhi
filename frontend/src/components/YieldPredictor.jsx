@@ -60,7 +60,7 @@ const YieldPredictor = () => {
       if (!response.ok) throw new Error('Prediction failed.');
       setResult(await response.json());
     } catch {
-      // Demo fallback
+
       const bench = CROP_BENCHMARKS[formData.crop] || CROP_BENCHMARKS.Paddy;
       const rainfall_factor = Math.min(formData.rainfall_mm / 1500, 1.2);
       const nutrient_score = (parseFloat(formData.nitrogen_kg_ha) + parseFloat(formData.phosphorus_kg_ha) + parseFloat(formData.potassium_kg_ha)) / (90 + 45 + 45);
@@ -145,7 +145,6 @@ const YieldPredictor = () => {
               ))}
             </div>
 
-            {/* Efficiency Gauge Bar */}
             <div className="glass-card">
               <div className="flex justify-between items-center mb-3">
                 <span className="font-black">Field Efficiency vs. Benchmark</span>
@@ -161,7 +160,6 @@ const YieldPredictor = () => {
               </div>
             </div>
 
-            {/* Recommendations */}
             <div className="glass-card space-y-4">
               <h4 className="font-black flex items-center gap-2"><CheckCircle2 size={18} className="text-primary" /> AI Recommendations</h4>
               {result.recommendations?.map((rec, i) => (
