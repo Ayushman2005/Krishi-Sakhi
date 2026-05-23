@@ -10,7 +10,6 @@ import logging
 # Import Schemas
 from schemas import ChatRequest
 
-# Import ML Routers
 from ml_models.disease_model import router as disease_router
 from ml_models.yield_model import router as yield_router
 from ml_models.weather_model import router as weather_router
@@ -18,6 +17,10 @@ from ml_models.market_model import router as market_router
 from ml_models.recommendation_model import router as recommendation_router
 from ml_models.soil_model import router as soil_router
 from ml_models.pest_model import router as pest_router
+from ml_models.generative_decay import router as generative_decay_router
+from ml_models.acoustic_monitor import router as acoustic_router
+from ml_models.polyculture_solver import router as polyculture_router
+from ml_models.carbon_ledger import router as carbon_router
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -63,6 +66,10 @@ app.include_router(recommendation_router, prefix="/ml",
                    tags=["Machine Learning"])
 app.include_router(soil_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(pest_router, prefix="/ml", tags=["Machine Learning"])
+app.include_router(generative_decay_router, prefix="/ml", tags=["Machine Learning"])
+app.include_router(acoustic_router, prefix="/ml", tags=["Machine Learning"])
+app.include_router(polyculture_router, prefix="/ml", tags=["Machine Learning"])
+app.include_router(carbon_router, prefix="/ml", tags=["Machine Learning"])
 
 
 # Global Error Handler

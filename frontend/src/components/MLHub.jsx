@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug, ChevronRight } from 'lucide-react';
+import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug, ChevronRight, Eye, Mic, Grid3X3, Coins } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
 import CropRecommender from './CropRecommender';
 import FertilizerRecommender from './FertilizerRecommender';
 import PestForecast from './PestForecast';
+import FutureDecayPredictor from './FutureDecayPredictor';
+import AcousticMonitor from './AcousticMonitor';
+import PolycultureSolver from './PolycultureSolver';
+import CarbonLedger from './CarbonLedger';
 
 const ML_TABS = [
   {
@@ -21,6 +25,32 @@ const ML_TABS = [
     accent: '#10b981',
     accentGlow: 'rgba(16, 185, 129, 0.15)',
     accuracy: '98.2%',
+  },
+  {
+    id: 'decay',
+    label: 'Future Decay Predictor',
+    shortLabel: 'Decay',
+    icon: Eye,
+    badge: 'Generative ML',
+    badgeColor: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    description: 'Predict and visualize leaf degradation and future decay patterns under simulated nutrient stresses.',
+    component: FutureDecayPredictor,
+    accent: '#f59e0b',
+    accentGlow: 'rgba(245, 158, 11, 0.15)',
+    accuracy: '97.2%',
+  },
+  {
+    id: 'acoustic',
+    label: 'Bio-Acoustic Canopy Monitor',
+    shortLabel: 'Acoustic',
+    icon: Mic,
+    badge: 'DSP Spectral FFT',
+    badgeColor: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    description: 'Analyze real-time or recorded farm canopy audio to classify pollinator frequency signatures or locate pest swarms.',
+    component: AcousticMonitor,
+    accent: '#10b981',
+    accentGlow: 'rgba(16, 185, 129, 0.15)',
+    accuracy: '98.4%',
   },
   {
     id: 'pest',
@@ -62,6 +92,19 @@ const ML_TABS = [
     accuracy: '95.8%',
   },
   {
+    id: 'polyculture',
+    label: 'Spatial Polyculture Solver',
+    shortLabel: 'Polyculture',
+    icon: Grid3X3,
+    badge: 'Adjacency Logic Engine',
+    badgeColor: 'bg-violet-500/10 text-violet-400 border-violet-500/20',
+    description: 'Design a highly synergetic 3x3 crop layout and calculate a 3-year rotating genetic plantation timeline.',
+    component: PolycultureSolver,
+    accent: '#8b5cf6',
+    accentGlow: 'rgba(139, 92, 246, 0.15)',
+    accuracy: '95.6%',
+  },
+  {
     id: 'crop_recommendation',
     label: 'Crop Recommendation',
     shortLabel: 'Crop',
@@ -86,6 +129,19 @@ const ML_TABS = [
     accent: '#ec4899',
     accentGlow: 'rgba(236, 72, 153, 0.15)',
     accuracy: '96.8%',
+  },
+  {
+    id: 'carbon',
+    label: 'Carbon Sequestration Ledger',
+    shortLabel: 'Carbon Ledger',
+    icon: Coins,
+    badge: 'Eco-Ledger Simulation',
+    badgeColor: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+    description: 'Estimate annual soil organic carbon sequestration and maintain a verified transaction credit ledger.',
+    component: CarbonLedger,
+    accent: '#0ea5e9',
+    accentGlow: 'rgba(14, 165, 233, 0.15)',
+    accuracy: '99.1%',
   },
 ];
 
@@ -132,15 +188,15 @@ const MLHub = () => {
           transition={{ delay: 0.2 }}
           className="text-text-muted text-lg max-w-2xl mx-auto"
         >
-          An integrated ecosystem of six specialized AI models giving your farm a precision edge.
+          An integrated ecosystem of ten specialized AI models giving your farm a precision edge.
         </motion.p>
       </header>
 
       {/* Global Intelligence Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {[
-          { label: 'Models Active', value: '6', icon: Cpu, color: 'text-primary' },
-          { label: 'Avg Suite Accuracy', value: '96.5%', icon: Shield, color: 'text-success' },
+          { label: 'Models Active', value: '10', icon: Cpu, color: 'text-primary' },
+          { label: 'Avg Suite Accuracy', value: '96.9%', icon: Shield, color: 'text-success' },
           { label: 'Crops Calibrated', value: '25+', icon: Leaf, color: 'text-accent' },
           { label: 'Latency Time', value: '<0.4s', icon: Zap, color: 'text-warning' },
         ].map((stat, i) => (

@@ -72,3 +72,19 @@ class PestForecastRequest(BaseModel):
     humidity: float
     rainfall: float
     growth_stage: str
+
+
+class PolycultureRequest(BaseModel):
+    acreage: float
+    soil_type: str
+    target_season: str
+    selected_crops: List[str] = []
+
+
+class CarbonLedgerRequest(BaseModel):
+    acreage: float
+    crop: str
+    tillage: str
+    cover_cropping: bool
+    organic_input_tons: float
+
