@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 import os
 from google import genai
 from dotenv import load_dotenv
+load_dotenv()
 import datetime
 import logging
 
@@ -24,7 +25,6 @@ from ml_models.carbon_ledger import router as carbon_router
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-load_dotenv()
 
 api_key = os.getenv("GEMINI_API_KEY")
 if api_key and api_key != "your_gemini_api_key_here":

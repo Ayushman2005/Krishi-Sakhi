@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug, ChevronRight, Eye, Mic, Grid3X3, Coins } from 'lucide-react';
+import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug, ChevronRight, Eye, Mic, Grid3X3, Coins, Search, ArrowLeft } from 'lucide-react';
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
@@ -25,6 +25,7 @@ const ML_TABS = [
     accent: '#10b981',
     accentGlow: 'rgba(16, 185, 129, 0.15)',
     accuracy: '98.2%',
+    category: 'Vision & Acoustics',
   },
   {
     id: 'decay',
@@ -38,6 +39,7 @@ const ML_TABS = [
     accent: '#f59e0b',
     accentGlow: 'rgba(245, 158, 11, 0.15)',
     accuracy: '97.2%',
+    category: 'Vision & Acoustics',
   },
   {
     id: 'acoustic',
@@ -51,6 +53,7 @@ const ML_TABS = [
     accent: '#10b981',
     accentGlow: 'rgba(16, 185, 129, 0.15)',
     accuracy: '98.4%',
+    category: 'Vision & Acoustics',
   },
   {
     id: 'pest',
@@ -64,6 +67,7 @@ const ML_TABS = [
     accent: '#f43f5e',
     accentGlow: 'rgba(244, 63, 94, 0.15)',
     accuracy: '94.5%',
+    category: 'Analytics & Planning',
   },
   {
     id: 'yield',
@@ -77,6 +81,7 @@ const ML_TABS = [
     accent: '#8b5cf6',
     accentGlow: 'rgba(139, 92, 246, 0.15)',
     accuracy: '96.1%',
+    category: 'Analytics & Planning',
   },
   {
     id: 'weather',
@@ -90,6 +95,7 @@ const ML_TABS = [
     accent: '#0ea5e9',
     accentGlow: 'rgba(14, 165, 233, 0.15)',
     accuracy: '95.8%',
+    category: 'Advisories & Guides',
   },
   {
     id: 'polyculture',
@@ -103,6 +109,7 @@ const ML_TABS = [
     accent: '#8b5cf6',
     accentGlow: 'rgba(139, 92, 246, 0.15)',
     accuracy: '95.6%',
+    category: 'Analytics & Planning',
   },
   {
     id: 'crop_recommendation',
@@ -116,6 +123,7 @@ const ML_TABS = [
     accent: '#f59e0b',
     accentGlow: 'rgba(245, 158, 11, 0.15)',
     accuracy: '97.6%',
+    category: 'Advisories & Guides',
   },
   {
     id: 'fertilizer_recommendation',
@@ -129,6 +137,7 @@ const ML_TABS = [
     accent: '#ec4899',
     accentGlow: 'rgba(236, 72, 153, 0.15)',
     accuracy: '96.8%',
+    category: 'Advisories & Guides',
   },
   {
     id: 'carbon',
@@ -142,14 +151,27 @@ const ML_TABS = [
     accent: '#0ea5e9',
     accentGlow: 'rgba(14, 165, 233, 0.15)',
     accuracy: '99.1%',
+    category: 'Analytics & Planning',
   },
 ];
 
 const MLHub = () => {
-  const [activeTab, setActiveTab] = useState('disease');
+  const [selectedModelId, setSelectedModelId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
 
-  const selectedModel = ML_TABS.find(tab => tab.id === activeTab) || ML_TABS[0];
-  const ActiveComponent = selectedModel.component;
+  const selectedModel = ML_TABS.find(tab => tab.id === selectedModelId);
+  const ActiveComponent = selectedModel ? selectedModel.component : null;
+
+  const filteredModels = ML_TABS.filter((model) => {
+    const matchesSearch = model.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      model.badge.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      model.description.toLowerCase().includes(searchQuery.toLowerCase());
+      
+    const matchesCategory = activeCategory === 'All' || model.category === activeCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -191,95 +213,139 @@ const MLHub = () => {
         </motion.p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-        {[
-          { label: 'Models Active', value: '10', icon: Cpu, color: 'text-primary' },
-          { label: 'Avg Suite Accuracy', value: '96.9%', icon: Shield, color: 'text-success' },
-          { label: 'Crops Calibrated', value: '25+', icon: Leaf, color: 'text-accent' },
-          { label: 'Latency Time', value: '<0.4s', icon: Zap, color: 'text-warning' },
-        ].map((stat, i) => (
-          <div key={i} className="glass-card flex items-center gap-4 py-4 px-6">
-            <div className={`p-2.5 bg-white/5 rounded-2xl ${stat.color} shadow-inner`}>
-              <stat.icon size={20} />
-            </div>
-            <div>
-              <p className="text-2.5xl font-black leading-none">{stat.value}</p>
-              <p className="text-[9px] text-text-muted font-black uppercase tracking-widest mt-1">{stat.label}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        <div className="xl:col-span-4 space-y-4">
-          <div className="flex flex-col gap-1 mb-4 pl-2">
-            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">AI COMMAND CENTER</span>
-            <h2 className="text-2xl font-black tracking-tight">Select Intelligence Model</h2>
+      {selectedModelId === null ? (
+        /* Grid Dashboard View */
+        <div className="space-y-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Models Active', value: '10', icon: Cpu, color: 'text-primary' },
+              { label: 'Avg Suite Accuracy', value: '96.9%', icon: Shield, color: 'text-success' },
+              { label: 'Crops Calibrated', value: '25+', icon: Leaf, color: 'text-accent' },
+              { label: 'Latency Time', value: '<0.4s', icon: Zap, color: 'text-warning' },
+            ].map((stat, i) => (
+              <div key={i} className="glass-card flex items-center gap-4 py-4 px-6">
+                <div className={`p-2.5 bg-white/5 rounded-2xl ${stat.color} shadow-inner`}>
+                  <stat.icon size={20} />
+                </div>
+                <div>
+                  <p className="text-2.5xl font-black leading-none">{stat.value}</p>
+                  <p className="text-[9px] text-text-muted font-black uppercase tracking-widest mt-1">{stat.label}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
+          {/* Controls: Search and Category filter chips */}
+          <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-white/5 border border-white/10 p-5 rounded-3xl backdrop-blur-md">
+            <div className="relative w-full lg:max-w-md">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search AI Models (e.g., CNN, yield, soil)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-primary/50 focus:bg-white/10 transition-all placeholder-white/30"
+              />
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center w-full lg:w-auto">
+              {['All', 'Vision & Acoustics', 'Advisories & Guides', 'Analytics & Planning'].map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border ${
+                    activeCategory === category
+                      ? 'bg-primary text-white border-primary shadow-[0_4px_15px_rgba(16,185,129,0.3)]'
+                      : 'bg-white/5 text-text-muted border-white/5 hover:border-white/10 hover:bg-white/8 hover:text-white'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Models Grid */}
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-3"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {ML_TABS.map((tab) => {
+            {filteredModels.map((tab) => {
               const Icon = tab.icon;
-              const isActive = tab.id === activeTab;
               return (
-                <motion.button
+                <motion.div
                   key={tab.id}
                   variants={itemVariants}
-                  onClick={() => setActiveTab(tab.id)}
-                  whileHover={{ scale: 1.02, x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full text-left p-5 rounded-3xl border transition-all duration-300 relative overflow-hidden flex items-center gap-4 ${
-                    isActive 
-                      ? 'bg-white/10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)]' 
-                      : 'bg-white/5 border-white/5 hover:border-white/10 hover:bg-white/8'
-                  }`}
-                  style={{
-                    borderColor: isActive ? `${tab.accent}40` : '',
-                    boxShadow: isActive ? `0 10px 30px -10px ${tab.accentGlow}` : ''
-                  }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  onClick={() => setSelectedModelId(tab.id)}
+                  className="glass-card flex flex-col justify-between h-full border border-white/5 cursor-pointer relative overflow-hidden group transition-all duration-300 hover:border-white/20"
                 >
-                  {isActive && (
-                    <motion.div 
-                      layoutId="active-bar"
-                      className="absolute left-0 top-3 bottom-3 w-1.5 rounded-full"
-                      style={{ backgroundColor: tab.accent }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-
+                  {/* Dynamic glow corner */}
                   <div 
-                    className="p-3.5 rounded-2xl transition-all duration-300 relative z-10"
-                    style={{ 
-                      backgroundColor: isActive ? `${tab.accent}20` : 'rgba(255,255,255,0.03)', 
-                      color: isActive ? tab.accent : 'var(--text-muted)' 
-                    }}
-                  >
-                    <Icon size={20} />
-                  </div>
-
-                  <div className="flex-1 min-w-0 relative z-10">
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className={`font-black text-base truncate ${isActive ? 'text-white' : 'text-text-muted hover:text-white'}`}>
-                        {tab.label}
-                      </h3>
-                      <ChevronRight size={14} className={`opacity-40 transition-transform duration-300 ${isActive ? 'translate-x-1 opacity-80' : ''}`} style={{ color: isActive ? tab.accent : '' }} />
+                    className="absolute -top-24 -right-24 w-48 h-48 rounded-full pointer-events-none filter blur-[40px] opacity-[0.03] group-hover:opacity-[0.12] transition-all duration-500"
+                    style={{ backgroundColor: tab.accent }}
+                  />
+                  
+                  <div className="relative z-10 flex-1">
+                    <div className="flex justify-between items-start mb-5">
+                      <div 
+                        className="p-3.5 rounded-2xl transition-all duration-300 relative"
+                        style={{ 
+                          backgroundColor: `${tab.accent}15`, 
+                          color: tab.accent 
+                        }}
+                      >
+                        <Icon size={24} />
+                      </div>
+                      <span className="text-[10px] font-black text-success bg-success/10 border border-success/20 px-3 py-1 rounded-full">
+                        {tab.accuracy} Acc
+                      </span>
                     </div>
-                    <span className={`text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border ${tab.badgeColor}`}>
-                      {tab.badge}
-                    </span>
+                    
+                    <h3 className="font-black text-xl mb-2 text-white group-hover:text-white transition-colors">
+                      {tab.label}
+                    </h3>
+                    
+                    <div className="flex gap-2 mb-4">
+                      <span className={`text-[8px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border ${tab.badgeColor}`}>
+                        {tab.badge}
+                      </span>
+                      <span className="text-[8px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border border-white/5 bg-white/5 text-text-muted">
+                        {tab.category}
+                      </span>
+                    </div>
+                    
+                    <p className="text-text-muted text-sm leading-relaxed mb-6 font-medium">
+                      {tab.description}
+                    </p>
                   </div>
-                </motion.button>
+                  
+                  <div className="relative z-10 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-black uppercase tracking-widest text-primary group-hover:text-white transition-colors">
+                    <span>Launch Model</span>
+                    <div className="p-2 bg-white/5 group-hover:bg-primary rounded-xl transition-all duration-300 text-white group-hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                      <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+                    </div>
+                  </div>
+                </motion.div>
               );
             })}
           </motion.div>
         </div>
+      ) : (
+        /* Interactive Model Workspace View */
+        <div className="flex flex-col gap-6 w-full">
+          <div>
+            <button
+              onClick={() => setSelectedModelId(null)}
+              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 rounded-full border border-white/10 hover:border-white/20 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-white/10 hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)] hover:-translate-y-0.5"
+            >
+              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform duration-300 text-primary" />
+              <span>Back to AI Suite</span>
+            </button>
+          </div>
 
-        <div className="xl:col-span-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedModel.id}
@@ -287,7 +353,7 @@ const MLHub = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.98 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="glass p-8 md:p-12 relative overflow-hidden flex flex-col h-full border border-white/10"
+              className="glass p-8 md:p-12 relative overflow-hidden flex flex-col h-full border border-white/10 w-full"
               style={{
                 boxShadow: `0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px ${selectedModel.accentGlow}`
               }}
@@ -316,8 +382,13 @@ const MLHub = () => {
                     <selectedModel.icon size={26} />
                   </div>
                   <div>
-                    <h3 className="text-2.5xl font-black tracking-tight">{selectedModel.label}</h3>
-                    <p className="text-text-muted text-sm mt-1 leading-relaxed max-w-xl">
+                    <div className="flex flex-wrap items-center gap-2.5 mb-1">
+                      <h3 className="text-2.5xl font-black tracking-tight">{selectedModel.label}</h3>
+                      <span className="text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md border border-white/5 bg-white/5 text-text-muted">
+                        {selectedModel.category}
+                      </span>
+                    </div>
+                    <p className="text-text-muted text-sm leading-relaxed max-w-xl">
                       {selectedModel.description}
                     </p>
                   </div>
@@ -346,7 +417,7 @@ const MLHub = () => {
             </motion.div>
           </AnimatePresence>
         </div>
-      </div>
+      )}
     </div>
   );
 };

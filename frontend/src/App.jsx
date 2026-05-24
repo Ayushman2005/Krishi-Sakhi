@@ -50,7 +50,26 @@ const AppContent = () => {
   const [activePage, setActivePage] = useState('dashboard');
   const [showSettings, setShowSettings] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const notificationRef = useRef(null);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const getGlowColor = () => {
+    switch (activePage) {
+      case 'dashboard': return 'rgba(16, 185, 129, 0.07)';
+      case 'ml': return 'rgba(139, 92, 246, 0.07)';
+      case 'market': return 'rgba(245, 158, 11, 0.07)';
+      case 'schemes': return 'rgba(14, 165, 233, 0.07)';
+      default: return 'rgba(16, 185, 129, 0.07)';
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -66,6 +85,22 @@ const AppContent = () => {
     <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden">
       <EnhancedBackground />
 
+      {/* Premium Ambient Interactive Cursor Glow */}
+      <motion.div
+        className="pointer-events-none fixed -left-32 -top-32 w-64 h-64 rounded-full filter blur-[80px] z-0 hidden lg:block transition-colors duration-500"
+        style={{ backgroundColor: getGlowColor() }}
+        animate={{
+          x: mousePos.x,
+          y: mousePos.y,
+        }}
+        transition={{
+          type: 'spring',
+          damping: 35,
+          stiffness: 220,
+          mass: 0.5
+        }}
+      />
+
       <motion.div 
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -77,6 +112,8 @@ const AppContent = () => {
             <motion.div
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className="flex items-center gap-3 cursor-pointer pl-2"
               onClick={() => setActivePage('dashboard')}
             >
@@ -97,9 +134,11 @@ const AppContent = () => {
                 className="hidden md:flex items-center gap-1 ml-6 bg-white/5 rounded-full p-1 border border-white/5 relative"
               >
                 {NAV_ITEMS.map(item => (
-                  <button
+                  <motion.button
                     key={item.id}
                     onClick={() => setActivePage(item.id)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     className={`relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-colors duration-300 z-10 ${
                       activePage === item.id
                         ? 'text-white'
@@ -115,7 +154,7 @@ const AppContent = () => {
                     )}
                     <item.icon size={16} />
                     {t(item.label)}
-                  </button>
+                  </motion.button>
                 ))}
               </motion.div>
             )}
@@ -125,14 +164,16 @@ const AppContent = () => {
             <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3 pr-1">
 
               <div className="relative flex items-center" ref={notificationRef}>
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setShowNotifications(!showNotifications)}
                   className={`relative p-2.5 rounded-full transition-all duration-300 border ${showNotifications ? 'bg-primary/20 text-primary border-primary/40 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-white/5 text-text-muted hover:bg-white/10 border-transparent hover:text-white hover:scale-105'}`} 
                   aria-label="Notifications"
                 >
                   <Bell size={18} />
                   <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-error rounded-full border-2 border-[#020617] animate-pulse"></span>
-                </button>
+                </motion.button>
 
                 <AnimatePresence>
                   {showNotifications && (
@@ -162,16 +203,20 @@ const AppContent = () => {
               </div>
 
               <div className="relative flex items-center">
-                <button 
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => setShowSettings(true)}
                   className="p-2.5 bg-white/5 text-text-muted hover:bg-white/10 border border-transparent rounded-full hover:text-white transition-all duration-300 hover:scale-105"
                   title={t('language')}
                 >
                   <Languages size={18} />
-                </button>
+                </motion.button>
               </div>
 
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setShowSettings(true)}
                 className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 mr-2 text-left group"
               >
@@ -182,17 +227,19 @@ const AppContent = () => {
                 <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)] flex items-center justify-center text-white font-black text-xs border border-white/20">
                   {profile.name.charAt(0).toUpperCase()}
                 </div>
-              </button>
+              </motion.button>
 
               {clearProfile && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={clearProfile}
                   className="p-2.5 bg-error/10 rounded-full hover:bg-error/20 transition-colors border border-error/10 ml-1 hover:scale-105"
                   title="Reset Profile"
                   aria-label="Log out"
                 >
                   <LogOut size={16} className="text-error" />
-                </button>
+                </motion.button>
               )}
             </motion.div>
           ) : (
@@ -216,9 +263,11 @@ const AppContent = () => {
             <div className="w-full max-w-md flex justify-between items-center p-2 pointer-events-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.8)] border border-white/10 bg-[#020617]/95 backdrop-blur-3xl relative overflow-hidden">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
               {NAV_ITEMS.map(item => (
-                  <button
+                <motion.button
                   key={item.id}
                   onClick={() => setActivePage(item.id)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   className={`relative flex-1 flex flex-col items-center justify-center gap-1.5 py-3 rounded-[1.25rem] transition-colors duration-300 z-10 ${
                     activePage === item.id
                       ? 'text-primary'
@@ -234,7 +283,7 @@ const AppContent = () => {
                   )}
                   <item.icon size={20} className={`transition-transform duration-300 ${activePage === item.id ? 'scale-110 drop-shadow-md' : ''}`} />
                   <span className="text-[9px] font-black uppercase tracking-widest">{t(item.label)}</span>
-                </button>
+                </motion.button>
               ))}
             </div>
           </motion.div>
@@ -246,36 +295,61 @@ const AppContent = () => {
           {!profile ? (
             <motion.div
               key="setup"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.4 }}
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
             >
               <ProfileForm />
             </motion.div>
           ) : activePage === 'dashboard' ? (
-            <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <motion.div 
+              key="dashboard" 
+              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              animate={{ opacity: 1, y: 0, scale: 1 }} 
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            >
               <Dashboard />
               <ChatInterface />
             </motion.div>
           ) : activePage === 'market' ? (
-            <motion.div key="market" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <motion.div 
+              key="market" 
+              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              animate={{ opacity: 1, y: 0, scale: 1 }} 
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            >
               <MarketInsights />
               <ChatInterface />
             </motion.div>
           ) : activePage === 'schemes' ? (
-            <motion.div key="schemes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <motion.div 
+              key="schemes" 
+              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              animate={{ opacity: 1, y: 0, scale: 1 }} 
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            >
               <SchemesLocator />
               <ChatInterface />
             </motion.div>
           ) : (
-            <motion.div key="ml" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <motion.div 
+              key="ml" 
+              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              animate={{ opacity: 1, y: 0, scale: 1 }} 
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+            >
               <MLHub />
               <ChatInterface />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
+
 
       <AnimatePresence>
         {showSettings && profile && (
