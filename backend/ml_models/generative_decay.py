@@ -11,13 +11,7 @@ from google import genai
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-api_key = os.getenv("GEMINI_API_KEY")
-gemini_client = None
-if api_key and api_key != "your_gemini_api_key_here":
-    try:
-        gemini_client = genai.Client(api_key=api_key)
-    except Exception as e:
-        logger.error(f"Failed to configure Gemini in Generative Decay Model: {e}")
+from ml_models.ai_client import gemini_client, generate_content_with_fallback
 
 @router.post("/future-decay")
 async def future_decay(
@@ -52,8 +46,9 @@ async def future_decay(
 
                 """
 
-                response = gemini_client.models.generate_content(
-                    model='gemini-2.0-flash',
+                import asyncio
+                response = await asyncio.to_thread(
+                    generate_content_with_fallback,
                     contents=[prompt, original_image]
                 )
 

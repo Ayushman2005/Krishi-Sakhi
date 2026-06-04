@@ -26,18 +26,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-api_key = os.getenv("GEMINI_API_KEY")
-if api_key and api_key != "your_gemini_api_key_here":
-    try:
-        gemini_client = genai.Client(api_key=api_key)
-        model = gemini_client
-        logger.info("✅ Gemini AI configured successfully.")
-    except Exception as e:
-        logger.error(f"❌ Failed to configure Gemini: {e}")
-        model = None
+from ml_models.ai_client import gemini_client, gemini_configured, generate_content_with_fallback
+
+model = gemini_client if gemini_configured else None
+if model:
+    logger.info("✅ Gemini AI configured successfully via centralized client.")
 else:
-    logger.warning("⚠ Gemini API Key missing. Running in Demo Mode.")
-    model = None
+    logger.warning("⚠ Gemini API Key missing or invalid. Running in Demo Mode.")
 
 app = FastAPI(
     title="Krishi Sakhi API",
@@ -117,7 +112,8 @@ User:
       {request.message}"""
 
     try:
-        response = model.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        import asyncio
+        response = await asyncio.to_thread(generate_content_with_fallback, contents=prompt)
         return {"response": response.text}
     except Exception as e:
         logger.error(f"Gemini error: {e}")

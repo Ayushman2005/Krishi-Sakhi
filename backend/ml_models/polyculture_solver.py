@@ -95,10 +95,14 @@ async def solve_polyculture(request: PolycultureRequest):
                 if available_comps:
                     pick = available_comps[0]
                 else:
-
+                    unassigned_defaults = [d for d in defaults if d != center_crop and d not in assigned]
                     pick = random.choice(defaults)
-                    while pick == center_crop or pick in assigned:
-                        pick = random.choice(defaults)
+                    if unassigned_defaults:
+                        while pick == center_crop or pick in assigned:
+                            pick = random.choice(defaults)
+                    else:
+                        while pick == center_crop:
+                            pick = random.choice(defaults)
             grid[r][c] = pick
             assigned.append(pick)
 

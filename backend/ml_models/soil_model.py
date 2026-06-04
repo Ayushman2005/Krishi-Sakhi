@@ -8,15 +8,7 @@ from PIL import Image
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-api_key = os.getenv("GEMINI_API_KEY")
-gemini_configured = False
-gemini_client = None
-if api_key and api_key != "your_gemini_api_key_here":
-    try:
-        gemini_client = genai.Client(api_key=api_key)
-        gemini_configured = True
-    except Exception as e:
-        logger.error(f"Failed to configure Gemini in Soil Model: {e}")
+from ml_models.ai_client import gemini_configured, generate_content_with_fallback
 
 @router.post("/soil-report-ocr")
 async def parse_soil_report(file: UploadFile = File(...)):
@@ -48,8 +40,9 @@ async def parse_soil_report(file: UploadFile = File(...)):
         }
         """
 
-        response = gemini_client.models.generate_content(
-            model='gemini-2.0-flash',
+        import asyncio
+        response = await asyncio.to_thread(
+            generate_content_with_fallback,
             contents=[prompt, image]
         )
 

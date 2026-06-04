@@ -13,13 +13,7 @@ load_dotenv()
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-api_key = os.getenv("GEMINI_API_KEY")
-gemini_client = None
-if api_key and api_key != "your_gemini_api_key_here":
-    try:
-        gemini_client = genai.Client(api_key=api_key)
-    except Exception as e:
-        logger.error(f"Failed to configure Gemini in Market Model: {e}")
+from ml_models.ai_client import gemini_client, generate_content_with_fallback
 
 def get_accurate_local_rates(location: str = "Global"):
     # Deterministic daily seed: calculate number of days since a fixed date
@@ -222,7 +216,8 @@ async def get_market_rates(location: str = "Global"):
     """
 
     try:
-        response = gemini_client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+        import asyncio
+        response = await asyncio.to_thread(generate_content_with_fallback, contents=prompt)
         import json
         text = response.text.strip()
         if "```json" in text:
