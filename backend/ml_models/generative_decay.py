@@ -6,12 +6,11 @@ import os
 import base64
 import random
 from PIL import Image, ImageEnhance, ImageDraw, ImageFilter
-from google import genai
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-from ml_models.ai_client import gemini_client, generate_content_with_fallback
+from ml_models.ai_client import openai_client, generate_content_with_fallback
 
 @router.post("/future-decay")
 async def future_decay(
@@ -26,7 +25,7 @@ async def future_decay(
         contents = await file.read()
         original_image = Image.open(io.BytesIO(contents)).convert('RGB')
 
-        if gemini_client:
+        if openai_client:
             try:
 
                 prompt = f"""
@@ -66,7 +65,7 @@ async def future_decay(
                     "description": f"Generative simulation of {deficit_type} mapped onto your leaf tissue structure."
                 }
             except Exception as e:
-                logger.warning(f"Gemini Generative Decay failed, falling back to PIL processor: {e}")
+                logger.warning(f"OpenAI Generative Decay failed, falling back to PIL processor: {e}")
 
         mutated_img = original_image.copy()
         width, height = mutated_img.size

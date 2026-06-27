@@ -17,9 +17,10 @@ pydantic-settings==2.14.1
 # ── Environment ────────────────────────────────
 python-dotenv==1.2.2
 
-# ── Google AI / Gemini ─────────────────────────
+# ── Google AI / Gemini / OpenAI ────────────────
 google-generativeai==0.8.6
 google-genai==1.75.0
+openai==2.44.0
 
 # ── LangChain ─────────────────────────────────
 langchain==1.3.0

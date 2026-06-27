@@ -4,7 +4,6 @@ import random
 import math
 import os
 import logging
-from google import genai
 from dotenv import load_dotenv
 
 # Defensive loading of dotenv at module level
@@ -13,7 +12,7 @@ load_dotenv()
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-from ml_models.ai_client import gemini_client, generate_content_with_fallback
+from ml_models.ai_client import openai_client, generate_content_with_fallback
 
 def get_accurate_local_rates(location: str = "Global"):
     # Deterministic daily seed: calculate number of days since a fixed date
@@ -200,7 +199,7 @@ async def market_forecast(crop: str):
 
 @router.get("/market-rates")
 async def get_market_rates(location: str = "Global"):
-    if not gemini_client:
+    if not openai_client:
         return get_accurate_local_rates(location)
 
     prompt = f"""Generate a realistic JSON list of 6 agricultural commodities currently being traded in {location}, India for May 2026.
@@ -228,5 +227,5 @@ async def get_market_rates(location: str = "Global"):
         market_data = json.loads(text)
         return market_data
     except Exception as e:
-        logger.warning(f"Gemini Market API failed: {e}. Falling back to accurate local database.")
+        logger.warning(f"OpenAI Market API failed: {e}. Falling back to accurate local database.")
         return get_accurate_local_rates(location)

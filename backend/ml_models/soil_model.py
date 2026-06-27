@@ -2,20 +2,19 @@ from fastapi import APIRouter, HTTPException, UploadFile, File
 import logging
 import io
 import os
-from google import genai
 from PIL import Image
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-from ml_models.ai_client import gemini_configured, generate_content_with_fallback
+from ml_models.ai_client import openai_configured, generate_content_with_fallback
 
 @router.post("/soil-report-ocr")
 async def parse_soil_report(file: UploadFile = File(...)):
 
-    if not gemini_configured:
+    if not openai_configured:
         raise HTTPException(
-            status_code=503, detail="Gemini API not configured.")
+            status_code=503, detail="OpenAI API not configured.")
 
     if not file.content_type.startswith("image/"):
         raise HTTPException(

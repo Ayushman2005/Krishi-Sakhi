@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
-from google import genai
 from dotenv import load_dotenv
 load_dotenv()
 import datetime
@@ -26,13 +25,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-from ml_models.ai_client import gemini_client, gemini_configured, generate_content_with_fallback
+from ml_models.ai_client import openai_client, openai_configured, generate_content_with_fallback
 
-model = gemini_client if gemini_configured else None
+model = openai_client if openai_configured else None
 if model:
-    logger.info("✅ Gemini AI configured successfully via centralized client.")
+    logger.info("✅ OpenAI configured successfully via centralized client.")
 else:
-    logger.warning("⚠ Gemini API Key missing or invalid. Running in Demo Mode.")
+    logger.warning("⚠ OpenAI API Key missing or invalid. Running in Demo Mode.")
 
 app = FastAPI(
     title="Krishi Sakhi API",
@@ -95,8 +94,7 @@ async def chat_endpoint(request: ChatRequest):
     if not model:
         return {
             "response": (
-
-                "Set your GEMINI_API_KEY in backend/.env for full AI capabilities.")}
+                "Set your OPENAI_API_KEY in backend/.env for full AI capabilities.")}
 
     context = f"Profile: {
         request.profile}\nActivities: {
@@ -116,7 +114,7 @@ User:
         response = await asyncio.to_thread(generate_content_with_fallback, contents=prompt)
         return {"response": response.text}
     except Exception as e:
-        logger.error(f"Gemini error: {e}")
+        logger.error(f"OpenAI error: {e}")
         raise HTTPException(
             status_code=500, detail="AI engine temporarily unavailable.")
 
