@@ -12,7 +12,7 @@ load_dotenv()
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-from ml_models.ai_client import openai_client, generate_content_with_fallback
+from ml_models.ai_client import ollama_configured, generate_content_with_fallback
 
 def get_accurate_local_rates(location: str = "Global"):
     # Deterministic daily seed: calculate number of days since a fixed date
@@ -199,7 +199,7 @@ async def market_forecast(crop: str):
 
 @router.get("/market-rates")
 async def get_market_rates(location: str = "Global"):
-    if not openai_client:
+    if not ollama_configured:
         return get_accurate_local_rates(location)
 
     prompt = f"""Generate a realistic JSON list of 6 agricultural commodities currently being traded in {location}, India for May 2026.
@@ -218,14 +218,20 @@ async def get_market_rates(location: str = "Global"):
         import asyncio
         response = await asyncio.to_thread(generate_content_with_fallback, contents=prompt)
         import json
+        import re
         text = response.text.strip()
         if "```json" in text:
             text = text.split("```json")[1].split("```")[0].strip()
         elif "```" in text:
             text = text.split("```")[1].split("```")[0].strip()
 
+        # Robust JSON extraction
+        match = re.search(r'(\{[\s\S]*\}|\[[\s\S]*\])', text)
+        if match:
+            text = match.group(1).strip()
+
         market_data = json.loads(text)
         return market_data
     except Exception as e:
-        logger.warning(f"OpenAI Market API failed: {e}. Falling back to accurate local database.")
+        logger.warning(f"Ollama Market API failed: {e}. Falling back to accurate local database.")
         return get_accurate_local_rates(location)

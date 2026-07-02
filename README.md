@@ -1,6 +1,6 @@
 # 🌱 Krishi Sakhi AI | Smart Precision Farming Suite
 
-**Krishi Sakhi AI** is a highly advanced, enterprise-grade precision agriculture assistant tailored for modern farmers and agronomists. Built as a comprehensive full-stack ecosystem, it integrates RAG-based Generative AI (using Google Gemini 2.0 Flash) with a suite of **10 specialized machine learning engines**, dynamic geospatial localization, live market intelligence, and custom visual dashboards under a premium dark-mode glassmorphic user interface.
+**Krishi Sakhi AI** is a highly advanced, enterprise-grade precision agriculture assistant tailored for modern farmers and agronomists. Built as a comprehensive full-stack ecosystem, it integrates RAG-based Generative AI (using Ollama) with a suite of **10 specialized machine learning engines**, dynamic geospatial localization, live market intelligence, and custom visual dashboards under a premium dark-mode glassmorphic user interface.
 
 ---
 
@@ -28,7 +28,7 @@ At the core of Krishi Sakhi is a multi-disciplinary precision agriculture suite 
 ---
 
 ## 💼 Core Features
-* **💬 RAG-Powered Agronomic Assistant**: Converse naturally with a domain-optimized conversational assistant powered by Google Gemini 2.0. Possesses context-awareness of the farmer's profile, geographic parameters, and active tasks. Resiliently falls back to an offline "Demo Mode" when API keys are absent.
+* **💬 RAG-Powered Agronomic Assistant**: Converse naturally with a domain-optimized conversational assistant powered by Ollama. Possesses context-awareness of the farmer's profile, geographic parameters, and active tasks. Resiliently falls back to an offline "Demo Mode" when Ollama is unavailable.
 * **📊 Mandi Insights & Revenue Estimator**: Live regional mandi commodities tracking, pricing trends, and a revenue planner that forecasts yield gains based on custom acreage, average market rate, and overhead expenses.
 * **📅 Farm Task Scheduler**: Responsive calendar and checklist dashboard to schedule, prioritize, and track critical agronomic activities (e.g., seeding, weeding, fertilizing).
 * **🏛️ Schemes & Subsidy Locator**: Matches local, national, and international farming subsidies, credit cards (KCC), and insurance schemes dynamically tuned to the farmer's location, crop type, and acreage.
@@ -44,7 +44,7 @@ At the core of Krishi Sakhi is a multi-disciplinary precision agriculture suite 
 | **Styling** | Tailwind CSS + Custom CSS | Glassmorphism system, custom animations, custom glow matrices |
 | **Icons** | Lucide React | High-quality vector iconography |
 | **Backend** | Python FastAPI | High-performance asynchronous API server |
-| **AI Orchestration**| Google GenAI SDK | Orchestrates Gemini 2.0 Flash models |
+| **AI Orchestration**| Ollama REST API | Orchestrates local Ollama models (e.g. Llama 3.2) |
 | **Deployment** | Uvicorn | ASGI server implementation |
 
 ---
@@ -71,10 +71,11 @@ pip install -r requirements.txt
 #### Environment Setup
 Create a `.env` file inside the `backend/` directory:
 ```env
-GEMINI_API_KEY=your_actual_gemini_api_key_here
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.2
 PORT=8000
 ```
-*(Note: If no API key is specified, the server runs in a graceful **Demo Mode** fallback to let you explore the application safely).*
+*(Note: If Ollama is not running locally, the server runs in a graceful **Demo Mode** fallback to let you explore the application safely).*
 
 #### Run FastAPI Server
 ```bash

@@ -25,13 +25,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-from ml_models.ai_client import openai_client, openai_configured, generate_content_with_fallback
+from ml_models.ai_client import ollama_configured, generate_content_with_fallback
 
-model = openai_client if openai_configured else None
+model = True if ollama_configured else None
 if model:
-    logger.info("✅ OpenAI configured successfully via centralized client.")
+    logger.info("✅ Ollama configured successfully via centralized client.")
 else:
-    logger.warning("⚠ OpenAI API Key missing or invalid. Running in Demo Mode.")
+    logger.warning("⚠ Ollama service missing or invalid. Running in Demo Mode.")
 
 app = FastAPI(
     title="Krishi Sakhi API",
@@ -94,7 +94,7 @@ async def chat_endpoint(request: ChatRequest):
     if not model:
         return {
             "response": (
-                "Set your OPENAI_API_KEY in backend/.env for full AI capabilities.")}
+                "Ollama service is not running. Please start Ollama locally for full AI capabilities.")}
 
     context = f"Profile: {
         request.profile}\nActivities: {
@@ -114,7 +114,7 @@ User:
         response = await asyncio.to_thread(generate_content_with_fallback, contents=prompt)
         return {"response": response.text}
     except Exception as e:
-        logger.error(f"OpenAI error: {e}")
+        logger.error(f"Ollama error: {e}")
         raise HTTPException(
             status_code=500, detail="AI engine temporarily unavailable.")
 

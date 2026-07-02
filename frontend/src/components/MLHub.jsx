@@ -280,7 +280,14 @@ const MLHub = () => {
                   variants={itemVariants}
                   whileHover={{ y: -8, scale: 1.02 }}
                   onClick={() => setSelectedModelId(tab.id)}
-                  className="glass-card flex flex-col justify-between h-full border border-white/5 cursor-pointer relative overflow-hidden group transition-all duration-300 hover:border-white/20"
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+                    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+                  }}
+                  className="glass-card spotlight-card flex flex-col justify-between h-full border border-white/5 cursor-pointer relative overflow-hidden group transition-all duration-300 hover:border-white/20"
                 >
                   {/* Dynamic glow corner */}
                   <div 

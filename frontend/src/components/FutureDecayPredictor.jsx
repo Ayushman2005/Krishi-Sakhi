@@ -247,7 +247,7 @@ const FutureDecayPredictor = () => {
                   {result.description}
                 </p>
                 <div className="pt-2 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-text-muted">
-                  <span>Engine: {result.mode === 'generative' ? 'Gemini 2.0 Generative Vision' : 'PIL Visual Filter Core'}</span>
+                  <span>Engine: {result.mode === 'generative' ? 'Ollama Generative Vision' : 'PIL Visual Filter Core'}</span>
                   <span className="text-primary">{selectedDeficit}</span>
                 </div>
               </div>

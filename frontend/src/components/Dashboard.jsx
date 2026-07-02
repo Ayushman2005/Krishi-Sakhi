@@ -70,6 +70,20 @@ const Dashboard = () => {
   const healthLabel = healthScore > 90 ? 'Excellent' : healthScore > 80 ? 'Good' : 'Needs Care';
   const healthColor = healthScore > 90 ? 'text-success' : healthScore > 80 ? 'text-primary' : 'text-warning';
 
+  const getWeatherGradient = () => {
+    if (!weatherData || weatherData.error) {
+      return 'from-primary/10 via-background to-transparent border-primary/20';
+    }
+    const main = weatherData.weather?.[0]?.main;
+    if (main === 'Rain' || main === 'Drizzle' || main === 'Thunderstorm') {
+      return 'from-blue-500/10 via-[#0a0f1d] to-[#020617] border-blue-500/20';
+    }
+    if (main === 'Clear') {
+      return 'from-amber-500/10 via-[#130d06] to-[#020617] border-amber-500/20';
+    }
+    return 'from-sky-500/10 via-[#0a121e] to-[#020617] border-sky-500/20';
+  };
+
   const getIcon = (iconName) => {
     const icons = { CloudRain, Sprout, Bug, Droplets, AlertCircle };
     const Icon = icons[iconName] || AlertCircle;
@@ -167,7 +181,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {[
-          { label: t('health_index'), value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100` },
+          { label: t('health_index'), value: healthLabel, icon: ShieldCheck, color: healthColor, sub: `${healthScore}/100`, isHealth: true },
           { label: t('soil_health'), value: profile?.soilType === 'Alluvial' ? 'Optimum' : 'Balanced', icon: LayoutGrid, color: 'text-primary', sub: 'pH 6.5' },
           { label: t('daily_water'), value: 'Optimal', icon: Droplets, color: 'text-primary', sub: profile?.irrigation === 'Drip' ? 'Efficient Use' : 'Standard' },
           { label: t('pest_risk'), value: 'Low', icon: Bug, color: 'text-warning', sub: 'No outbreaks' },
@@ -181,18 +195,52 @@ const Dashboard = () => {
               backgroundColor: 'rgba(255, 255, 255, 0.08)',
               borderColor: 'rgba(16, 185, 129, 0.3)'
             }}
-            className="glass-card flex flex-col p-6 border-2 border-transparent transition-all duration-300"
+            onMouseMove={(e) => {
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = e.clientX - rect.left;
+              const y = e.clientY - rect.top;
+              e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+              e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+            }}
+            className="glass-card spotlight-card flex flex-col p-6 border-2 border-transparent transition-all duration-300"
           >
             <div className="flex justify-between items-start mb-6">
-              <div className={`p-4 bg-white/5 rounded-2xl ${stat.color} shadow-inner`}>
-                <stat.icon size={28} />
-              </div>
-              <div className="text-right">
+              {stat.isHealth ? (
+                <div className="relative flex items-center justify-center w-14 h-14 bg-white/5 rounded-2xl shadow-inner select-none z-10">
+                  <svg className="w-12 h-12 transform -rotate-90">
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="16"
+                      className="text-white/5 stroke-current"
+                      strokeWidth="3"
+                      fill="transparent"
+                    />
+                    <circle
+                      cx="24"
+                      cy="24"
+                      r="16"
+                      className={`${stat.color} stroke-current transition-all duration-1000 ease-out`}
+                      strokeWidth="3"
+                      fill="transparent"
+                      strokeDasharray={2 * Math.PI * 16}
+                      strokeDashoffset={((100 - healthScore) / 100) * (2 * Math.PI * 16)}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <span className="absolute text-[10px] font-black text-white">{healthScore}</span>
+                </div>
+              ) : (
+                <div className={`p-4 bg-white/5 rounded-2xl ${stat.color} shadow-inner z-10`}>
+                  <stat.icon size={28} />
+                </div>
+              )}
+              <div className="text-right z-10">
                 <span className="text-[10px] font-black opacity-30 uppercase tracking-widest block mb-1">{stat.label}</span>
                 <span className="text-xs font-black text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">{stat.sub}</span>
               </div>
             </div>
-            <p className="text-3xl font-black tracking-tighter">{stat.value}</p>
+            <p className="text-3xl font-black tracking-tighter z-10">{stat.value}</p>
           </motion.div>
         ))}
       </div>
@@ -327,7 +375,7 @@ const Dashboard = () => {
             </button>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="glass p-10 bg-gradient-to-br from-primary/10 via-background to-transparent border-primary/20 relative">
+          <motion.div variants={itemVariants} className={`glass p-10 bg-gradient-to-br ${getWeatherGradient()} relative transition-all duration-700`}>
             <div className="absolute top-4 right-4 animate-spin-slow">
               <Sun className="text-secondary opacity-20" size={80} />
             </div>

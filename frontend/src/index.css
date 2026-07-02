@@ -202,6 +202,31 @@ body::after {
   border-color: rgba(245, 158, 11, 0.3);
 }
 
+/* Spotlight Hover Effect */
+.spotlight-card {
+  position: relative;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    250px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(255, 255, 255, 0.08),
+    transparent 80%
+  );
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
 /* ─────────────────────────────────────────────── */
 /* Typography Enhancements                         */
 /* ─────────────────────────────────────────────── */

@@ -7,14 +7,14 @@ from PIL import Image
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-from ml_models.ai_client import openai_configured, generate_content_with_fallback
+from ml_models.ai_client import ollama_configured, generate_content_with_fallback
 
 @router.post("/soil-report-ocr")
 async def parse_soil_report(file: UploadFile = File(...)):
 
-    if not openai_configured:
+    if not ollama_configured:
         raise HTTPException(
-            status_code=503, detail="OpenAI API not configured.")
+            status_code=503, detail="Ollama service not configured.")
 
     if not file.content_type.startswith("image/"):
         raise HTTPException(
@@ -50,6 +50,12 @@ async def parse_soil_report(file: UploadFile = File(...)):
             text = text.split("```json")[1].split("```")[0].strip()
         elif "```" in text:
             text = text.split("```")[1].split("```")[0].strip()
+
+        import re
+        # Robust JSON extraction
+        match = re.search(r'(\{[\s\S]*\}|\[[\s\S]*\])', text)
+        if match:
+            text = match.group(1).strip()
 
         import json
         data = json.loads(text)
