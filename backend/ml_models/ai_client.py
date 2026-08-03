@@ -11,22 +11,59 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
+import time
+
 # Load Ollama Configuration
-ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434").rstrip("/")
+ollama_host = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434").rstrip("/")
 ollama_model = os.getenv("OLLAMA_MODEL", "llama3.2")
 
-ollama_configured = False
+_ollama_status_cache = {"status": False, "last_check": 0.0}
 
-try:
-    # Verify connection to local Ollama instance
-    response = requests.get(f"{ollama_host}/api/tags", timeout=3)
-    if response.status_code == 200:
-        ollama_configured = True
-        logger.info(f"Ollama connection verified at {ollama_host}. Default model: {ollama_model}")
-    else:
-        logger.warning(f"Ollama returned status {response.status_code} at {ollama_host}. Running in Demo Mode.")
-except Exception as e:
-    logger.warning(f"Failed to reach Ollama at {ollama_host}: {e}. Running in Demo Mode.")
+def check_ollama_status(cache_ttl: float = 5.0) -> bool:
+    """
+    Verify connection to local Ollama instance with 5-second caching.
+    Tries 127.0.0.1 automatically if localhost encounters Windows IPv6 resolution refusal.
+    """
+    global ollama_host
+    now = time.time()
+    if now - _ollama_status_cache["last_check"] < cache_ttl:
+        return _ollama_status_cache["status"]
+
+    _ollama_status_cache["last_check"] = now
+    hosts_to_try = [ollama_host]
+    if "localhost" in ollama_host:
+        hosts_to_try.append(ollama_host.replace("localhost", "127.0.0.1"))
+    elif "127.0.0.1" in ollama_host:
+        hosts_to_try.append(ollama_host.replace("127.0.0.1", "localhost"))
+
+    for host in hosts_to_try:
+        try:
+            response = requests.get(f"{host}/api/tags", timeout=3)
+            if response.status_code == 200:
+                ollama_host = host
+                if not _ollama_status_cache["status"]:
+                    logger.info(f"✅ Ollama connection verified at {ollama_host}. Default model: {ollama_model}")
+                _ollama_status_cache["status"] = True
+                return True
+        except Exception:
+            continue
+
+    if _ollama_status_cache["status"]:
+        logger.warning(f"Failed to reach Ollama at {ollama_host}. Running in Demo Mode.")
+    _ollama_status_cache["status"] = False
+    return False
+
+class DynamicOllamaConfigured:
+    def __bool__(self):
+        return check_ollama_status()
+
+    def __repr__(self):
+        return str(check_ollama_status())
+
+ollama_configured = DynamicOllamaConfigured()
+
+# Perform initial status check on startup
+check_ollama_status()
 
 class AIResponseWrapper:
     """

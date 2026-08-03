@@ -39,8 +39,8 @@ scipy==1.17.1
 # ── Deep Learning (CPU-only, stable build) ─────
 # IMPORTANT: Always install from the PyTorch index to avoid broken nightly builds
 # pip install torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cpu
-torch==2.7.0
-torchvision==0.22.0
+torch
+torchvision
 
 # ── Image Processing ───────────────────────────
 Pillow==12.2.0

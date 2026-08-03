@@ -25,10 +25,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-from ml_models.ai_client import ollama_configured, generate_content_with_fallback
+from ml_models.ai_client import ollama_configured, generate_content_with_fallback, check_ollama_status
 
-model = True if ollama_configured else None
-if model:
+if ollama_configured:
     logger.info("✅ Ollama configured successfully via centralized client.")
 else:
     logger.warning("⚠ Ollama service missing or invalid. Running in Demo Mode.")
@@ -86,12 +85,12 @@ async def health_check():
         "status": "online",
         "version": "2.1.0",
         "timestamp": datetime.datetime.now().isoformat(),
-        "ai_enabled": model is not None
+        "ai_enabled": bool(ollama_configured)
     }
 
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
-    if not model:
+    if not ollama_configured:
         return {
             "response": (
                 "Ollama service is not running. Please start Ollama locally for full AI capabilities.")}
