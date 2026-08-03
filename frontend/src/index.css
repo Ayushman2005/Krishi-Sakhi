@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 html {
   scroll-behavior: smooth;
@@ -252,6 +250,7 @@ h1, h2, h3, h4, h5, h6 {
 .gradient-text {
   background: linear-gradient(135deg, #34d399 0%, #10b981 30%, #0ea5e9 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
   display: inline-block;
