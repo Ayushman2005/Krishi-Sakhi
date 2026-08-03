@@ -81,6 +81,10 @@ const AppContent = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [activePage]);
+
   return (
     <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden">
       <EnhancedBackground />
@@ -295,20 +299,20 @@ const AppContent = () => {
           {!profile ? (
             <motion.div
               key="setup"
-              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              initial={{ opacity: 0, y: 20, scale: 0.99 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+              exit={{ opacity: 0, y: -15, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <ProfileForm />
             </motion.div>
           ) : activePage === 'dashboard' ? (
             <motion.div 
               key="dashboard" 
-              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              initial={{ opacity: 0, y: 20, scale: 0.99 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+              exit={{ opacity: 0, y: -15, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <Dashboard />
               <ChatInterface />
@@ -316,10 +320,10 @@ const AppContent = () => {
           ) : activePage === 'market' ? (
             <motion.div 
               key="market" 
-              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              initial={{ opacity: 0, y: 20, scale: 0.99 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+              exit={{ opacity: 0, y: -15, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <MarketInsights />
               <ChatInterface />
@@ -327,10 +331,10 @@ const AppContent = () => {
           ) : activePage === 'schemes' ? (
             <motion.div 
               key="schemes" 
-              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              initial={{ opacity: 0, y: 20, scale: 0.99 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+              exit={{ opacity: 0, y: -15, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <SchemesLocator />
               <ChatInterface />
@@ -338,10 +342,10 @@ const AppContent = () => {
           ) : (
             <motion.div 
               key="ml" 
-              initial={{ opacity: 0, y: 30, scale: 0.98 }} 
+              initial={{ opacity: 0, y: 20, scale: 0.99 }} 
               animate={{ opacity: 1, y: 0, scale: 1 }} 
-              exit={{ opacity: 0, y: -20, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 180, damping: 22 }}
+              exit={{ opacity: 0, y: -15, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <MLHub />
               <ChatInterface />
