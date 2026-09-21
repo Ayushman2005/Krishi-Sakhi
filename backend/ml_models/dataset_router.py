@@ -22,6 +22,11 @@ DATASET_METADATA = {
         "filename": "crop_yield_data.csv",
         "description": "Historical agro-climatic yield benchmark dataset for multi-state Indian crop production.",
         "target_col": "Yield_Quintals_Per_Acre"
+    },
+    "comprehensive_plants_and_crops": {
+        "filename": "comprehensive_plants_and_crops.csv",
+        "description": "Exhaustive multi-category dataset covering 58 plants & crops across Cereals, Pulses, Fruits, Vegetables, Cash Crops, Plantation, Oilseeds, and Spices.",
+        "target_col": "label"
     }
 }
 

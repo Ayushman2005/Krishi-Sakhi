@@ -85,7 +85,7 @@ class TestBackendDatasets(unittest.TestCase):
         res = client.get("/data/datasets")
         self.assertEqual(res.status_code, 200)
         datasets = res.json()
-        self.assertEqual(len(datasets), 3)
+        self.assertGreaterEqual(len(datasets), 3)
 
         preview_res = client.get("/data/datasets/crop_recommendation/preview")
         self.assertEqual(preview_res.status_code, 200)

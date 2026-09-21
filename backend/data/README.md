@@ -1,6 +1,6 @@
 # 🌾 Krishi Sakhi Backend Agricultural Datasets
 
-This directory houses the benchmark precision agriculture datasets utilized by the **Krishi Sakhi** machine learning suite to power crop recommendations, fertilizer prescriptions, and yield estimations.
+This directory houses the benchmark precision agriculture datasets utilized by the **Krishi Sakhi** machine learning suite to power crop recommendations, fertilizer prescriptions, yield estimations, and multi-model plant classification.
 
 ---
 
@@ -8,65 +8,78 @@ This directory houses the benchmark precision agriculture datasets utilized by t
 
 | File | Records | Features | Target Variable | Primary Model |
 | :--- | :--- | :--- | :--- | :--- |
+| **`comprehensive_plants_and_crops.csv`** | 4,060 | 12 soil, climate, agro-ecological attributes | `label` (58 plant varieties) | `RandomForestClassifier` (99.26% test acc) |
 | **`crop_recommendation.csv`** | 2,200 | 7 agronomic & climate indicators | `label` (22 crops) | `RandomForestClassifier` |
 | **`fertilizer_recommendation.csv`** | 500 | 8 soil, crop & atmospheric features | `Fertilizer Name` (7 classes) | `RandomForestClassifier` |
 | **`crop_yield_data.csv`** | 480 | 10 agro-climatic & nutrient features | `Yield_Quintals_Per_Acre` | `GradientBoostingRegressor` |
 
 ---
 
-## 1. Crop Recommendation Dataset (`crop_recommendation.csv`)
+## 1. Comprehensive Plants & Crops Dataset (`comprehensive_plants_and_crops.csv`)
+
+Exhaustive multi-category precision agriculture dataset covering **58 plant & crop varieties across all 8 botanical and economic domains**.
+
+### Categorical Breakdown (58 Varieties)
+1. **Cereals & Grains (8)**: `Rice`, `Wheat`, `Maize`, `Barley`, `Pearl Millet`, `Sorghum`, `Finger Millet`, `Oats`.
+2. **Pulses & Legumes (9)**: `Chickpea`, `Pigeonpea`, `Kidney Bean`, `Blackgram`, `Mungbean`, `Lentil`, `Mothbean`, `Peas`, `Soybean`.
+3. **Fruits & Tree Crops (13)**: `Mango`, `Banana`, `Apple`, `Orange`, `Grapes`, `Papaya`, `Pomegranate`, `Guava`, `Pineapple`, `Lemon`, `Watermelon`, `Muskmelon`, `Coconut`.
+4. **Vegetables & Roots (12)**: `Tomato`, `Potato`, `Onion`, `Garlic`, `Ginger`, `Carrot`, `Cabbage`, `Cauliflower`, `Spinach`, `Brinjal`, `Chilli`, `Okra`.
+5. **Commercial & Cash Crops (5)**: `Cotton`, `Jute`, `Sugarcane`, `Tobacco`, `Rubber`.
+6. **Plantation & Beverages (2)**: `Tea`, `Coffee`.
+7. **Oilseeds (4)**: `Mustard`, `Groundnut`, `Sunflower`, `Sesame`.
+8. **Spices & Herbs (5)**: `Turmeric`, `Black Pepper`, `Cardamom`, `Cumin`, `Coriander`.
+
+### Features
+* **`N`** (int): Soil Nitrogen content (kg/ha).
+* **`P`** (int): Soil Phosphorus content (kg/ha).
+* **`K`** (int): Soil Potassium content (kg/ha).
+* **`temperature`** (float): Ambient surface temperature (°C).
+* **`humidity`** (float): Relative air humidity (%).
+* **`ph`** (float): Soil pH (acidic to alkaline).
+* **`rainfall`** (float): Cumulative seasonal precipitation (mm).
+* **`soil_type`** (string): Soil texture class (`Loamy`, `Clayey`, `Sandy`, `Black`, `Red`, `Alluvial`, `Laterite`).
+* **`category`** (string): Botanical domain (`Cereal`, `Pulse`, `Fruit`, `Vegetable`, `Cash Crop`, `Plantation`, `Oilseed`, `Spice`).
+* **`growth_duration_days`** (int): Phenological cycle duration until harvest.
+* **`water_requirement`** (string): Irrigation demand index (`Low`, `Medium`, `High`, `Very High`).
+* **`sunlight_hours`** (float): Mean daily photoperiod requirement.
+* **`label`** (string): Target plant or crop name.
+
+### 📓 Training Notebook
+This dataset is trained, benchmarked, and evaluated in the dedicated Jupyter Notebook:
+* **[`backend/notebooks/train_plants_and_crops.ipynb`](../notebooks/train_plants_and_crops.ipynb)**
+  * Benchmarks 5 models (Random Forest, Gradient Boosting, Decision Tree, KNN, Logistic Regression).
+  * Feature importance & 5-fold cross-validation.
+  * Exports serialized model artifacts to `backend/ml_models/best_crop_model.joblib`.
+
+---
+
+## 2. Crop Recommendation Dataset (`crop_recommendation.csv`)
 
 Ground-truth precision agriculture dataset providing optimal environmental and soil conditions for 22 major agricultural crops.
 
 ### Features
-* **`N`** (int): Ratio of Nitrogen content in soil (kg/ha).
-* **`P`** (int): Ratio of Phosphorus content in soil (kg/ha).
-* **`K`** (int): Ratio of Potassium content in soil (kg/ha).
-* **`temperature`** (float): Ambient temperature in Celsius (°C).
-* **`humidity`** (float): Relative air humidity percentage (%).
-* **`ph`** (float): Soil pH value (acidic < 6.5 to alkaline > 7.5).
-* **`rainfall`** (float): Cumulative seasonal precipitation (mm).
-* **`label`** (string): Recommended crop class.
-
-### Supported Crops (22 Classes)
-`Rice`, `Maize`, `Chickpea`, `Kidneybeans`, `Pigeonpeas`, `Mothbeans`, `Mungbean`, `Blackgram`, `Lentil`, `Pomegranate`, `Banana`, `Mango`, `Grapes`, `Watermelon`, `Muskmelon`, `Apple`, `Orange`, `Papaya`, `Coconut`, `Cotton`, `Jute`, `Coffee`.
+* **`N`**, **`P`**, **`K`**: Macronutrients (kg/ha).
+* **`temperature`**, **`humidity`**, **`ph`**, **`rainfall`**: Agro-climatic parameters.
+* **`label`**: 22 standard crop varieties.
 
 ---
 
-## 2. Fertilizer Recommendation Dataset (`fertilizer_recommendation.csv`)
+## 3. Fertilizer Recommendation Dataset (`fertilizer_recommendation.csv`)
 
 Diagnostic dataset for calculating soil nutrient deficits and prescribing targeted commercial fertilizer formulations.
 
 ### Features
-* **`Temparature`** (float): Surface air temperature (°C).
-* **`Humidity`** (float): Air moisture content (%).
-* **`Moisture`** (float): Soil moisture percentage (%).
-* **`Soil Type`** (string): `Sandy`, `Loamy`, `Black`, `Red`, `Clayey`.
-* **`Crop Type`** (string): Target crop being cultivated.
-* **`Nitrogen`** (int): Soil nitrogen reading (ppm / kg/ha).
-* **`Potassium`** (int): Soil potassium reading (ppm / kg/ha).
-* **`Phosphorous`** (int): Soil phosphorus reading (ppm / kg/ha).
-* **`Fertilizer Name`** (string): Recommended fertilizer product.
-
-### Prescribed Fertilizer Classes
-`Urea`, `DAP`, `14-35-14`, `28-28`, `17-17-17`, `20-20`, `10-26-26`.
+* **`Temparature`**, **`Humidity`**, **`Moisture`**, **`Soil Type`**, **`Crop Type`**, **`Nitrogen`**, **`Potassium`**, **`Phosphorous`**.
+* **`Fertilizer Name`**: Urea, DAP, 14-35-14, 28-28, 17-17-17, 20-20, 10-26-26.
 
 ---
 
-## 3. Crop Yield Benchmark Dataset (`crop_yield_data.csv`)
+## 4. Crop Yield Benchmark Dataset (`crop_yield_data.csv`)
 
 Empirical harvest dataset spanning multi-state Indian farming regions across Kharif, Rabi, and Annual growing seasons.
 
 ### Features
-* **`Crop`** (string): Crop variety (`Paddy`, `Coconut`, `Rubber`, `Vegetables`, `Banana`, `Wheat`, `Maize`, `Cotton`).
-* **`Season`** (string): `Kharif`, `Rabi`, `Whole Year`.
-* **`State`** (string): Indian agricultural state.
-* **`Area_Acres`** (float): Total parcel size under cultivation.
-* **`Rainfall_mm`** (float): Seasonal rainfall index.
-* **`Temperature_C`** (float): Average growing season temperature.
-* **`Soil_pH`** (float): Soil acidity / alkalinity index.
-* **`Nitrogen_kg_ha`**, **`Phosphorus_kg_ha`**, **`Potassium_kg_ha`** (float): Soil macronutrient concentrations.
-* **`Yield_Quintals_Per_Acre`** (float): Actual measured yield output.
+* **`Crop`**, **`Season`**, **`State`**, **`Area_Acres`**, **`Rainfall_mm`**, **`Temperature_C`**, **`Soil_pH`**, **`Nitrogen_kg_ha`**, **`Phosphorus_kg_ha`**, **`Potassium_kg_ha`**, **`Yield_Quintals_Per_Acre`**.
 
 ---
 

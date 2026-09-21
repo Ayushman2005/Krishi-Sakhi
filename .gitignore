@@ -23,7 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
-# PyTorch model weights
+# ML / Model artifacts
+*.joblib
+*.pkl
 plant_disease_model.pth
 class_names.txt
 training_history.json
