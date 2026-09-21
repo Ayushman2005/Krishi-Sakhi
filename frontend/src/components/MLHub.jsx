@@ -1,6 +1,50 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Leaf, TrendingUp, Cloud, Cpu, Zap, Shield, Beaker, Bug, ChevronRight, Eye, Mic, Grid3X3, Coins, Search, ArrowLeft } from 'lucide-react';
+
+/* ─── Animated count-up hook ─── */
+function useCountUp(target, duration = 1000, delay = 0) {
+  const [value, setValue] = useState(0);
+  const raf = useRef(null);
+  useEffect(() => {
+    const numeric = parseFloat(String(target).replace(/[^0-9.]/g, ''));
+    if (isNaN(numeric)) { setValue(target); return; }
+    let start = null;
+    const t = setTimeout(() => {
+      const step = (ts) => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setValue(Math.floor(eased * numeric));
+        if (p < 1) raf.current = requestAnimationFrame(step);
+        else setValue(numeric);
+      };
+      raf.current = requestAnimationFrame(step);
+    }, delay);
+    return () => { clearTimeout(t); if (raf.current) cancelAnimationFrame(raf.current); };
+  }, [target, duration, delay]);
+  return value;
+}
+
+/* ─── 3D tilt hook ─── */
+function useTilt(strength = 8) {
+  const ref = useRef(null);
+  const onMove = useCallback((e) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    el.style.transform = `perspective(600px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg) scale(1.03)`;
+    el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+    el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+  }, [strength]);
+  const onLeave = useCallback(() => {
+    if (ref.current) ref.current.style.transform = '';
+  }, []);
+  return { ref, onMove, onLeave };
+}
+
 import DiseaseDetector from './DiseaseDetector';
 import YieldPredictor from './YieldPredictor';
 import WeatherAdvisor from './WeatherAdvisor';
@@ -159,6 +203,20 @@ const MLHub = () => {
   const [selectedModelId, setSelectedModelId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [launchingId, setLaunchingId] = useState(null);
+
+  /* Count-up for stat row */
+  const countModels = useCountUp(10, 800, 300);
+  const countAccuracy = useCountUp(96.9, 1000, 400);
+  const countCrops = useCountUp(25, 700, 500);
+
+  const handleLaunch = (id) => {
+    setLaunchingId(id);
+    setTimeout(() => {
+      setLaunchingId(null);
+      setSelectedModelId(id);
+    }, 520);
+  };
 
   const selectedModel = ML_TABS.find(tab => tab.id === selectedModelId);
   const ActiveComponent = selectedModel ? selectedModel.component : null;
@@ -167,9 +225,7 @@ const MLHub = () => {
     const matchesSearch = model.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
       model.badge.toLowerCase().includes(searchQuery.toLowerCase()) ||
       model.description.toLowerCase().includes(searchQuery.toLowerCase());
-      
     const matchesCategory = activeCategory === 'All' || model.category === activeCategory;
-    
     return matchesSearch && matchesCategory;
   });
 
@@ -189,19 +245,19 @@ const MLHub = () => {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 rounded-full border border-white/10 text-sm font-black uppercase tracking-widest mb-6"
+          className="inline-flex items-center gap-3 px-5 py-2.5 bg-cyan-950/40 rounded-full border border-cyan-500/30 text-sm font-black uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-cyan-300 font-[var(--font-display)]"
         >
-          <Cpu size={16} className="text-primary animate-pulse" />
-          Machine Learning Hub
-          <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          <Cpu size={16} className="text-cyan-400 animate-pulse" />
+          Cyber-Intelligence Neural Hub
+          <span className="w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-6xl font-black tracking-tighter mb-4"
+          className="text-6xl font-black tracking-tighter mb-4 font-[var(--font-display)]"
         >
-          AI <span className="gradient-text">Model Suite</span>
+          AI <span className="gradient-text">Neural Core Suite</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -209,7 +265,7 @@ const MLHub = () => {
           transition={{ delay: 0.2 }}
           className="text-text-muted text-lg max-w-2xl mx-auto"
         >
-          An integrated ecosystem of ten specialized AI models giving your farm a precision edge.
+          An integrated ecosystem of ten specialized machine learning nodes giving your farm a precision edge.
         </motion.p>
       </header>
 
@@ -218,33 +274,47 @@ const MLHub = () => {
         <div className="space-y-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: 'Models Active', value: '10', icon: Cpu, color: 'text-primary' },
-              { label: 'Avg Suite Accuracy', value: '96.9%', icon: Shield, color: 'text-success' },
-              { label: 'Crops Calibrated', value: '25+', icon: Leaf, color: 'text-accent' },
-              { label: 'Latency Time', value: '<0.4s', icon: Zap, color: 'text-warning' },
+              { label: 'Models Active', value: countModels, suffix: '', icon: Cpu, color: 'text-cyan-400', glow: 'rgba(6,182,212,0.4)' },
+              { label: 'Avg Suite Accuracy', value: countAccuracy, suffix: '%', icon: Shield, color: 'text-cyan-300', glow: 'rgba(34,211,238,0.4)' },
+              { label: 'Crops Calibrated', value: countCrops, suffix: '+', icon: Leaf, color: 'text-violet-400', glow: 'rgba(139,92,246,0.4)' },
+              { label: 'Inference Latency', value: null, display: '<0.4s', icon: Zap, color: 'text-amber-400', glow: 'rgba(245,158,11,0.4)' },
             ].map((stat, i) => (
-              <div key={i} className="glass-card flex items-center gap-4 py-4 px-6">
-                <div className={`p-2.5 bg-white/5 rounded-2xl ${stat.color} shadow-inner`}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 + 0.2, type: 'spring', stiffness: 100 }}
+                whileHover={{ y: -4, boxShadow: `0 20px 40px -10px rgba(0,0,0,0.7), 0 0 25px -5px ${stat.glow}` }}
+                className="glass-card flex items-center gap-4 py-4 px-6 cursor-default border border-cyan-500/20"
+              >
+                <div className={`p-2.5 bg-cyan-950/40 border border-cyan-500/20 rounded-2xl ${stat.color} shadow-inner pulse-ring`}>
                   <stat.icon size={20} />
                 </div>
                 <div>
-                  <p className="text-2.5xl font-black leading-none">{stat.value}</p>
-                  <p className="text-[9px] text-text-muted font-black uppercase tracking-widest mt-1">{stat.label}</p>
+                  <motion.p
+                    key={stat.value}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-2xl font-black leading-none tabular-nums text-white font-[var(--font-mono)]"
+                  >
+                    {stat.display ?? `${stat.value}${stat.suffix}`}
+                  </motion.p>
+                  <p className="text-[9px] text-cyan-400/60 font-black uppercase tracking-widest mt-1 font-[var(--font-display)]">{stat.label}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           {/* Controls: Search and Category filter chips */}
-          <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-white/5 border border-white/10 p-5 rounded-3xl backdrop-blur-md">
+          <div className="flex flex-col lg:flex-row gap-4 justify-between items-center bg-cyan-950/20 border border-cyan-500/20 p-5 rounded-3xl backdrop-blur-md">
             <div className="relative w-full lg:max-w-md">
-              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400" />
               <input
                 type="text"
-                placeholder="Search AI Models (e.g., CNN, yield, soil)..."
+                placeholder="Search Neural Models (e.g. CNN, yield, soil)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-primary/50 focus:bg-white/10 transition-all placeholder-white/30"
+                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-cyan-500/20 rounded-2xl text-white outline-none focus:border-cyan-400 focus:bg-cyan-950/30 transition-all placeholder-white/30"
               />
             </div>
             
@@ -253,10 +323,10 @@ const MLHub = () => {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border font-[var(--font-display)] ${
                     activeCategory === category
-                      ? 'bg-primary text-white border-primary shadow-[0_4px_15px_rgba(16,185,129,0.3)]'
-                      : 'bg-white/5 text-text-muted border-white/5 hover:border-white/10 hover:bg-white/8 hover:text-white'
+                      ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
+                      : 'bg-white/5 text-text-muted border-cyan-500/10 hover:border-cyan-500/30 hover:bg-cyan-500/10 hover:text-white'
                   }`}
                 >
                   {category}
@@ -266,7 +336,7 @@ const MLHub = () => {
           </div>
 
           {/* Models Grid */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -274,47 +344,61 @@ const MLHub = () => {
           >
             {filteredModels.map((tab) => {
               const Icon = tab.icon;
+              const isLaunching = launchingId === tab.id;
               return (
                 <motion.div
                   key={tab.id}
                   variants={itemVariants}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  onClick={() => setSelectedModelId(tab.id)}
+                  onClick={() => handleLaunch(tab.id)}
                   onMouseMove={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-                    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+                    const el = e.currentTarget;
+                    const rect = el.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                    el.style.transform = `perspective(700px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px)`;
+                    el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
                   }}
-                  className="glass-card spotlight-card flex flex-col justify-between h-full border border-white/5 cursor-pointer relative overflow-hidden group transition-all duration-300 hover:border-white/20"
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = '';
+                  }}
+                  className="glass-card spotlight-card tilt-card flex flex-col justify-between h-full border border-white/5 cursor-pointer relative overflow-hidden group transition-[border-color,box-shadow] duration-300 hover:border-white/20"
+                  style={{ transformOrigin: 'center center' }}
                 >
-                  {/* Dynamic glow corner */}
-                  <div 
-                    className="absolute -top-24 -right-24 w-48 h-48 rounded-full pointer-events-none filter blur-[40px] opacity-[0.03] group-hover:opacity-[0.12] transition-all duration-500"
+                  {/* Model launch progress bar */}
+                  {isLaunching && (
+                    <div className="absolute top-0 left-0 right-0 z-20">
+                      <div className="model-loading-bar" />
+                    </div>
+                  )}
+
+                  {/* Dynamic glow corner — scales up on hover */}
+                  <motion.div
+                    className="absolute -top-24 -right-24 w-48 h-48 rounded-full pointer-events-none filter blur-[40px]"
+                    initial={{ opacity: 0.03, scale: 1 }}
+                    whileHover={{ opacity: 0.18, scale: 1.5 }}
+                    transition={{ duration: 0.4 }}
                     style={{ backgroundColor: tab.accent }}
                   />
-                  
+
                   <div className="relative z-10 flex-1">
                     <div className="flex justify-between items-start mb-5">
-                      <div 
+                      <motion.div
                         className="p-3.5 rounded-2xl transition-all duration-300 relative"
-                        style={{ 
-                          backgroundColor: `${tab.accent}15`, 
-                          color: tab.accent 
-                        }}
+                        whileHover={{ scale: 1.12 }}
+                        style={{ backgroundColor: `${tab.accent}15`, color: tab.accent }}
                       >
                         <Icon size={24} />
-                      </div>
-                      <span className="text-[10px] font-black text-success bg-success/10 border border-success/20 px-3 py-1 rounded-full">
+                      </motion.div>
+                      <span className="text-[10px] font-black text-success bg-success/10 border border-success/20 px-3 py-1 rounded-full pulse-ring">
                         {tab.accuracy} Acc
                       </span>
                     </div>
-                    
+
                     <h3 className="font-black text-xl mb-2 text-white group-hover:text-white transition-colors">
                       {tab.label}
                     </h3>
-                    
+
                     <div className="flex gap-2 mb-4">
                       <span className={`text-[8px] font-black uppercase tracking-wider px-2.5 py-1 rounded-md border ${tab.badgeColor}`}>
                         {tab.badge}
@@ -323,22 +407,27 @@ const MLHub = () => {
                         {tab.category}
                       </span>
                     </div>
-                    
+
                     <p className="text-text-muted text-sm leading-relaxed mb-6 font-medium">
                       {tab.description}
                     </p>
                   </div>
-                  
-                  <div className="relative z-10 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-black uppercase tracking-widest text-primary group-hover:text-white transition-colors">
-                    <span>Launch Model</span>
-                    <div className="p-2 bg-white/5 group-hover:bg-primary rounded-xl transition-all duration-300 text-white group-hover:shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+
+                  <div className="relative z-10 pt-4 border-t border-cyan-500/15 flex items-center justify-between text-xs font-black uppercase tracking-widest text-cyan-400 group-hover:text-white transition-colors font-[var(--font-display)]">
+                    <span>{isLaunching ? 'Initializing Node…' : 'Launch Model'}</span>
+                    <motion.div
+                      animate={isLaunching ? { rotate: 360 } : { rotate: 0 }}
+                      transition={{ duration: 0.5, ease: 'linear', repeat: isLaunching ? Infinity : 0 }}
+                      className="p-2 bg-white/5 group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-cyan-600 rounded-xl transition-all duration-300 text-white group-hover:shadow-[0_0_15px_rgba(6,182,212,0.6)]"
+                    >
                       <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               );
             })}
           </motion.div>
+
         </div>
       ) : (
         /* Interactive Model Workspace View */
@@ -346,10 +435,10 @@ const MLHub = () => {
           <div>
             <button
               onClick={() => setSelectedModelId(null)}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 rounded-full border border-white/10 hover:border-white/20 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-white/10 hover:shadow-[0_4px_20px_rgba(255,255,255,0.05)] hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-950/30 rounded-full border border-cyan-500/25 hover:border-cyan-400/50 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-cyan-500/15 hover:shadow-[0_4px_20px_rgba(6,182,212,0.2)] hover:-translate-y-0.5 text-cyan-200 font-[var(--font-display)]"
             >
-              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform duration-300 text-primary" />
-              <span>Back to AI Suite</span>
+              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform duration-300 text-cyan-400" />
+              <span>Back to Neural Suite</span>
             </button>
           </div>
 
@@ -360,9 +449,9 @@ const MLHub = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.98 }}
               transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="glass p-8 md:p-12 relative overflow-hidden flex flex-col h-full border border-white/10 w-full"
+              className="glass p-8 md:p-12 relative overflow-hidden flex flex-col h-full border border-cyan-500/25 w-full bg-[#030712]/90"
               style={{
-                boxShadow: `0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px ${selectedModel.accentGlow}`
+                boxShadow: `0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px -10px ${selectedModel.accentGlow}`
               }}
             >
               <div 

@@ -167,62 +167,81 @@ const ProfileForm = () => {
     <div className="min-h-[calc(100vh-80px)] w-full flex items-stretch">
 
       <div className="hidden lg:flex flex-col justify-between w-[420px] shrink-0 p-12 relative overflow-hidden"
-           style={{ background: 'linear-gradient(160deg, #033d2e 0%, #022c22 60%, #01190f 100%)' }}>
+           style={{ background: 'linear-gradient(160deg, #021a2e 0%, #061833 50%, #020612 100%)' }}>
 
-        <div className="orb-animate absolute top-16 left-16 w-64 h-64 rounded-full opacity-30"
-             style={{ background: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, transparent 70%)' }} />
-        <div className="orb-animate-r absolute bottom-24 right-8 w-48 h-48 rounded-full opacity-20"
+        <div className="orb-animate absolute top-16 left-16 w-64 h-64 rounded-full opacity-40"
+             style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.5) 0%, transparent 70%)' }} />
+        <div className="orb-animate-r absolute bottom-24 right-8 w-48 h-48 rounded-full opacity-30"
              style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.6) 0%, transparent 70%)' }} />
-        <div className="absolute inset-0 border-r border-white/5" />
+        <div className="absolute inset-0 border-r border-cyan-500/20" />
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-xl shadow-primary/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-indigo-600 rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/40 border border-cyan-300/30">
               <Sprout size={24} className="text-white" />
             </div>
             <div>
-              <p className="font-black text-lg tracking-tight">Krishi Sakhi</p>
-              <p className="text-[10px] text-primary font-bold uppercase tracking-widest">AI Farming Assistant</p>
+              <p className="font-black text-lg tracking-tight font-[var(--font-display)] text-white">Krishi Sakhi</p>
+              <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest font-[var(--font-display)]">Cyber-Agro AI Terminal</p>
             </div>
           </div>
 
-          <h2 className="text-4xl font-black tracking-tighter leading-tight mb-4">
-            Your Smart<br />
-            <span className="gradient-text">Farm Companion</span><br />
-            Starts Here.
+          <h2 className="text-4xl font-black tracking-tighter leading-tight mb-4 font-[var(--font-display)]">
+            Your Cyber<br />
+            <span className="gradient-text">Agro Companion</span><br />
+            Initializes Here.
           </h2>
           <p className="text-text-muted text-sm leading-relaxed">
-            Set up your digital farm profile in under 2 minutes. Our AI will personalize every advisory, alert, and insight just for you.
+            Configure your digital telemetry node in under 2 minutes. Our AI calibrates personalized weather forecasting, disease detection, and yield algorithms.
           </p>
         </div>
 
         <div className="relative z-10 space-y-3">
-          <StatPill label="Farmers Onboarded" value="12,400+" color="bg-primary" />
-          <StatPill label="Advisories Sent" value="3.2M" color="bg-accent" />
-          <StatPill label="Global Reach" value="Worldwide" color="bg-secondary" />
+          <StatPill label="Nodes Onboarded" value="12,400+" color="bg-cyan-500" />
+          <StatPill label="Advisories Dispatched" value="3.2M" color="bg-violet-500" />
+          <StatPill label="Global Sensor Grid" value="Worldwide" color="bg-amber-500" />
         </div>
 
         <div className="relative z-10">
           <div className="space-y-4">
             {STEPS.map((s) => (
-              <div key={s.id} className={`flex items-center gap-4 transition-all ${step === s.id ? 'opacity-100' : 'opacity-30'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all ${
-                  step > s.id ? 'bg-primary text-white' : step === s.id ? 'bg-primary text-white shadow-lg shadow-primary/40' : 'bg-white/10 text-text-muted'
-                }`}>
+              <div key={s.id} className={`flex items-center gap-4 transition-all duration-500 ${step === s.id ? 'opacity-100' : step > s.id ? 'opacity-70' : 'opacity-25'}`}>
+                <motion.div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-black shrink-0 transition-all ${
+                    step > s.id ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-[0_0_15px_rgba(6,182,212,0.6)]' : step === s.id ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white shadow-lg shadow-cyan-500/50 border border-cyan-300' : 'bg-white/10 text-text-muted'
+                  }`}
+                  animate={step === s.id ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+                  transition={{ duration: 1.5, repeat: step === s.id ? Infinity : 0, ease: 'easeInOut' }}
+                >
                   {step > s.id ? <CheckCircle2 size={16} /> : s.id}
-                </div>
+                </motion.div>
                 <div>
-                  <p className="font-black text-sm">{s.label}</p>
-                  <p className="text-[10px] text-text-muted">{s.sub}</p>
+                  <p className="font-black text-sm font-[var(--font-display)] text-white">{s.label}</p>
+                  <p className="text-[10px] text-cyan-400/70">{s.sub}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-6 h-1.5 bg-white/10 rounded-full overflow-hidden">
-            <motion.div animate={{ width: step === 1 ? '50%' : '100%' }} transition={{ duration: 0.6, ease: 'easeInOut' }}
-              className="h-full bg-primary rounded-full shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
+
+          {/* Animated segmented progress bar */}
+          <div className="mt-6">
+            <div className="h-2 bg-cyan-950/60 rounded-full overflow-hidden relative border border-cyan-500/20">
+              <motion.div
+                animate={{ width: step === 1 ? '50%' : '100%' }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #06b6d4, #8b5cf6)' }}
+              />
+              {/* Glow shimmer on bar */}
+              <motion.div
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear', delay: 0.5 }}
+                className="absolute inset-y-0 w-12 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full"
+              />
+            </div>
+            <p className="text-[10px] text-cyan-400/80 font-bold mt-2 uppercase tracking-widest font-[var(--font-mono)]">Step {step} of 2</p>
           </div>
-          <p className="text-[10px] text-text-muted font-bold mt-2 uppercase tracking-widest">Step {step} of 2</p>
+
         </div>
       </div>
 
@@ -252,10 +271,10 @@ const ProfileForm = () => {
             {step === 1 && (
               <motion.form
                 key="step1"
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0, x: 50, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: -50, filter: 'blur(4px)' }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 onSubmit={handleNext}
                 className="space-y-8"
               >
@@ -363,10 +382,10 @@ const ProfileForm = () => {
                 )}
 
                 <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                  className="btn btn-primary w-full py-5 text-lg font-black group"
-                  style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(16,185,129,0.45)' }}
+                  className="btn btn-primary w-full py-5 text-lg font-black group font-[var(--font-display)]"
+                  style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(6,182,212,0.5)' }}
                 >
-                  Continue to Farm Details
+                  Continue to Field Details
                   <ArrowRight size={22} className="group-hover:translate-x-1.5 transition-transform" />
                 </motion.button>
               </motion.form>
@@ -376,33 +395,33 @@ const ProfileForm = () => {
             {step === 2 && (
               <motion.form
                 key="step2"
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
+                initial={{ opacity: 0, x: 50, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: 50, filter: 'blur(4px)' }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 onSubmit={handleSubmit}
                 className="space-y-8"
               >
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full text-accent text-xs font-black uppercase tracking-widest mb-4">
-                    <Sprout size={12} /> Step 2 of 2 — Farm Details
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 rounded-full text-cyan-400 text-xs font-black uppercase tracking-widest mb-4 border border-cyan-500/30 font-[var(--font-display)]">
+                    <Sprout size={12} /> Step 2 of 2 — Agro Configuration
                   </div>
-                  <h1 className="text-5xl font-black tracking-tighter mb-2">
-                    About Your <span className="gradient-text">Farm</span>
+                  <h1 className="text-5xl font-black tracking-tighter mb-2 font-[var(--font-display)] text-white">
+                    Calibrate Your <span className="gradient-text">Agro Node</span>
                   </h1>
-                  <p className="text-text-muted text-base">This powers your personalized AI advisories and yield predictions.</p>
+                  <p className="text-text-muted text-base">This powers your personalized AI inference models and precision yield forecasting.</p>
                 </div>
 
                 {/* Land Size */}
                 <Field label="Land Size" icon={Maximize2}>
                   <div className="relative group">
-                    <Maximize2 size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors pointer-events-none" />
+                    <Maximize2 size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-cyan-400 transition-colors pointer-events-none" />
                     <input
                       type="number" placeholder="e.g. 2.5" min="0.1" step="0.1"
                       value={formData.landSize} onChange={e => set('landSize', e.target.value)}
                       style={{ paddingLeft: '2.75rem', paddingRight: '5rem' }}
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-black text-text-muted pointer-events-none">acres</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-black text-cyan-400/80 pointer-events-none font-[var(--font-display)]">acres</span>
                   </div>
                 </Field>
 
@@ -416,12 +435,12 @@ const ProfileForm = () => {
                         whileHover={{ y: -4 }} whileTap={{ scale: 0.95 }}
                         className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 transition-all duration-200 text-center ${
                           formData.crop === crop.value
-                            ? 'border-primary bg-primary/15 shadow-lg shadow-primary/20'
-                            : 'border-white/8 bg-white/3 hover:border-white/20 hover:bg-white/6'
+                            ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_15px_rgba(6,182,212,0.35)]'
+                            : 'border-white/8 bg-white/3 hover:border-cyan-500/30 hover:bg-cyan-500/5'
                         }`}
                       >
                         <span className="text-2xl leading-none">{crop.emoji}</span>
-                        <span className="text-[10px] font-black leading-tight">{crop.label}</span>
+                        <span className="text-[10px] font-black leading-tight font-[var(--font-display)]">{crop.label}</span>
                         <span className="text-[8px] text-text-muted leading-none hidden sm:block">{crop.desc}</span>
                       </motion.button>
                     ))}
@@ -437,12 +456,12 @@ const ProfileForm = () => {
                         onClick={() => set('irrigation', irr.value)}
                         className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all text-center ${
                           formData.irrigation === irr.value
-                            ? 'border-primary bg-primary/15 text-white shadow-md shadow-primary/20'
-                            : 'border-white/8 bg-white/3 text-text-muted hover:border-white/20'
+                            ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_15px_rgba(6,182,212,0.35)]'
+                            : 'border-white/8 bg-white/3 text-text-muted hover:border-cyan-500/30'
                         }`}
                       >
-                        <irr.icon size={20} className={formData.irrigation === irr.value ? 'text-primary' : ''} />
-                        <span className="text-xs font-black">{irr.label}</span>
+                        <irr.icon size={20} className={formData.irrigation === irr.value ? 'text-cyan-400' : ''} />
+                        <span className="text-xs font-black font-[var(--font-display)]">{irr.label}</span>
                         <span className="text-[9px] opacity-60">{irr.desc}</span>
                       </button>
                     ))}
@@ -456,13 +475,13 @@ const ProfileForm = () => {
                       <button
                         key={soil.value} type="button"
                         onClick={() => set('soilType', soil.value)}
-                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all text-sm font-bold ${
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all text-sm font-bold font-[var(--font-display)] ${
                           formData.soilType === soil.value
-                            ? 'border-primary bg-primary/15 text-white'
-                            : 'border-white/10 bg-white/5 text-text-muted hover:border-white/20'
+                            ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                            : 'border-white/10 bg-white/5 text-text-muted hover:border-cyan-500/30'
                         }`}
                       >
-                        <soil.icon size={14} className={formData.soilType === soil.value ? 'text-primary' : ''} />
+                        <soil.icon size={14} className={formData.soilType === soil.value ? 'text-cyan-400' : ''} />
                         {soil.label}
                       </button>
                     ))}
@@ -471,7 +490,7 @@ const ProfileForm = () => {
 
                 {errorMsg && (
                   <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-error text-sm font-bold bg-error/10 border border-error/20 px-4 py-3 rounded-xl"
+                    className="flex items-center gap-2 text-rose-400 text-sm font-bold bg-rose-500/10 border border-rose-500/20 px-4 py-3 rounded-xl"
                   >
                     <AlertCircle size={16} /> {errorMsg}
                   </motion.p>
@@ -480,18 +499,18 @@ const ProfileForm = () => {
                 <div className="flex gap-3">
                   <motion.button type="button" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
                     onClick={() => { setStep(1); setErrorMsg(''); }}
-                    className="btn btn-secondary px-6 py-5 text-base font-black"
+                    className="btn btn-secondary px-6 py-5 text-base font-black border-cyan-500/20"
                     style={{ borderRadius: '18px' }}
                   >
                     <ArrowLeft size={18} /> Back
                   </motion.button>
 
                   <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                    className="btn btn-primary flex-1 py-5 text-lg font-black group"
-                    style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(16,185,129,0.45)' }}
+                    className="btn btn-primary flex-1 py-5 text-lg font-black group font-[var(--font-display)]"
+                    style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(6,182,212,0.5)' }}
                   >
                     <Sparkles size={20} />
-                    Launch My Farm AI
+                    Initialize Farm AI Node
                     <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform" />
                   </motion.button>
                 </div>
