@@ -20,6 +20,7 @@ from ml_models.generative_decay import router as generative_decay_router
 from ml_models.acoustic_monitor import router as acoustic_router
 from ml_models.polyculture_solver import router as polyculture_router
 from ml_models.carbon_ledger import router as carbon_router
+from ml_models.dataset_router import router as dataset_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -58,6 +59,7 @@ app.include_router(generative_decay_router, prefix="/ml", tags=["Machine Learnin
 app.include_router(acoustic_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(polyculture_router, prefix="/ml", tags=["Machine Learning"])
 app.include_router(carbon_router, prefix="/ml", tags=["Machine Learning"])
+app.include_router(dataset_router, prefix="/data", tags=["Datasets"])
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):

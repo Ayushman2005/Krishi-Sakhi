@@ -14,35 +14,65 @@ CROP_BENCHMARKS = {
     "Banana": {"unit": "bunches/acre", "avg": 700, "good": 900, "excellent": 1100},
 }
 
+import os
+import logging
+import pandas as pd
+
+logger = logging.getLogger(__name__)
+
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+YIELD_DATA_PATH = os.path.join(DATA_DIR, "crop_yield_data.csv")
+
 yield_models = {}
 
-def train_dummy_models():
+def _train_dummy_crop_yield(crop, bench):
+    X, y = [], []
+    for _ in range(200):
+        rain = random.uniform(500, 3000)
+        temp = random.uniform(20, 35)
+        ph = random.uniform(5.0, 8.0)
+        n = random.uniform(50, 150)
+        p = random.uniform(20, 80)
+        k = random.uniform(20, 80)
+
+        rain_f = min(rain / 1500, 1.2)
+        temp_f = 1.0 if 20 <= temp <= 32 else 0.85
+        ph_f = 1.0 if 6.0 <= ph <= 7.0 else 0.88
+        nutrients = min((n + p + k) / (90 + 45 + 45), 1.3)
+
+        val = bench["avg"] * rain_f * temp_f * ph_f * nutrients
+        X.append([rain, temp, ph, n, p, k])
+        y.append(val)
+
+    reg = GradientBoostingRegressor(n_estimators=50, random_state=42)
+    reg.fit(X, y)
+    return reg
+
+def train_yield_models():
+    global yield_models
+    df_yield = None
+    if os.path.isfile(YIELD_DATA_PATH):
+        try:
+            df_yield = pd.read_csv(YIELD_DATA_PATH)
+            logger.info(f"Loaded yield dataset with {len(df_yield)} records.")
+        except Exception as e:
+            logger.warning(f"Could not load yield dataset: {e}")
+
+    feature_cols = ["Rainfall_mm", "Temperature_C", "Soil_pH", "Nitrogen_kg_ha", "Phosphorus_kg_ha", "Potassium_kg_ha"]
+
     for crop, bench in CROP_BENCHMARKS.items():
-        X = []
-        y = []
-        for _ in range(200):
-            rain = random.uniform(500, 3000)
-            temp = random.uniform(20, 35)
-            ph = random.uniform(5.0, 8.0)
-            n = random.uniform(50, 150)
-            p = random.uniform(20, 80)
-            k = random.uniform(20, 80)
+        if df_yield is not None and crop in df_yield["Crop"].values:
+            sub_df = df_yield[df_yield["Crop"] == crop]
+            X = sub_df[feature_cols].values
+            y = sub_df["Yield_Quintals_Per_Acre"].values
+            reg = GradientBoostingRegressor(n_estimators=50, random_state=42)
+            reg.fit(X, y)
+            yield_models[crop] = reg
+            logger.info(f"✅ Yield model for {crop} trained on real dataset ({len(sub_df)} samples).")
+        else:
+            yield_models[crop] = _train_dummy_crop_yield(crop, bench)
 
-            rain_f = min(rain / 1500, 1.2)
-            temp_f = 1.0 if 20 <= temp <= 32 else 0.85
-            ph_f = 1.0 if 6.0 <= ph <= 7.0 else 0.88
-            nutrients = min((n + p + k) / (90 + 45 + 45), 1.3)
-
-            val = bench["avg"] * rain_f * temp_f * ph_f * nutrients
-
-            X.append([rain, temp, ph, n, p, k])
-            y.append(val)
-
-        reg = GradientBoostingRegressor(n_estimators=50, random_state=42)
-        reg.fit(X, y)
-        yield_models[crop] = reg
-
-train_dummy_models()
+train_yield_models()
 
 @router.post("/yield-predict")
 async def yield_predict(request: YieldRequest):

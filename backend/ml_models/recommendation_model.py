@@ -36,8 +36,17 @@ FERTILIZERS = ["Urea", "DAP", "14-35-14",
 crop_clf = RandomForestClassifier(n_estimators=50, random_state=42)
 fert_clf = RandomForestClassifier(n_estimators=50, random_state=42)
 
-def train_dummy_classifiers():
+import os
+import logging
+import pandas as pd
 
+logger = logging.getLogger(__name__)
+
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+CROP_DATA_PATH = os.path.join(DATA_DIR, "crop_recommendation.csv")
+FERT_DATA_PATH = os.path.join(DATA_DIR, "fertilizer_recommendation.csv")
+
+def _train_dummy_crop():
     X_crop, y_crop = [], []
     for _ in range(500):
         N = random.uniform(0, 140)
@@ -64,6 +73,7 @@ def train_dummy_classifiers():
 
     crop_clf.fit(X_crop, y_crop)
 
+def _train_dummy_fert():
     X_fert, y_fert = [], []
     for _ in range(500):
         temp = random.uniform(20, 40)
@@ -87,7 +97,39 @@ def train_dummy_classifiers():
 
     fert_clf.fit(X_fert, y_fert)
 
-train_dummy_classifiers()
+def train_classifiers():
+    # 1. Train Crop Classifier
+    if os.path.isfile(CROP_DATA_PATH):
+        try:
+            df_crop = pd.read_csv(CROP_DATA_PATH)
+            feature_cols = ["N", "P", "K", "temperature", "humidity", "ph", "rainfall"]
+            X_crop = df_crop[feature_cols].values
+            y_crop = df_crop["label"].values
+            crop_clf.fit(X_crop, y_crop)
+            logger.info(f"✅ Crop classifier trained on real dataset: {len(df_crop)} samples, {len(np.unique(y_crop))} classes.")
+        except Exception as e:
+            logger.warning(f"Failed to load crop dataset ({e}). Falling back to synthetic.")
+            _train_dummy_crop()
+    else:
+        _train_dummy_crop()
+
+    # 2. Train Fertilizer Classifier
+    if os.path.isfile(FERT_DATA_PATH):
+        try:
+            df_fert = pd.read_csv(FERT_DATA_PATH)
+            # Use nutrient & climate features matching FertilizerRecommendRequest
+            feature_cols = ["Temparature", "Humidity", "Moisture", "Nitrogen", "Phosphorous", "Potassium"]
+            X_fert = df_fert[feature_cols].values
+            y_fert = df_fert["Fertilizer Name"].values
+            fert_clf.fit(X_fert, y_fert)
+            logger.info(f"✅ Fertilizer classifier trained on real dataset: {len(df_fert)} samples, {len(np.unique(y_fert))} classes.")
+        except Exception as e:
+            logger.warning(f"Failed to load fertilizer dataset ({e}). Falling back to synthetic.")
+            _train_dummy_fert()
+    else:
+        _train_dummy_fert()
+
+train_classifiers()
 
 @router.post("/crop-recommend")
 async def crop_recommend(request: CropRecommendRequest):

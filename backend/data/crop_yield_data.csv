@@ -1,0 +1,481 @@
+Crop,Season,State,Area_Acres,Rainfall_mm,Temperature_C,Soil_pH,Nitrogen_kg_ha,Phosphorus_kg_ha,Potassium_kg_ha,Yield_Quintals_Per_Acre
+Paddy,Whole Year,Tamil Nadu,19.4,1623.9,30.9,6.16,88.8,22.3,64.4,13.29
+Paddy,Whole Year,Tamil Nadu,24.1,1149.7,27.4,7.25,36.0,27.3,25.5,8.15
+Paddy,Kharif,Andhra Pradesh,7.1,1001.7,20.2,7.73,58.0,76.8,29.3,8.58
+Paddy,Kharif,Andhra Pradesh,23.2,1989.7,28.6,7.47,88.6,64.4,86.7,13.39
+Paddy,Kharif,West Bengal,13.7,774.8,34.8,7.68,92.8,53.1,84.1,8.45
+Paddy,Kharif,Gujarat,18.5,897.7,25.0,6.92,144.8,52.8,43.8,20.9
+Paddy,Rabi,Maharashtra,10.5,1228.0,23.3,7.58,48.0,60.2,81.5,14.69
+Paddy,Rabi,Kerala,18.1,2140.7,29.4,5.64,111.1,36.8,40.9,10.91
+Paddy,Kharif,Madhya Pradesh,13.1,1769.2,23.8,5.37,75.8,51.0,57.8,13.3
+Paddy,Whole Year,Andhra Pradesh,18.9,1995.7,23.1,7.71,135.1,54.2,16.9,11.12
+Paddy,Kharif,Madhya Pradesh,5.8,1855.3,20.9,5.92,62.6,78.0,66.8,13.34
+Paddy,Kharif,Kerala,9.6,1397.0,29.1,7.16,103.0,31.8,63.5,18.3
+Paddy,Whole Year,Kerala,7.9,1723.3,34.7,6.24,154.4,88.2,38.4,14.36
+Paddy,Whole Year,Punjab,7.0,1655.7,32.1,7.78,137.9,83.4,67.8,13.12
+Paddy,Whole Year,Gujarat,18.7,1002.6,31.0,5.62,88.3,88.8,20.6,13.43
+Paddy,Kharif,Kerala,10.1,1359.9,28.0,5.42,105.9,34.1,39.8,15.97
+Paddy,Kharif,Uttar Pradesh,4.7,1196.9,18.9,7.98,110.0,64.6,51.8,12.38
+Paddy,Kharif,Tamil Nadu,19.8,1189.5,22.0,5.59,38.9,52.9,46.2,10.29
+Paddy,Rabi,Haryana,6.3,1028.6,24.0,6.15,58.4,71.4,54.8,17.96
+Paddy,Kharif,Madhya Pradesh,3.8,1232.9,22.3,7.06,149.4,33.3,18.0,18.33
+Paddy,Kharif,Andhra Pradesh,10.3,1532.0,23.1,7.92,136.9,43.1,75.2,16.68
+Paddy,Rabi,Punjab,22.6,996.5,27.3,8.03,51.8,86.7,55.3,12.59
+Paddy,Kharif,Haryana,17.1,1891.3,33.6,6.36,43.5,55.3,67.7,10.95
+Paddy,Whole Year,Andhra Pradesh,20.6,811.1,30.3,5.08,123.2,17.8,20.5,8.08
+Paddy,Whole Year,Karnataka,2.7,1965.3,34.4,6.3,88.6,45.3,38.7,9.42
+Paddy,Whole Year,Haryana,1.1,1809.2,19.1,7.39,35.9,78.6,41.8,8.55
+Paddy,Whole Year,Karnataka,8.2,833.2,31.8,6.4,81.4,64.6,50.5,13.31
+Paddy,Whole Year,Uttar Pradesh,10.4,1928.1,27.8,8.07,48.7,65.8,83.6,13.19
+Paddy,Rabi,Madhya Pradesh,24.0,717.2,33.7,5.45,35.4,58.0,44.6,5.67
+Paddy,Rabi,Haryana,6.0,1841.8,31.1,5.68,147.7,78.9,25.7,13.32
+Paddy,Rabi,Gujarat,5.7,979.3,32.4,7.73,140.7,84.9,89.6,11.35
+Paddy,Kharif,Kerala,8.0,803.7,19.8,7.32,93.3,39.8,24.6,8.46
+Paddy,Rabi,Haryana,15.9,2086.2,23.7,6.44,110.1,37.9,58.8,16.35
+Paddy,Rabi,Tamil Nadu,24.0,959.7,23.6,7.51,122.6,63.1,35.8,15.01
+Paddy,Whole Year,Madhya Pradesh,9.0,1439.1,26.0,7.48,93.3,23.2,63.4,16.58
+Paddy,Kharif,Karnataka,22.4,1002.5,31.2,7.01,124.6,81.9,78.7,16.03
+Paddy,Whole Year,Gujarat,10.7,1608.7,34.3,6.77,100.7,89.9,50.4,15.78
+Paddy,Rabi,Tamil Nadu,6.4,1889.1,31.2,5.93,90.4,53.3,44.8,12.24
+Paddy,Kharif,Madhya Pradesh,21.4,1942.1,29.1,5.53,96.8,48.5,28.4,11.79
+Paddy,Kharif,Madhya Pradesh,18.7,1444.6,24.5,5.7,93.4,19.7,42.7,13.95
+Paddy,Whole Year,Maharashtra,22.8,1256.3,26.5,6.45,36.0,88.5,39.3,20.23
+Paddy,Whole Year,Kerala,20.9,1985.7,22.7,6.74,52.6,64.0,42.4,12.29
+Paddy,Whole Year,Haryana,7.0,2197.9,22.0,6.3,136.2,40.9,74.4,15.01
+Paddy,Whole Year,Punjab,22.2,1377.4,22.1,6.65,66.5,26.3,26.8,12.42
+Paddy,Whole Year,Haryana,6.5,1949.2,31.0,6.54,92.2,30.8,27.1,11.56
+Paddy,Kharif,Punjab,2.0,1583.2,20.9,7.01,35.1,57.9,19.2,8.53
+Paddy,Whole Year,Uttar Pradesh,24.0,1623.0,28.1,5.06,123.5,64.6,36.3,15.64
+Paddy,Whole Year,West Bengal,24.8,2035.6,21.1,7.66,108.1,74.6,76.5,10.64
+Paddy,Whole Year,Madhya Pradesh,7.3,1815.2,24.2,6.45,106.8,32.2,43.9,16.48
+Paddy,Whole Year,Maharashtra,21.6,1476.7,25.6,5.48,42.5,50.7,61.1,13.4
+Paddy,Whole Year,Kerala,19.1,843.5,29.9,7.89,100.1,15.1,85.3,11.39
+Paddy,Whole Year,Andhra Pradesh,11.1,2047.2,30.6,6.37,152.0,51.2,72.7,15.09
+Paddy,Kharif,Gujarat,11.2,1092.0,31.8,7.91,40.9,59.9,55.8,8.51
+Paddy,Whole Year,Punjab,18.8,711.0,27.4,6.66,78.8,30.4,75.3,14.54
+Paddy,Kharif,Haryana,11.2,1601.5,22.7,6.72,103.4,60.9,89.4,21.05
+Paddy,Rabi,Maharashtra,14.3,1558.6,21.2,6.79,92.9,89.1,58.3,20.41
+Paddy,Whole Year,Andhra Pradesh,4.3,2030.3,20.1,5.74,131.8,86.2,22.5,12.01
+Paddy,Whole Year,Tamil Nadu,15.7,1754.2,18.9,6.25,112.7,75.3,76.7,15.01
+Paddy,Rabi,Gujarat,3.1,1105.2,24.7,6.95,124.2,84.8,45.0,21.93
+Paddy,Whole Year,Karnataka,24.1,788.5,31.9,5.56,94.3,15.8,78.8,10.29
+Coconut,Rabi,Kerala,5.7,2452.2,27.2,7.24,110.0,65.6,42.0,38.75
+Coconut,Kharif,Uttar Pradesh,24.9,2443.8,24.4,6.26,106.2,53.8,70.3,42.68
+Coconut,Whole Year,Haryana,7.8,2542.9,34.5,6.11,155.2,35.7,60.5,38.79
+Coconut,Whole Year,Andhra Pradesh,1.1,1246.6,27.1,6.79,95.4,40.5,23.8,33.24
+Coconut,Whole Year,Karnataka,20.5,2038.3,30.5,8.09,103.2,72.7,71.8,50.64
+Coconut,Whole Year,West Bengal,12.1,2061.9,18.5,5.37,38.8,62.5,89.6,30.55
+Coconut,Rabi,Maharashtra,10.9,1599.1,27.6,7.24,64.2,36.5,44.9,32.77
+Coconut,Kharif,Tamil Nadu,14.3,1253.4,23.6,5.7,104.6,28.7,71.0,42.84
+Coconut,Rabi,Maharashtra,18.7,1365.0,22.4,5.85,59.8,77.6,77.7,41.65
+Coconut,Kharif,Haryana,23.1,2238.1,29.9,6.96,129.4,55.6,18.2,39.8
+Coconut,Rabi,Gujarat,12.8,2851.0,34.1,7.78,93.8,88.8,83.7,26.03
+Coconut,Whole Year,Maharashtra,4.1,1941.0,25.6,8.01,34.2,41.0,79.5,32.15
+Coconut,Kharif,West Bengal,17.8,1810.9,30.4,5.04,57.4,58.6,39.4,35.92
+Coconut,Kharif,Karnataka,14.2,1369.5,26.5,6.96,77.6,52.4,30.8,33.43
+Coconut,Rabi,Tamil Nadu,21.5,1453.7,21.2,5.42,104.9,32.1,22.5,25.76
+Coconut,Whole Year,Maharashtra,11.4,1654.1,20.6,8.07,49.4,75.4,28.2,21.76
+Coconut,Whole Year,Madhya Pradesh,13.8,1525.1,26.8,5.8,141.6,18.6,22.4,47.24
+Coconut,Rabi,Maharashtra,12.4,2147.1,26.1,6.07,76.9,57.0,84.9,55.56
+Coconut,Rabi,Punjab,3.9,2617.4,35.3,5.64,104.9,63.7,28.1,28.23
+Coconut,Rabi,Tamil Nadu,17.2,1865.2,31.3,7.85,79.5,36.5,62.4,32.72
+Coconut,Whole Year,Uttar Pradesh,20.4,1568.0,29.4,6.83,140.4,20.4,27.1,41.28
+Coconut,Whole Year,Tamil Nadu,8.0,1429.6,29.6,5.87,87.8,79.7,42.2,55.67
+Coconut,Rabi,West Bengal,5.0,2591.3,20.3,5.75,62.7,70.8,71.2,27.13
+Coconut,Kharif,Andhra Pradesh,3.3,2754.9,26.5,5.17,130.2,54.3,89.7,41.48
+Coconut,Kharif,Gujarat,3.0,2744.5,25.0,5.73,125.9,48.2,24.5,35.04
+Coconut,Kharif,Uttar Pradesh,1.8,1606.5,34.5,7.77,90.7,80.3,85.1,38.59
+Coconut,Whole Year,Uttar Pradesh,13.9,2069.8,26.2,7.4,144.0,47.6,63.0,50.03
+Coconut,Rabi,Tamil Nadu,14.0,2493.3,26.0,6.17,63.8,37.8,15.0,26.74
+Coconut,Rabi,Uttar Pradesh,7.9,1959.5,30.4,6.57,128.2,37.5,72.4,60.38
+Coconut,Kharif,Gujarat,20.1,1985.5,21.4,7.82,86.8,33.7,68.6,28.82
+Coconut,Kharif,Andhra Pradesh,7.3,1736.0,22.3,7.45,148.3,75.6,66.3,44.23
+Coconut,Rabi,Kerala,10.9,2589.9,21.3,5.93,112.8,61.3,35.4,33.66
+Coconut,Rabi,Maharashtra,1.5,998.3,27.6,5.6,43.3,35.2,68.6,32.23
+Coconut,Kharif,Maharashtra,4.6,1877.3,24.2,6.0,133.9,89.8,49.8,76.78
+Coconut,Kharif,Tamil Nadu,21.2,2784.3,19.0,7.48,39.3,50.3,29.4,11.42
+Coconut,Kharif,Andhra Pradesh,3.9,2420.9,22.5,7.47,87.6,70.3,17.5,23.22
+Coconut,Whole Year,Haryana,17.0,1312.7,25.0,8.08,151.7,26.9,69.6,42.87
+Coconut,Whole Year,Kerala,3.9,1852.8,23.4,6.15,36.8,65.0,88.0,45.03
+Coconut,Rabi,Andhra Pradesh,1.4,2472.9,28.5,6.27,61.6,87.7,58.6,49.86
+Coconut,Kharif,Gujarat,9.9,1077.2,20.8,5.29,110.4,84.8,89.8,36.86
+Coconut,Rabi,Punjab,16.5,2288.6,32.2,5.4,60.2,88.6,74.1,43.51
+Coconut,Whole Year,West Bengal,5.6,2264.7,24.4,5.43,146.8,51.4,47.8,47.22
+Coconut,Kharif,West Bengal,14.6,1976.4,23.8,6.5,142.8,59.9,79.5,57.28
+Coconut,Kharif,Kerala,11.8,2522.4,27.7,6.45,130.9,52.9,70.0,58.79
+Coconut,Rabi,Gujarat,19.6,1372.8,31.0,7.11,100.1,44.1,54.3,34.97
+Coconut,Kharif,Kerala,15.7,1538.7,29.5,5.35,98.0,20.0,77.6,43.89
+Coconut,Kharif,Punjab,3.6,1279.4,18.6,7.05,80.5,51.7,61.8,23.96
+Coconut,Rabi,Punjab,6.3,2321.3,18.2,7.95,115.2,84.6,77.4,31.61
+Coconut,Kharif,Madhya Pradesh,9.7,2372.1,34.0,7.63,133.3,19.4,61.3,28.3
+Coconut,Rabi,Haryana,2.9,1327.5,27.4,5.32,60.0,43.9,29.5,30.96
+Coconut,Whole Year,Gujarat,23.7,2005.7,28.0,7.39,129.6,58.2,65.6,57.67
+Coconut,Kharif,Andhra Pradesh,5.0,1257.2,25.2,6.08,50.6,89.9,48.2,42.29
+Coconut,Whole Year,Tamil Nadu,24.8,1542.8,24.7,7.45,86.0,69.4,60.6,39.33
+Coconut,Rabi,Maharashtra,19.4,2733.8,22.6,8.08,88.2,44.8,69.5,24.86
+Coconut,Kharif,Gujarat,13.4,2867.0,23.4,5.96,58.8,79.2,16.6,25.55
+Coconut,Whole Year,Karnataka,13.3,2029.9,28.3,5.3,89.8,26.7,34.9,40.76
+Coconut,Kharif,Maharashtra,7.1,1494.6,28.3,6.82,58.3,20.8,39.4,27.98
+Coconut,Whole Year,West Bengal,17.9,2522.6,19.7,7.06,34.9,75.6,43.6,17.73
+Coconut,Rabi,Tamil Nadu,22.1,1759.9,34.7,5.39,130.2,71.1,78.7,55.62
+Coconut,Whole Year,Madhya Pradesh,10.2,1503.5,18.7,6.73,49.4,52.7,31.6,18.47
+Rubber,Rabi,Andhra Pradesh,19.1,2492.1,19.6,6.38,132.2,26.1,40.2,267.7
+Rubber,Whole Year,Punjab,10.6,1305.9,27.0,7.48,46.9,25.1,56.9,210.1
+Rubber,Whole Year,Madhya Pradesh,5.7,2590.7,31.2,5.79,39.3,73.3,39.3,335.3
+Rubber,Kharif,Haryana,17.1,2125.0,24.3,6.03,107.2,16.8,37.9,409.57
+Rubber,Rabi,Gujarat,16.0,2165.9,34.6,5.75,119.1,26.7,69.6,322.27
+Rubber,Kharif,Punjab,23.8,3342.7,33.6,7.62,31.8,67.0,23.3,118.84
+Rubber,Rabi,Punjab,6.0,2402.0,21.7,6.67,63.6,51.2,69.7,271.68
+Rubber,Kharif,Madhya Pradesh,10.0,3292.6,27.5,5.82,37.8,30.1,67.2,249.9
+Rubber,Whole Year,West Bengal,23.7,1261.2,29.9,7.12,148.7,42.0,23.1,248.41
+Rubber,Rabi,Madhya Pradesh,6.5,2021.3,35.6,5.32,71.0,80.0,54.9,308.87
+Rubber,Rabi,Kerala,14.5,2824.2,18.7,7.95,69.6,51.7,70.8,188.59
+Rubber,Rabi,Madhya Pradesh,9.5,1831.6,35.9,8.13,65.9,19.7,34.3,140.57
+Rubber,Whole Year,Punjab,23.8,1645.9,24.2,6.26,47.8,69.7,54.1,327.35
+Rubber,Whole Year,Madhya Pradesh,6.5,1681.7,20.7,8.11,148.3,39.7,55.7,231.14
+Rubber,Whole Year,Uttar Pradesh,14.0,3036.3,33.5,5.99,121.7,54.3,25.1,286.37
+Rubber,Whole Year,Uttar Pradesh,23.4,3319.4,23.7,6.78,153.3,23.9,38.8,245.81
+Rubber,Rabi,Punjab,22.1,2102.0,25.4,6.42,151.4,82.1,85.0,397.49
+Rubber,Kharif,Maharashtra,4.2,1163.4,35.7,6.97,108.7,60.9,59.7,165.4
+Rubber,Rabi,Punjab,2.9,2987.2,20.4,7.71,90.9,63.7,28.8,205.81
+Rubber,Kharif,West Bengal,4.9,1647.6,25.4,8.1,150.3,86.3,31.7,330.54
+Rubber,Kharif,Maharashtra,2.6,3343.6,35.7,7.77,93.7,39.4,49.3,153.7
+Rubber,Kharif,Andhra Pradesh,15.6,3094.9,31.0,6.26,152.1,57.9,55.2,289.78
+Rubber,Whole Year,Punjab,3.6,2205.7,33.8,7.81,61.9,55.3,88.8,256.32
+Rubber,Whole Year,Andhra Pradesh,19.4,3429.5,21.4,6.41,145.0,73.0,36.4,198.21
+Rubber,Whole Year,Karnataka,23.1,2769.7,34.3,6.48,114.0,21.8,52.5,225.8
+Rubber,Whole Year,Gujarat,14.1,2051.2,23.8,5.08,89.0,82.2,82.2,457.11
+Rubber,Rabi,Haryana,8.8,2669.6,30.8,5.52,125.3,21.8,68.0,423.65
+Rubber,Whole Year,Haryana,18.0,2859.0,35.6,6.96,50.8,56.3,18.3,127.78
+Rubber,Whole Year,Tamil Nadu,21.9,3187.7,20.9,5.46,130.0,18.8,38.1,298.96
+Rubber,Rabi,West Bengal,16.0,1384.5,20.4,5.65,110.9,34.0,49.4,307.87
+Rubber,Kharif,Kerala,15.6,2294.2,21.9,7.11,89.0,48.1,60.1,279.97
+Rubber,Rabi,Kerala,15.9,2449.3,32.9,5.16,49.3,64.0,17.8,264.34
+Rubber,Whole Year,Madhya Pradesh,21.1,1822.2,34.6,5.16,84.2,28.4,65.4,291.23
+Rubber,Whole Year,Gujarat,19.9,1529.4,26.2,6.85,151.1,22.0,37.4,314.51
+Rubber,Kharif,Andhra Pradesh,19.2,3140.8,19.2,6.51,45.9,79.5,39.7,169.85
+Rubber,Whole Year,Maharashtra,6.0,1240.8,28.3,8.13,98.8,21.6,69.3,283.23
+Rubber,Rabi,Karnataka,15.6,1865.9,27.5,8.18,76.0,24.7,57.2,310.92
+Rubber,Rabi,Madhya Pradesh,12.8,1535.4,29.0,7.27,157.3,15.1,16.8,307.93
+Rubber,Whole Year,Haryana,21.4,3034.9,36.0,6.32,73.4,57.0,62.8,197.07
+Rubber,Whole Year,Maharashtra,7.8,3012.3,23.5,6.62,72.1,15.5,66.4,215.07
+Rubber,Whole Year,Gujarat,24.0,3113.5,21.5,7.67,149.9,50.9,50.6,203.84
+Rubber,Rabi,Uttar Pradesh,4.7,2214.7,33.6,7.87,90.1,76.1,84.6,260.25
+Rubber,Rabi,Kerala,14.6,2741.2,28.0,5.06,105.1,39.9,83.7,444.17
+Rubber,Kharif,Haryana,7.7,1175.4,35.7,7.0,139.5,57.8,44.2,176.4
+Rubber,Whole Year,Karnataka,21.6,2817.8,22.9,5.28,144.0,42.9,77.2,354.81
+Rubber,Rabi,Kerala,5.2,2005.6,18.7,5.65,42.0,52.9,74.9,314.44
+Rubber,Kharif,Uttar Pradesh,9.2,2270.0,33.7,5.99,72.6,72.7,22.4,330.16
+Rubber,Whole Year,Kerala,24.8,1596.6,18.7,6.24,142.4,23.7,38.3,222.26
+Rubber,Kharif,Gujarat,9.0,3251.8,19.9,7.45,126.9,16.7,71.9,188.66
+Rubber,Rabi,Maharashtra,5.8,1793.5,27.6,7.47,117.2,35.4,26.8,320.7
+Rubber,Whole Year,Gujarat,13.3,1599.9,24.3,6.02,48.4,67.8,36.2,288.01
+Rubber,Rabi,Haryana,15.7,1919.7,26.0,5.42,91.2,65.7,22.9,455.17
+Rubber,Rabi,Andhra Pradesh,5.3,2542.6,28.7,7.68,120.9,61.2,38.4,361.9
+Rubber,Whole Year,Madhya Pradesh,2.9,3333.1,31.8,6.82,42.1,75.2,67.4,193.16
+Rubber,Whole Year,Karnataka,16.5,2954.9,26.5,8.03,48.7,82.2,34.4,272.35
+Rubber,Whole Year,Uttar Pradesh,23.0,1899.4,33.5,6.04,93.4,19.9,23.5,231.52
+Rubber,Rabi,Uttar Pradesh,19.4,2562.7,20.3,5.33,136.3,74.8,39.4,348.18
+Rubber,Whole Year,Karnataka,12.1,2529.1,22.3,5.78,50.7,51.2,20.0,238.18
+Rubber,Rabi,Gujarat,19.8,2153.6,32.2,6.74,60.7,64.7,20.8,255.41
+Rubber,Rabi,Gujarat,3.7,2542.5,23.9,5.31,87.9,38.1,45.4,401.85
+Vegetables,Whole Year,Madhya Pradesh,19.5,733.4,26.9,7.11,41.8,76.3,81.5,83.62
+Vegetables,Kharif,Madhya Pradesh,19.2,981.6,26.2,5.93,110.0,48.5,30.4,74.6
+Vegetables,Whole Year,Karnataka,20.1,998.0,34.5,8.0,123.3,83.6,89.3,51.08
+Vegetables,Whole Year,Gujarat,10.7,512.2,23.3,6.18,101.4,19.0,67.8,76.78
+Vegetables,Kharif,Tamil Nadu,21.7,1161.8,22.2,7.25,81.3,38.9,43.7,47.75
+Vegetables,Kharif,Kerala,16.9,817.9,21.4,6.23,150.2,78.0,26.6,124.02
+Vegetables,Kharif,Madhya Pradesh,4.2,463.1,18.3,7.31,93.3,47.8,89.3,50.72
+Vegetables,Rabi,Madhya Pradesh,21.6,1186.4,30.5,7.98,111.0,49.1,46.8,40.06
+Vegetables,Rabi,Andhra Pradesh,6.4,773.8,18.1,6.59,125.0,68.4,35.2,94.65
+Vegetables,Rabi,Gujarat,1.8,433.3,26.7,6.18,105.4,87.1,21.0,70.34
+Vegetables,Rabi,Kerala,12.2,468.8,34.0,5.28,91.4,70.6,87.0,40.6
+Vegetables,Whole Year,Madhya Pradesh,20.2,675.0,18.9,6.1,131.2,50.2,53.4,80.7
+Vegetables,Rabi,Tamil Nadu,9.5,1260.4,23.3,5.54,120.4,59.8,37.8,59.24
+Vegetables,Kharif,Karnataka,16.1,908.8,28.3,7.1,67.9,70.3,17.0,54.01
+Vegetables,Whole Year,Uttar Pradesh,2.8,1089.7,22.5,6.97,65.8,34.3,70.6,61.79
+Vegetables,Whole Year,Gujarat,4.6,793.1,32.5,5.84,121.1,51.4,75.0,74.99
+Vegetables,Kharif,Tamil Nadu,24.2,924.1,32.8,7.68,127.9,46.0,43.7,48.67
+Vegetables,Kharif,Madhya Pradesh,6.1,1046.2,24.2,7.06,128.2,23.7,27.6,68.71
+Vegetables,Rabi,Karnataka,18.9,1062.1,27.6,6.22,121.7,50.6,25.9,71.95
+Vegetables,Rabi,Punjab,23.3,795.0,30.2,8.08,118.8,18.1,83.8,62.38
+Vegetables,Whole Year,Andhra Pradesh,23.0,1155.4,24.0,5.85,42.8,64.1,44.3,53.49
+Vegetables,Whole Year,Maharashtra,17.1,1078.0,27.4,7.17,159.1,38.5,15.8,60.02
+Vegetables,Kharif,Haryana,10.9,862.2,30.3,6.12,124.3,33.9,17.6,60.55
+Vegetables,Whole Year,Punjab,16.8,1135.2,35.1,7.04,122.0,24.0,79.2,45.56
+Vegetables,Whole Year,Madhya Pradesh,14.6,1251.1,34.1,7.23,62.9,50.0,85.2,35.64
+Vegetables,Rabi,Karnataka,17.6,987.5,31.9,5.82,131.5,35.8,19.7,44.75
+Vegetables,Rabi,Punjab,23.9,632.9,25.9,6.57,150.7,60.8,28.4,105.44
+Vegetables,Whole Year,Uttar Pradesh,19.4,592.2,29.6,7.92,123.0,22.7,20.5,40.28
+Vegetables,Rabi,Karnataka,1.5,838.0,29.8,5.0,34.9,44.3,26.4,28.43
+Vegetables,Whole Year,Andhra Pradesh,1.1,1022.7,31.9,6.53,82.5,69.6,75.9,59.7
+Vegetables,Kharif,Maharashtra,10.2,1006.5,32.0,5.39,99.6,89.4,40.0,45.77
+Vegetables,Whole Year,Punjab,24.9,969.4,24.6,7.73,74.2,78.1,72.0,72.68
+Vegetables,Kharif,Maharashtra,14.3,1251.4,29.9,5.96,80.7,23.0,66.7,37.19
+Vegetables,Rabi,Madhya Pradesh,18.6,523.1,21.5,7.3,107.1,51.7,19.7,55.63
+Vegetables,Rabi,Karnataka,13.8,1134.1,26.1,8.19,34.8,19.2,74.1,30.86
+Vegetables,Kharif,Haryana,20.4,987.2,26.3,7.17,143.7,26.2,58.5,87.22
+Vegetables,Whole Year,Punjab,4.4,975.4,26.5,7.94,36.0,67.6,24.8,36.59
+Vegetables,Rabi,Punjab,20.7,485.6,29.0,7.67,38.3,76.3,23.6,31.59
+Vegetables,Kharif,Gujarat,2.5,578.3,24.1,7.67,125.9,45.2,24.1,66.31
+Vegetables,Kharif,Kerala,8.7,1248.9,21.8,5.15,52.5,19.7,35.5,25.14
+Vegetables,Whole Year,Uttar Pradesh,9.9,545.2,22.4,6.86,47.3,74.3,62.4,68.39
+Vegetables,Kharif,Uttar Pradesh,22.1,471.0,18.1,7.96,121.9,59.5,36.3,46.23
+Vegetables,Whole Year,West Bengal,4.0,525.9,22.9,6.44,61.1,28.1,66.9,65.46
+Vegetables,Whole Year,West Bengal,23.8,951.9,32.1,6.11,30.6,32.7,23.8,23.8
+Vegetables,Whole Year,Haryana,9.7,1069.8,27.7,5.7,130.1,64.4,35.7,63.62
+Vegetables,Whole Year,Uttar Pradesh,21.3,1202.1,27.0,5.51,149.9,19.1,42.3,49.27
+Vegetables,Rabi,Karnataka,15.8,1183.3,26.2,5.33,36.8,55.3,26.9,27.11
+Vegetables,Kharif,Kerala,2.7,607.1,26.0,6.86,84.5,71.0,82.4,89.96
+Vegetables,Rabi,Haryana,6.5,608.7,25.4,5.64,145.9,20.5,58.9,73.83
+Vegetables,Kharif,Andhra Pradesh,6.2,936.3,21.2,6.2,89.5,29.6,41.9,62.87
+Vegetables,Kharif,Tamil Nadu,1.8,900.4,23.1,5.36,90.5,46.4,72.0,71.79
+Vegetables,Whole Year,Karnataka,4.8,1099.2,35.1,7.9,105.2,56.5,32.2,34.65
+Vegetables,Rabi,Kerala,21.7,590.5,26.5,6.48,31.9,47.1,80.4,63.21
+Vegetables,Whole Year,Andhra Pradesh,6.3,1216.2,35.0,7.92,146.8,46.3,18.3,35.97
+Vegetables,Kharif,Kerala,11.2,747.0,32.6,7.23,42.7,52.1,21.2,32.54
+Vegetables,Kharif,Andhra Pradesh,4.2,660.3,29.7,5.29,92.4,37.9,67.7,53.23
+Vegetables,Kharif,Gujarat,24.4,808.1,20.5,7.25,54.0,80.4,62.0,77.64
+Vegetables,Whole Year,Punjab,2.7,1186.2,24.0,5.1,85.4,35.2,86.0,56.78
+Vegetables,Whole Year,Maharashtra,2.9,1175.1,31.2,5.18,152.9,65.6,81.6,41.51
+Vegetables,Rabi,Tamil Nadu,15.9,721.7,21.2,6.79,38.7,68.2,30.4,63.4
+Banana,Whole Year,Maharashtra,3.7,1231.6,34.9,6.86,154.7,30.7,70.9,430.45
+Banana,Rabi,Tamil Nadu,13.1,1158.3,19.0,6.19,88.8,52.6,77.2,415.82
+Banana,Whole Year,Kerala,20.8,1787.3,26.1,6.18,117.5,67.0,88.4,574.43
+Banana,Rabi,Maharashtra,3.1,1115.7,21.2,8.07,40.0,27.4,23.4,123.36
+Banana,Kharif,Uttar Pradesh,13.5,1428.0,23.3,8.1,100.4,24.9,41.0,251.98
+Banana,Kharif,Madhya Pradesh,8.0,683.1,33.7,5.74,153.2,63.4,45.9,377.35
+Banana,Rabi,Madhya Pradesh,12.7,1478.9,27.5,6.76,89.5,57.5,82.4,514.95
+Banana,Kharif,Karnataka,12.6,1881.4,31.9,5.15,75.9,49.2,27.5,196.55
+Banana,Rabi,Kerala,5.4,831.5,30.7,7.9,133.3,27.1,23.8,312.89
+Banana,Kharif,Gujarat,11.6,1088.0,21.7,7.26,116.5,88.4,26.1,353.62
+Banana,Whole Year,Uttar Pradesh,8.2,1815.0,25.3,6.6,48.9,49.4,39.0,211.8
+Banana,Whole Year,Kerala,9.0,1531.2,26.5,5.93,152.7,88.6,58.0,649.82
+Banana,Whole Year,Gujarat,22.8,1183.6,30.4,7.34,147.0,25.5,56.3,452.03
+Banana,Whole Year,Andhra Pradesh,21.2,1188.7,19.7,5.18,113.4,58.8,31.7,316.74
+Banana,Kharif,Karnataka,1.5,1310.7,26.0,7.15,41.4,53.4,29.6,254.29
+Banana,Whole Year,Gujarat,23.6,1799.1,24.5,5.47,141.0,42.7,43.0,321.99
+Banana,Rabi,Tamil Nadu,24.5,1754.1,19.6,7.33,87.7,89.4,75.3,237.56
+Banana,Whole Year,Andhra Pradesh,22.5,784.2,28.6,5.28,57.0,50.6,80.1,379.89
+Banana,Whole Year,Haryana,19.1,716.8,25.4,7.93,83.9,56.7,68.3,316.69
+Banana,Kharif,Uttar Pradesh,5.5,1103.9,28.0,5.14,137.4,77.6,37.8,580.47
+Banana,Kharif,West Bengal,1.6,603.2,22.7,8.06,138.5,50.4,64.0,302.21
+Banana,Kharif,Andhra Pradesh,12.8,1508.0,22.4,5.38,66.0,89.6,20.0,283.08
+Banana,Rabi,Gujarat,14.6,1746.2,29.3,6.52,120.3,24.0,53.4,391.93
+Banana,Kharif,Karnataka,15.0,792.9,26.3,7.22,76.5,19.0,42.1,242.47
+Banana,Kharif,Tamil Nadu,8.0,1299.1,34.9,6.64,129.6,28.7,22.1,338.01
+Banana,Rabi,Kerala,21.9,1691.4,30.3,5.96,119.1,66.6,22.2,416.33
+Banana,Kharif,Uttar Pradesh,4.3,971.5,32.0,6.32,149.7,27.2,31.3,461.39
+Banana,Whole Year,Maharashtra,15.7,1697.5,27.5,6.7,101.6,71.7,23.5,394.67
+Banana,Kharif,Haryana,20.7,1818.9,26.6,6.0,77.1,76.3,81.7,452.53
+Banana,Kharif,Tamil Nadu,18.0,638.0,32.7,5.71,141.4,25.7,32.0,282.51
+Banana,Kharif,Uttar Pradesh,11.2,1607.2,20.0,5.06,93.0,47.3,29.7,170.7
+Banana,Whole Year,Madhya Pradesh,15.2,1219.2,34.4,5.14,69.2,15.8,22.2,162.86
+Banana,Kharif,Gujarat,15.1,864.0,30.1,5.09,48.9,71.0,35.8,271.13
+Banana,Kharif,Tamil Nadu,21.5,1630.7,29.0,6.62,38.9,76.5,72.2,398.52
+Banana,Rabi,Maharashtra,5.1,1595.3,18.1,7.32,150.2,84.0,78.8,343.58
+Banana,Kharif,Gujarat,11.6,1864.2,21.3,6.14,79.3,31.1,32.1,180.62
+Banana,Kharif,Tamil Nadu,12.2,1286.0,26.9,6.16,67.5,69.2,21.2,459.41
+Banana,Rabi,Andhra Pradesh,12.0,1571.8,30.4,7.69,59.4,45.5,88.9,306.1
+Banana,Rabi,Haryana,23.5,1085.0,18.2,7.16,117.4,44.7,54.2,310.38
+Banana,Kharif,Haryana,10.5,1517.4,35.6,7.37,146.0,27.7,42.3,242.85
+Banana,Whole Year,Maharashtra,21.3,1133.7,22.2,6.36,94.9,72.4,72.4,522.16
+Banana,Rabi,Madhya Pradesh,9.5,1480.0,35.1,8.16,96.5,26.1,49.1,201.08
+Banana,Rabi,West Bengal,6.5,1844.0,18.5,7.36,137.9,52.4,17.0,175.89
+Banana,Whole Year,Gujarat,8.8,999.6,29.2,7.43,115.9,54.0,51.9,421.7
+Banana,Whole Year,Karnataka,12.9,1266.3,27.8,7.59,100.3,16.3,72.3,444.57
+Banana,Rabi,Haryana,11.8,1725.8,26.0,5.12,53.0,64.5,73.5,308.28
+Banana,Rabi,Uttar Pradesh,11.3,1012.4,25.0,7.44,104.0,51.8,56.5,372.26
+Banana,Rabi,West Bengal,14.5,806.3,19.0,5.84,106.8,43.3,65.7,313.78
+Banana,Rabi,Karnataka,2.5,1379.4,20.3,6.17,135.2,58.8,72.4,488.2
+Banana,Kharif,Andhra Pradesh,11.3,1909.4,25.4,5.18,61.7,32.6,38.4,159.05
+Banana,Rabi,Haryana,3.7,824.1,27.7,5.12,115.5,46.7,53.6,396.29
+Banana,Whole Year,Punjab,12.3,629.4,23.7,6.83,71.9,22.3,51.6,221.88
+Banana,Rabi,Maharashtra,12.9,1671.1,30.0,5.53,68.9,87.7,30.1,344.94
+Banana,Whole Year,Haryana,6.1,950.0,23.4,6.84,134.6,61.8,86.8,533.63
+Banana,Kharif,Gujarat,15.2,960.8,28.2,6.7,85.5,41.0,20.7,380.19
+Banana,Rabi,Kerala,11.4,1312.7,21.6,6.29,111.2,49.0,72.3,449.4
+Banana,Whole Year,Punjab,17.9,1738.8,28.4,5.68,155.1,70.7,50.0,576.31
+Banana,Whole Year,Kerala,21.5,1797.0,34.8,7.33,37.8,30.0,49.7,116.52
+Banana,Rabi,Madhya Pradesh,21.3,1141.5,33.5,7.92,112.4,78.4,35.0,350.11
+Banana,Rabi,Uttar Pradesh,17.5,911.7,22.3,5.48,33.6,74.8,38.3,235.6
+Wheat,Rabi,Andhra Pradesh,16.5,351.5,20.9,5.44,63.6,75.3,64.4,12.09
+Wheat,Whole Year,Punjab,12.7,339.2,33.5,5.27,108.2,80.0,82.5,7.75
+Wheat,Whole Year,Tamil Nadu,16.8,389.6,35.0,7.32,48.3,23.4,70.1,8.51
+Wheat,Whole Year,Kerala,20.9,1004.0,34.8,5.81,145.0,32.9,24.2,8.3
+Wheat,Whole Year,Tamil Nadu,18.7,901.2,31.4,7.99,58.3,23.0,31.1,4.97
+Wheat,Rabi,Andhra Pradesh,21.7,365.0,27.6,7.24,44.7,55.9,50.6,8.31
+Wheat,Kharif,Karnataka,9.7,836.7,32.8,5.07,155.7,60.4,78.1,9.58
+Wheat,Whole Year,Punjab,23.0,805.2,22.6,6.23,113.1,67.5,82.7,17.76
+Wheat,Kharif,Kerala,21.6,602.8,34.4,6.26,157.1,34.2,21.8,14.28
+Wheat,Rabi,Maharashtra,6.0,961.5,34.5,7.02,144.3,72.5,45.5,9.82
+Wheat,Rabi,Haryana,12.3,620.3,33.1,7.3,144.0,76.5,76.8,14.44
+Wheat,Kharif,Kerala,9.4,755.5,32.6,7.36,88.9,17.1,18.9,8.62
+Wheat,Rabi,Madhya Pradesh,20.0,422.3,25.2,7.01,70.8,21.2,26.8,9.39
+Wheat,Kharif,Madhya Pradesh,21.3,815.3,32.3,6.02,92.2,70.1,34.6,11.36
+Wheat,Rabi,Tamil Nadu,5.8,621.4,21.3,7.8,152.8,81.3,31.8,20.06
+Wheat,Whole Year,Kerala,15.7,488.5,19.6,6.48,64.0,78.9,18.7,18.17
+Wheat,Rabi,Gujarat,4.6,1010.0,21.1,6.82,31.8,54.4,73.0,14.8
+Wheat,Rabi,Madhya Pradesh,3.8,835.2,21.4,7.76,131.7,36.6,52.1,14.81
+Wheat,Whole Year,Maharashtra,6.2,914.2,31.1,5.61,53.4,74.4,17.2,7.03
+Wheat,Whole Year,Maharashtra,11.8,502.5,28.5,7.07,41.1,50.2,80.4,12.87
+Wheat,Whole Year,Andhra Pradesh,6.1,599.2,25.6,6.91,39.5,56.8,18.9,11.99
+Wheat,Rabi,West Bengal,24.9,996.6,35.4,6.91,127.3,18.4,34.0,10.1
+Wheat,Rabi,Karnataka,17.1,419.6,34.1,5.13,53.3,27.7,52.0,6.1
+Wheat,Kharif,West Bengal,3.2,832.8,25.8,5.83,70.7,88.4,52.4,12.93
+Wheat,Whole Year,Karnataka,9.7,632.5,34.3,5.84,137.8,84.5,53.8,12.19
+Wheat,Rabi,Uttar Pradesh,18.7,676.3,35.1,6.78,150.0,62.7,48.0,15.18
+Wheat,Kharif,Punjab,5.4,661.2,20.9,6.49,45.1,82.1,52.1,22.69
+Wheat,Rabi,Kerala,12.0,405.4,31.0,5.47,75.4,30.3,36.3,6.9
+Wheat,Rabi,Kerala,14.5,799.1,21.8,8.19,30.5,72.5,28.5,11.11
+Wheat,Rabi,Maharashtra,17.2,959.5,18.5,7.18,118.5,44.6,59.3,16.85
+Wheat,Kharif,Tamil Nadu,1.7,654.1,30.7,6.54,111.7,35.2,64.4,14.94
+Wheat,Whole Year,Punjab,15.9,649.0,35.1,8.2,147.9,74.8,24.7,12.21
+Wheat,Rabi,Madhya Pradesh,8.8,364.7,19.3,8.05,79.6,44.9,28.4,11.51
+Wheat,Kharif,Andhra Pradesh,1.5,473.9,25.0,6.29,114.1,86.6,26.6,14.27
+Wheat,Whole Year,Andhra Pradesh,20.4,546.7,30.3,5.42,116.5,77.4,53.4,10.31
+Wheat,Rabi,Andhra Pradesh,7.4,754.2,19.6,6.35,77.9,29.0,62.3,18.02
+Wheat,Rabi,Kerala,24.4,808.7,29.7,7.28,151.0,54.5,63.5,11.35
+Wheat,Rabi,West Bengal,2.9,898.1,23.4,8.15,119.0,37.5,33.6,11.77
+Wheat,Kharif,Gujarat,14.2,980.9,27.2,6.63,83.7,49.8,69.0,11.69
+Wheat,Rabi,Tamil Nadu,15.1,874.6,18.3,7.37,90.2,74.0,78.2,15.4
+Wheat,Whole Year,Andhra Pradesh,8.1,744.9,26.2,7.14,111.1,34.9,87.5,16.6
+Wheat,Kharif,Uttar Pradesh,5.4,859.1,28.9,7.79,43.8,55.1,15.4,5.58
+Wheat,Whole Year,Uttar Pradesh,12.5,819.6,33.6,8.09,108.2,51.5,61.4,10.26
+Wheat,Whole Year,Tamil Nadu,17.2,818.6,25.1,5.97,46.3,16.0,23.4,5.66
+Wheat,Kharif,Maharashtra,6.0,788.8,29.7,6.39,111.4,74.3,29.3,12.3
+Wheat,Kharif,West Bengal,12.4,340.6,21.0,5.49,121.3,87.3,50.4,13.2
+Wheat,Kharif,Gujarat,5.8,732.1,33.0,5.16,31.0,62.3,68.5,9.83
+Wheat,Whole Year,West Bengal,14.9,847.7,36.0,5.12,82.0,53.5,69.3,9.85
+Wheat,Kharif,West Bengal,18.1,702.7,25.6,6.01,38.3,82.0,46.3,13.3
+Wheat,Whole Year,West Bengal,23.5,572.9,30.6,5.07,67.4,29.4,40.8,7.47
+Wheat,Whole Year,Maharashtra,22.8,567.5,28.8,7.7,115.4,24.8,37.0,11.44
+Wheat,Whole Year,Andhra Pradesh,16.7,582.6,26.5,8.11,51.1,30.5,66.8,8.94
+Wheat,Kharif,West Bengal,5.2,436.8,26.9,7.54,152.6,52.0,32.6,11.57
+Wheat,Rabi,Punjab,22.1,580.3,20.9,7.65,146.3,17.4,19.8,18.58
+Wheat,Kharif,Gujarat,3.9,485.2,22.6,6.09,76.2,18.5,80.8,14.74
+Wheat,Whole Year,Uttar Pradesh,22.0,757.1,19.9,5.16,153.0,74.9,87.2,17.75
+Wheat,Whole Year,Haryana,15.6,938.7,19.8,6.8,95.9,27.5,23.9,14.35
+Wheat,Kharif,Tamil Nadu,18.5,831.3,31.7,6.59,143.2,26.6,42.3,13.38
+Wheat,Kharif,Haryana,11.5,622.3,31.8,5.79,135.2,40.6,52.9,11.19
+Wheat,Whole Year,Tamil Nadu,19.1,582.9,30.0,5.49,128.0,46.6,32.1,11.27
+Maize,Rabi,Andhra Pradesh,22.6,1315.0,27.3,7.18,152.7,48.2,72.8,16.9
+Maize,Kharif,Kerala,3.0,719.3,35.7,5.53,38.0,71.9,64.5,12.73
+Maize,Kharif,Gujarat,24.5,1341.3,32.4,7.8,156.4,46.4,81.4,9.79
+Maize,Whole Year,Karnataka,18.8,1275.1,18.1,5.9,98.6,84.0,67.5,12.88
+Maize,Whole Year,Maharashtra,16.0,1003.0,26.0,6.1,135.5,63.7,73.2,27.94
+Maize,Kharif,Haryana,13.9,789.6,30.9,7.82,97.7,55.6,31.0,15.19
+Maize,Whole Year,Karnataka,9.2,1019.4,18.4,7.85,100.2,34.4,77.4,13.79
+Maize,Whole Year,Andhra Pradesh,3.7,481.0,24.7,7.01,76.1,18.6,63.8,15.92
+Maize,Whole Year,Karnataka,18.7,848.7,35.7,7.58,158.6,57.4,82.1,15.63
+Maize,Whole Year,Kerala,6.6,704.8,30.0,7.61,104.5,25.5,43.3,15.12
+Maize,Rabi,Haryana,13.4,605.0,32.0,6.45,49.1,46.9,45.9,12.04
+Maize,Kharif,Andhra Pradesh,12.4,842.2,24.6,6.68,106.5,53.9,44.6,31.33
+Maize,Whole Year,West Bengal,11.2,836.5,34.8,6.57,156.5,76.8,25.8,19.2
+Maize,Kharif,West Bengal,24.2,904.8,27.5,7.22,89.2,17.4,26.8,16.18
+Maize,Whole Year,Haryana,21.5,528.2,24.7,5.93,98.0,23.8,37.9,17.29
+Maize,Rabi,Karnataka,1.7,558.6,32.1,6.35,151.8,37.9,36.3,15.91
+Maize,Kharif,West Bengal,3.9,751.0,33.7,6.34,104.5,57.4,82.5,19.43
+Maize,Whole Year,West Bengal,21.0,549.2,20.5,7.04,129.0,65.0,26.2,18.58
+Maize,Whole Year,Haryana,16.9,808.0,22.2,6.27,100.3,86.9,81.8,28.47
+Maize,Kharif,Madhya Pradesh,21.8,1086.2,28.3,7.55,122.0,57.1,24.3,17.73
+Maize,Whole Year,Maharashtra,14.0,1133.4,35.2,6.67,127.6,52.7,16.4,15.77
+Maize,Kharif,Kerala,24.1,682.1,21.7,7.66,139.1,58.5,21.3,18.11
+Maize,Rabi,Tamil Nadu,15.1,884.5,34.8,6.09,53.5,16.8,54.6,11.24
+Maize,Kharif,Haryana,24.5,931.6,23.1,5.58,129.9,26.6,86.4,23.48
+Maize,Whole Year,Punjab,24.1,594.7,30.8,5.95,42.8,25.7,82.0,12.4
+Maize,Kharif,Haryana,5.9,1128.2,28.5,6.58,127.8,43.9,23.6,20.08
+Maize,Whole Year,West Bengal,10.8,877.7,25.3,5.75,145.2,35.2,87.3,28.17
+Maize,Whole Year,Maharashtra,16.6,542.4,28.2,6.43,140.0,52.5,73.7,20.66
+Maize,Kharif,Kerala,19.8,927.6,25.6,7.92,88.7,15.1,49.8,18.04
+Maize,Whole Year,Karnataka,24.3,425.5,34.8,6.54,107.7,78.0,43.5,13.54
+Maize,Kharif,Madhya Pradesh,15.0,902.2,18.8,7.37,103.2,37.5,44.6,15.78
+Maize,Whole Year,Uttar Pradesh,14.4,686.3,25.8,6.95,154.5,38.9,66.2,25.34
+Maize,Whole Year,Karnataka,11.9,654.9,35.7,6.09,89.8,60.0,16.2,13.66
+Maize,Kharif,Madhya Pradesh,15.6,429.0,18.2,5.56,102.3,67.2,51.7,11.63
+Maize,Whole Year,Haryana,16.6,928.6,34.1,7.61,87.9,24.3,87.9,13.96
+Maize,Rabi,Gujarat,10.3,1209.6,32.6,8.15,46.2,42.8,29.5,5.95
+Maize,Rabi,Punjab,17.3,1088.1,21.4,7.61,111.3,75.6,31.6,18.16
+Maize,Kharif,Tamil Nadu,7.7,1270.7,30.7,5.67,55.5,76.6,44.7,12.44
+Maize,Whole Year,Gujarat,12.9,940.9,29.9,6.81,118.7,57.4,19.9,20.87
+Maize,Kharif,Haryana,7.2,957.9,22.1,6.67,131.7,29.4,65.8,28.29
+Maize,Whole Year,Madhya Pradesh,15.7,1061.4,33.9,5.01,85.5,65.5,63.8,12.96
+Maize,Rabi,Tamil Nadu,21.3,805.4,20.2,6.66,94.4,53.8,18.3,21.24
+Maize,Rabi,Punjab,23.0,922.8,23.7,6.25,73.5,81.0,75.6,31.2
+Maize,Whole Year,Maharashtra,11.2,494.6,22.5,5.53,70.4,61.9,22.3,12.89
+Maize,Whole Year,Punjab,20.1,1299.3,33.1,5.79,91.6,86.9,77.4,11.76
+Maize,Kharif,Kerala,23.6,1150.3,29.2,7.45,111.3,58.4,21.4,14.32
+Maize,Rabi,Punjab,8.5,1217.6,19.2,5.41,149.5,48.1,37.6,13.13
+Maize,Kharif,Haryana,17.3,947.9,23.3,6.22,42.5,71.4,32.5,20.45
+Maize,Whole Year,Madhya Pradesh,1.3,784.0,32.3,7.82,110.5,40.5,85.3,15.42
+Maize,Whole Year,West Bengal,8.9,605.0,19.8,6.9,38.8,74.2,29.5,13.57
+Maize,Whole Year,Madhya Pradesh,7.2,818.6,31.0,6.42,61.6,74.8,19.5,17.7
+Maize,Whole Year,Andhra Pradesh,24.0,1130.3,23.6,7.83,130.8,26.1,38.2,16.9
+Maize,Kharif,Tamil Nadu,13.4,1039.9,20.6,5.76,136.5,57.0,19.1,18.46
+Maize,Whole Year,Maharashtra,22.8,1159.2,24.1,7.14,120.3,88.6,60.0,20.69
+Maize,Whole Year,Gujarat,24.1,1001.1,25.5,5.52,89.1,74.2,18.2,19.68
+Maize,Whole Year,Punjab,6.4,640.3,29.2,5.76,125.5,86.4,39.9,19.55
+Maize,Rabi,Maharashtra,5.4,1350.5,24.5,5.24,33.9,23.6,36.8,6.51
+Maize,Rabi,Gujarat,2.1,452.8,21.6,5.56,145.1,68.9,40.5,15.43
+Maize,Kharif,Uttar Pradesh,1.5,1213.1,34.4,5.07,118.1,43.4,74.1,9.86
+Maize,Rabi,Maharashtra,11.9,770.6,24.7,5.55,98.5,74.9,61.7,24.39
+Cotton,Kharif,Haryana,4.5,1137.4,32.3,5.61,79.2,43.1,60.0,5.48
+Cotton,Kharif,Maharashtra,19.3,859.5,33.4,5.94,49.3,33.5,62.2,5.2
+Cotton,Whole Year,Uttar Pradesh,24.2,1105.8,21.8,5.26,91.2,64.8,19.9,5.92
+Cotton,Whole Year,Madhya Pradesh,10.0,803.1,21.2,7.28,98.3,51.2,86.7,13.41
+Cotton,Rabi,Gujarat,16.3,1027.3,29.7,5.66,146.3,48.9,32.6,8.21
+Cotton,Rabi,Andhra Pradesh,14.7,1146.8,24.7,6.76,47.5,21.3,48.3,5.78
+Cotton,Kharif,Gujarat,12.2,887.4,25.7,6.5,83.2,75.3,38.8,13.02
+Cotton,Rabi,Uttar Pradesh,6.6,907.4,24.5,5.26,139.5,53.5,63.3,11.65
+Cotton,Kharif,Maharashtra,3.8,672.2,27.8,6.07,117.8,33.8,70.9,13.41
+Cotton,Kharif,Karnataka,17.9,1198.3,36.0,7.41,126.2,83.4,15.6,6.27
+Cotton,Rabi,Tamil Nadu,23.7,1053.0,31.6,5.04,115.0,89.2,86.4,7.8
+Cotton,Kharif,Maharashtra,18.4,548.1,22.2,6.88,101.8,50.2,76.1,12.57
+Cotton,Rabi,Haryana,21.3,728.8,35.0,6.34,87.0,79.0,17.3,7.55
+Cotton,Rabi,Uttar Pradesh,23.6,383.0,32.6,7.67,74.2,46.4,66.4,6.15
+Cotton,Rabi,Kerala,8.8,394.2,32.1,7.95,50.0,86.4,39.8,5.79
+Cotton,Whole Year,Gujarat,14.8,697.5,24.9,8.04,38.3,44.0,50.6,7.66
+Cotton,Whole Year,West Bengal,22.5,451.9,19.9,6.77,34.2,66.7,51.6,6.2
+Cotton,Rabi,Haryana,7.8,567.3,29.9,5.22,37.5,53.9,27.9,5.29
+Cotton,Rabi,Andhra Pradesh,4.8,466.4,27.7,6.53,38.9,86.6,79.9,10.37
+Cotton,Rabi,Maharashtra,11.4,960.5,26.5,6.93,152.1,59.1,52.7,16.03
+Cotton,Kharif,Karnataka,1.2,492.7,19.2,6.28,135.0,54.4,83.3,8.85
+Cotton,Rabi,West Bengal,14.8,983.3,23.2,7.82,89.3,67.5,68.4,10.49
+Cotton,Kharif,Gujarat,11.0,523.2,29.1,6.38,80.0,64.4,67.4,10.04
+Cotton,Kharif,Punjab,22.3,505.3,33.9,6.72,116.7,20.0,69.5,8.59
+Cotton,Rabi,West Bengal,24.8,831.1,35.9,5.24,43.7,72.5,39.5,5.35
+Cotton,Kharif,Karnataka,13.1,756.3,19.3,7.22,127.5,43.6,70.9,13.21
+Cotton,Kharif,Andhra Pradesh,1.3,469.6,34.5,6.05,127.3,51.4,20.1,6.12
+Cotton,Whole Year,Maharashtra,23.8,490.7,32.8,7.69,52.2,16.4,22.5,3.29
+Cotton,Whole Year,Kerala,10.4,439.0,31.7,7.17,50.0,41.9,31.3,5.02
+Cotton,Whole Year,Madhya Pradesh,6.2,949.8,33.1,7.6,113.3,68.7,82.3,8.86
+Cotton,Rabi,Karnataka,2.3,378.8,31.9,7.45,150.7,43.1,32.9,7.84
+Cotton,Kharif,Andhra Pradesh,24.7,653.1,21.5,7.14,58.7,81.2,74.8,13.73
+Cotton,Whole Year,Uttar Pradesh,5.0,717.9,19.9,6.05,103.1,29.2,30.5,7.5
+Cotton,Kharif,Andhra Pradesh,6.6,462.4,23.8,5.05,115.0,15.9,31.0,6.37
+Cotton,Rabi,Madhya Pradesh,16.6,679.4,19.2,5.7,69.2,59.9,88.7,7.85
+Cotton,Whole Year,Kerala,5.1,1166.2,28.8,8.14,120.5,65.8,87.9,7.99
+Cotton,Kharif,Tamil Nadu,16.2,1104.3,23.7,7.72,92.7,40.1,60.6,8.66
+Cotton,Whole Year,Andhra Pradesh,16.4,566.8,28.6,8.16,60.2,61.2,82.3,9.08
+Cotton,Kharif,Andhra Pradesh,15.9,424.4,24.7,5.95,49.7,30.3,17.8,4.55
+Cotton,Rabi,Gujarat,18.7,646.2,23.0,7.06,128.9,54.1,88.3,15.56
+Cotton,Kharif,Karnataka,6.5,979.6,24.2,5.66,37.0,83.8,89.1,9.92
+Cotton,Whole Year,Maharashtra,21.9,805.2,21.3,7.02,38.4,51.9,86.5,10.56
+Cotton,Kharif,Uttar Pradesh,4.0,518.3,27.9,7.54,56.6,53.1,47.0,8.61
+Cotton,Whole Year,Uttar Pradesh,5.7,724.8,28.9,5.97,104.9,87.6,30.1,12.99
+Cotton,Kharif,West Bengal,23.8,671.7,24.8,6.51,85.0,60.7,47.5,12.45
+Cotton,Kharif,West Bengal,19.3,727.6,19.5,7.9,69.0,55.3,56.5,7.81
+Cotton,Rabi,Andhra Pradesh,8.3,608.7,28.1,6.54,73.3,68.6,29.7,11.27
+Cotton,Kharif,Punjab,21.7,977.6,24.7,6.29,84.1,44.6,70.7,10.67
+Cotton,Whole Year,Karnataka,24.7,433.8,33.9,8.18,46.2,84.9,27.2,4.5
+Cotton,Whole Year,Karnataka,9.4,960.0,29.4,6.18,37.5,43.9,46.8,5.87
+Cotton,Kharif,West Bengal,23.1,673.2,30.7,5.09,116.5,26.1,60.4,9.64
+Cotton,Rabi,Uttar Pradesh,6.9,852.1,29.9,5.52,45.2,21.9,68.4,6.06
+Cotton,Kharif,Gujarat,13.4,530.8,25.6,7.66,62.9,37.7,87.6,11.3
+Cotton,Whole Year,Andhra Pradesh,8.4,714.6,33.8,7.33,41.6,62.7,73.3,8.34
+Cotton,Rabi,Uttar Pradesh,19.0,1142.3,25.2,5.99,158.3,76.2,15.1,8.7
+Cotton,Whole Year,Andhra Pradesh,11.0,612.9,25.8,5.56,54.2,25.1,51.5,7.08
+Cotton,Rabi,Haryana,14.6,550.4,21.6,7.4,135.2,29.4,88.7,12.24
+Cotton,Whole Year,West Bengal,22.9,465.1,29.5,5.26,41.1,24.4,19.8,3.02
+Cotton,Rabi,Maharashtra,12.6,1002.4,18.2,5.85,154.2,64.9,74.2,6.25
+Cotton,Whole Year,Maharashtra,20.0,684.9,27.4,8.08,64.6,51.4,71.8,10.86
