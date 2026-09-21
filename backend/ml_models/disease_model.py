@@ -1,3 +1,8 @@
+import warnings
+warnings.filterwarnings("ignore", message=".*urllib3.*")
+warnings.filterwarnings("ignore", message=".*chardet.*")
+warnings.filterwarnings("ignore", message=".*charset_normalizer.*")
+
 from fastapi import APIRouter, HTTPException, UploadFile, File
 import logging
 import io
@@ -30,8 +35,17 @@ if TORCH_AVAILABLE:
     try:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        if os.path.exists("plant_disease_model.pth"):
-            checkpoint = torch.load("plant_disease_model.pth", map_location=device)
+        MODEL_FILENAME = "plant_disease_model.pth"
+        candidate_paths = [
+            MODEL_FILENAME,
+            os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), MODEL_FILENAME),
+            os.path.join(os.getcwd(), MODEL_FILENAME),
+            os.path.join(os.getcwd(), "backend", MODEL_FILENAME),
+        ]
+        model_path = next((p for p in candidate_paths if os.path.exists(p)), None)
+
+        if model_path and os.path.exists(model_path):
+            checkpoint = torch.load(model_path, map_location=device)
 
             if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
                 num_classes = checkpoint["num_classes"]
