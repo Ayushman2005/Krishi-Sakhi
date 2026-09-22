@@ -36,78 +36,61 @@ const SchemesLocator = () => {
   }, [profile]);
 
   return (
-    <div className="main-container relative px-4 md:px-8 max-w-6xl mx-auto py-12">
-      <header className="text-center mb-12">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 bg-yellow-500/10 rounded-full border border-yellow-500/20 text-yellow-500 text-sm font-black uppercase tracking-widest mb-6"
-        >
-          <Landmark size={16} />
-          Government Support
-        </motion.div>
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-5xl font-black tracking-tighter mb-4"
-        >
-          Schemes & <span className="text-yellow-500">Subsidies</span>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-text-muted text-lg max-w-2xl mx-auto"
-        >
-          Explore personalized government initiatives based on your farm profile and location.
-        </motion.p>
+    <div className="main-container max-w-6xl mx-auto">
+      <header className="text-center mb-8">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 rounded-full border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2.5">
+          <Landmark size={14} /> Government Support
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+          Schemes & <span className="text-amber-400">Subsidies</span>
+        </h1>
+        <p className="text-text-muted text-xs sm:text-sm max-w-xl mx-auto">
+          Explore government initiatives based on your farm profile and location.
+        </p>
       </header>
 
       {error && (
-        <div className="p-4 bg-error/10 border border-error/20 text-error rounded-2xl text-center mb-8">
+        <div className="p-3.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-xl text-center text-xs font-medium mb-6">
           {error}
         </div>
       )}
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-text-muted">
-          <Loader2 size={40} className="animate-spin mb-4 text-yellow-500" />
-          <p className="font-bold">Locating tailored schemes...</p>
+        <div className="flex flex-col items-center justify-center py-16 text-text-muted">
+          <Loader2 size={32} className="animate-spin mb-3 text-amber-400" />
+          <p className="text-xs font-medium">Locating tailored schemes...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <AnimatePresence>
             {schemes.map((scheme, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5, boxShadow: '0 20px 40px -15px rgba(234,179,8,0.2)' }}
-                className="glass-card border-white/5 hover:border-yellow-500/30 transition-all flex flex-col h-full relative overflow-hidden group"
+                className="glass-card border border-white/10 hover:border-amber-500/30 transition-all rounded-2xl p-5 flex flex-col h-full justify-between"
               >
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity rotate-12">
-                  <Landmark size={80} className="text-yellow-500" />
+                <div>
+                  <h3 className="text-base font-semibold text-white mb-3">{scheme.name}</h3>
+
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="text-[10px] font-semibold uppercase tracking-wider text-text-muted flex items-center gap-1.5 mb-0.5">
+                        <CheckCircle2 size={12} className="text-emerald-400" /> Key Benefit
+                      </h4>
+                      <p className="text-xs font-medium text-slate-200">{scheme.benefit}</p>
+                    </div>
+                    <div>
+                      <h4 className="text-[10px] font-semibold uppercase tracking-wider text-text-muted flex items-center gap-1.5 mb-0.5">
+                        <MapPin size={12} className="text-slate-400" /> Eligibility
+                      </h4>
+                      <p className="text-xs text-text-muted">{scheme.eligibility}</p>
+                    </div>
+                  </div>
                 </div>
 
-                <h3 className="text-xl font-black mb-4 pr-10">{scheme.name}</h3>
-
-                <div className="space-y-4 flex-1">
-                  <div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-1"><CheckCircle2 size={12} className="text-success" /> Key Benefit</h4>
-                    <p className="text-sm font-medium">{scheme.benefit}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-1.5 mb-1"><MapPin size={12} className="text-blue-400" /> Eligibility</h4>
-                    <p className="text-sm text-text-muted">{scheme.eligibility}</p>
-                  </div>
-                </div>
-
-                <button className="mt-6 w-full py-3 bg-white/5 hover:bg-yellow-500 hover:text-black rounded-xl font-black transition-colors flex items-center justify-center gap-2">
-                  Apply Now <ArrowRight size={16} />
+                <button className="mt-4 w-full py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5">
+                  Apply Now <ArrowRight size={14} />
                 </button>
-              </motion.div>
+              </div>
             ))}
           </AnimatePresence>
         </div>

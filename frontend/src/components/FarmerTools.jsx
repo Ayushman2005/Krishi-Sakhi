@@ -189,87 +189,77 @@ const FarmerTools = () => {
             className="space-y-8"
           >
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-3">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-[10px] font-semibold uppercase tracking-wider mb-2">
                   <Sprout size={12} /> Simple Crop Assistance
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-white font-display">
-                  Farming <span className="gradient-text">Tools</span>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                  Farming <span className="text-emerald-400">Tools</span>
                 </h2>
-                <p className="text-text-muted mt-2 text-sm max-w-xl">
-                  Select a tool below to check plant health, calculate fertilizer, get weather warnings, or predict your harvest.
+                <p className="text-text-muted mt-1 text-xs sm:text-sm max-w-xl">
+                  Select a tool below to check plant health, calculate fertilizer, get weather warnings, or predict harvest.
                 </p>
               </div>
 
               {/* Search bar */}
-              <div className="relative w-full md:w-72">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
+              <div className="relative w-full md:w-64">
+                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
                 <input
                   type="text"
-                  placeholder="Search tools (e.g. disease, weather)..."
+                  placeholder="Search tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-11 pr-4 py-3 text-xs text-white placeholder-text-muted/50 focus:outline-none focus:border-cyan-400/60 focus:bg-white/10 transition-all font-medium"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3.5 py-2 text-xs text-white placeholder-text-muted/50 focus:outline-none focus:border-emerald-500 transition-all font-medium"
                 />
               </div>
             </div>
 
             {/* Grid of Tools */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTools.map((tool, index) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredTools.map((tool) => {
                 const Icon = tool.icon;
                 return (
-                  <motion.div
+                  <div
                     key={tool.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ y: -6, transition: { duration: 0.2 } }}
                     onClick={() => setActiveToolId(tool.id)}
-                    className="glass rounded-3xl p-6 border border-white/5 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
+                    className="glass-card p-5 border border-white/10 hover:border-emerald-500/30 transition-all duration-200 cursor-pointer flex flex-col justify-between group rounded-2xl"
                   >
-                    {/* Hover glow */}
-                    <div 
-                      className="absolute -right-20 -top-20 w-44 h-44 rounded-full blur-[80px] opacity-10 group-hover:opacity-30 transition-all duration-500"
-                      style={{ backgroundColor: tool.accent }}
-                    />
-
-                    <div className="relative z-10 space-y-4">
+                    <div className="space-y-3.5">
                       <div className="flex items-center justify-between">
                         <div 
-                          className="w-12 h-12 rounded-2xl flex items-center justify-center border shadow-lg transition-transform group-hover:scale-110"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center border transition-transform"
                           style={{ 
-                            backgroundColor: `${tool.accent}15`, 
-                            borderColor: `${tool.accent}30`,
+                            backgroundColor: `${tool.accent}12`, 
+                            borderColor: `${tool.accent}25`,
                             color: tool.accent 
                           }}
                         >
-                          <Icon size={24} />
+                          <Icon size={20} />
                         </div>
-                        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${tool.badgeColor}`}>
+                        <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold border ${tool.badgeColor}`}>
                           {tool.badge}
                         </span>
                       </div>
 
                       <div>
-                        <h3 className="text-lg font-black text-white font-display group-hover:text-cyan-300 transition-colors">
+                        <h3 className="text-base font-semibold text-white group-hover:text-emerald-300 transition-colors">
                           {tool.title}
                         </h3>
-                        <p className="text-xs text-cyan-400/80 font-bold mt-0.5">
+                        <p className="text-xs text-emerald-400 font-medium mt-0.5">
                           {tool.tagline}
                         </p>
-                        <p className="text-xs text-text-muted mt-2 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-text-muted mt-1.5 line-clamp-2 leading-relaxed">
                           {tool.description}
                         </p>
                       </div>
                     </div>
 
-                    <div className="relative z-10 pt-5 mt-4 border-t border-white/5 flex items-center justify-between text-xs font-black text-cyan-400">
+                    <div className="pt-3.5 mt-3.5 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-emerald-400">
                       <span>Open Tool</span>
-                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>

@@ -303,19 +303,18 @@ const AdminPanel = () => {
   return (
     <div className="main-container space-y-8">
       {/* Admin Top Banner */}
-      <div className="glass p-6 rounded-3xl border border-cyan-500/30 bg-[#030712]/90 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 inset-x-0 h-1 bg-linear-to-r from-cyan-400 via-indigo-500 to-violet-500" />
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-3">
-            <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+      <div className="glass-card p-5 rounded-2xl border border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-md bg-violet-500/10 border border-violet-500/20 text-violet-300 font-mono text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5">
               <ShieldCheck size={12} /> Root Controller
             </span>
-            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5">
+            <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[10px] font-semibold uppercase tracking-wider flex items-center gap-1.5">
               <Activity size={12} /> 10 ML Models Active
             </span>
           </div>
-          <h1 className="text-3xl font-black text-white font-display tracking-tight">
-            Admin & <span className="gradient-text">Machine Learning Studio</span>
+          <h1 className="text-2xl font-bold text-white tracking-tight">
+            Admin & <span className="text-violet-400">Machine Learning Studio</span>
           </h1>
           <p className="text-xs text-text-muted">
             Direct operational access to ML inference pipelines, API endpoints, telemetry logs, and LLM controllers.
@@ -325,15 +324,15 @@ const AdminPanel = () => {
         <button
           onClick={fetchSystemStatus}
           disabled={isCheckingHealth}
-          className="btn btn-secondary px-5 py-2.5 rounded-2xl flex items-center gap-2 text-xs font-black uppercase tracking-wider"
+          className="btn btn-secondary px-3.5 py-2 rounded-xl flex items-center gap-2 text-xs font-semibold"
         >
-          <RefreshCw size={14} className={isCheckingHealth ? 'animate-spin text-cyan-400' : ''} />
+          <RefreshCw size={14} className={isCheckingHealth ? 'animate-spin text-violet-400' : ''} />
           Refresh Nodes
         </button>
       </div>
 
       {/* Admin Navigation Tabs */}
-      <div className="flex flex-wrap gap-2 p-1.5 bg-[#030712]/80 backdrop-blur-md rounded-2xl border border-white/5">
+      <div className="flex flex-wrap gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10">
         {[
           { id: 'models', label: 'ML Models Lab (10 Models)', icon: Cpu },
           { id: 'system', label: 'System & LLM Engine', icon: Server },
@@ -350,13 +349,13 @@ const AdminPanel = () => {
                 setAdminTab(tab.id);
                 setSelectedModelId(null);
               }}
-              className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-linear-to-r from-cyan-500 to-indigo-600 text-white shadow-lg shadow-cyan-500/25'
+                  ? 'bg-violet-600 text-white shadow-sm'
                   : 'text-text-muted hover:text-white hover:bg-white/5'
               }`}
             >
-              <Icon size={16} />
+              <Icon size={15} />
               {tab.label}
             </button>
           );

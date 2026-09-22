@@ -79,22 +79,22 @@ const MarketInsights = () => {
 
   return (
     <div className="main-container">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-5 mb-6">
         <div className="flex-1">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-[10px] font-black uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 text-[10px] font-semibold uppercase tracking-wider mb-2">
             <LineChart size={12} /> Pan-India Intelligence
           </div>
-          <h2 className="text-4xl font-black tracking-tighter">Live <span className="text-secondary">Market Rates</span></h2>
-          <p className="text-text-muted mt-2">Check accurate commodity prices for any district in India.</p>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">Live <span className="text-emerald-400">Market Rates</span></h2>
+          <p className="text-text-muted mt-1 text-xs sm:text-sm">Check accurate commodity prices for any district in India.</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-          <div className="relative group min-w-[250px]">
-            <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-secondary transition-colors" />
+        <div className="flex flex-col sm:flex-row gap-2.5 w-full md:w-auto">
+          <div className="relative group min-w-[220px]">
+            <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-emerald-400 transition-colors" />
             <input 
               type="text" 
               placeholder="Search District (e.g. Nashik, Ludhiana)" 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:border-secondary/50 focus:bg-white/10 transition-all"
+              className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition-all font-medium"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   const val = e.target.value.trim();
@@ -105,72 +105,64 @@ const MarketInsights = () => {
               }}
             />
           </div>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <button 
             onClick={handleRefresh}
-            className="btn btn-secondary h-12 px-6 flex items-center gap-2"
+            className="btn btn-secondary h-9 px-4 text-xs font-semibold rounded-xl flex items-center gap-2"
           >
-            <RefreshCcw size={16} className={isRefreshing ? 'animate-spin text-secondary' : ''} />
+            <RefreshCcw size={14} className={isRefreshing ? 'animate-spin text-emerald-400' : ''} />
             {isRefreshing ? 'Syncing...' : 'Refresh'}
-          </motion.button>
+          </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {marketData.length > 0 ? marketData.map((item, index) => (
-          <motion.div
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {marketData.length > 0 ? marketData.map((item) => (
+          <div
             key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            whileHover={{ y: -8, transition: { duration: 0.2 } }}
-            className="glass rounded-3xl flex flex-col group relative overflow-hidden p-8 border border-white/5 hover:border-white/20 transition-all duration-300"
+            className="glass-card rounded-2xl flex flex-col p-5 border border-white/10 hover:border-white/20 transition-all justify-between"
           >
-            <div className={`absolute -right-20 -top-20 w-48 h-48 rounded-full blur-[100px] opacity-10 transition-all duration-700 group-hover:opacity-30 ${item.up ? 'bg-success' : 'bg-error'}`} />
-
-            <div className="flex justify-between items-start mb-8 relative z-10">
-              <div className="flex items-center gap-3 text-[10px] font-black text-text-muted uppercase tracking-widest bg-white/5 px-4 py-2 rounded-xl border border-white/5">
-                <Landmark size={14} className="text-secondary" /> {item.crop}
+            <div>
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/5">
+                  <Landmark size={13} className="text-emerald-400" /> {item.crop}
+                </div>
+                <div className={`flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md ${item.up ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'}`}>
+                  {item.up ? <TrendingUp size={12} /> : <TrendingDown size={12} />} {item.trend}
+                </div>
               </div>
-              <div className={`flex items-center gap-1.5 text-xs font-black px-3 py-1.5 rounded-lg ${item.up ? 'text-success bg-success/10 border border-success/20' : 'text-error bg-error/10 border border-error/20'}`}>
-                {item.up ? <TrendingUp size={14} /> : <TrendingDown size={14} />} {item.trend}
+
+              <div className="my-4">
+                <div className="flex items-baseline gap-1.5">
+                  <IndianRupee size={20} className={item.up ? 'text-emerald-400' : 'text-rose-400'} />
+                  <span className="text-3xl font-bold tracking-tight text-white font-mono">{item.price}</span>
+                  <span className="text-text-muted text-xs font-medium ml-1">/ {item.unit}</span>
+                </div>
               </div>
             </div>
 
-            <div className="relative z-10 flex-grow flex flex-col justify-center mb-10">
-              <div className="flex items-baseline gap-2">
-                <IndianRupee size={28} className={item.up ? 'text-success' : 'text-error'} strokeWidth={3} />
-                <span className="text-6xl font-black tracking-tighter">{item.price}</span>
-                <span className="text-text-muted font-black text-xs uppercase tracking-widest">{item.unit}</span>
+            <div className="pt-3.5 mt-2 border-t border-white/5 flex items-center justify-between text-xs text-text-muted font-medium">
+              <div className="flex items-center gap-1.5">
+                <MapPin size={13} className="text-slate-400" /> {item.location}
               </div>
-            </div>
-
-            <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between text-[11px] text-text-muted relative z-10 font-bold">
-              <div className="flex items-center gap-2">
-                <MapPin size={14} className="text-secondary" /> {item.location}
-              </div>
-              <motion.button 
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <button 
                 onClick={() => getForecast(item.crop)}
-                className="flex items-center gap-2 px-4 py-2 bg-secondary/10 hover:bg-secondary/20 text-secondary rounded-xl transition-colors font-black uppercase tracking-widest"
+                className="flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-emerald-500/15 text-emerald-400 rounded-lg transition-colors text-xs font-semibold"
               >
-                <Sparkles size={14} /> AI Forecast
-              </motion.button>
+                <Sparkles size={12} /> AI Forecast
+              </button>
             </div>
-          </motion.div>
+          </div>
         )) : isRefreshing ? (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted">
-            <Loader2 size={48} className="animate-spin mb-4 text-cyan-400" />
-            <p className="font-black uppercase tracking-widest text-sm">Syncing with Mandi APMCs...</p>
+          <div className="col-span-full py-16 flex flex-col items-center justify-center text-text-muted">
+            <Loader2 size={32} className="animate-spin mb-3 text-emerald-400" />
+            <p className="font-medium text-xs">Syncing with Mandi APMCs...</p>
           </div>
         ) : (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted text-center">
-            <p className="font-black uppercase tracking-widest text-sm mb-4">No commodity rates received for this mandi.</p>
+          <div className="col-span-full py-16 flex flex-col items-center justify-center text-text-muted text-center">
+            <p className="font-medium text-xs mb-3">No commodity rates received for this mandi.</p>
             <button
               onClick={() => fetchMarketRates()}
-              className="px-6 py-2.5 bg-secondary/20 hover:bg-secondary/30 text-secondary border border-secondary/30 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all"
+              className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-semibold text-xs transition-all"
             >
               Retry Sync
             </button>
