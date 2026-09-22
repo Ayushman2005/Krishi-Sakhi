@@ -14,13 +14,25 @@ const MarketInsights = () => {
   const [forecastData, setForecastData] = useState(null);
   const [isLoadingForecast, setIsLoadingForecast] = useState(false);
 
-  const fetchMarketRates = async () => {
+  const normalizeMarketData = (data) => {
+    if (Array.isArray(data)) return data;
+    if (data && typeof data === 'object') {
+      for (const key of ['agricultural_commodities', 'commodities', 'market_data', 'rates', 'crops', 'data', 'items']) {
+        if (Array.isArray(data[key])) return data[key];
+      }
+      const foundArray = Object.values(data).find(Array.isArray);
+      if (foundArray) return foundArray;
+    }
+    return [];
+  };
+
+  const fetchMarketRates = async (overrideLocation) => {
     setIsRefreshing(true);
     try {
-      const location = profile?.location || 'Global';
+      const location = overrideLocation || profile?.location || 'Global';
       const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
       const data = await response.json();
-      setMarketData(data);
+      setMarketData(normalizeMarketData(data));
     } catch (err) {
       console.error("Failed to fetch market rates", err);
     } finally {
@@ -31,14 +43,16 @@ const MarketInsights = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchMarketRatesEffect = async () => {
-
+      setIsRefreshing(true);
       try {
         const location = profile?.location || 'Global';
         const response = await fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(location)}`);
         const data = await response.json();
-        if (isMounted) setMarketData(data);
+        if (isMounted) setMarketData(normalizeMarketData(data));
       } catch (err) {
         console.error("Failed to fetch market rates", err);
+      } finally {
+        if (isMounted) setIsRefreshing(false);
       }
     };
     fetchMarketRatesEffect();
@@ -85,13 +99,7 @@ const MarketInsights = () => {
                 if (e.key === 'Enter') {
                   const val = e.target.value.trim();
                   if (val) {
-                    setIsRefreshing(true);
-                    fetch(`${BACKEND_URL}/ml/market-rates?location=${encodeURIComponent(val)}`)
-                      .then(res => res.json())
-                      .then(data => {
-                        setMarketData(data);
-                        setIsRefreshing(false);
-                      });
+                    fetchMarketRates(val);
                   }
                 }
               }}
@@ -152,10 +160,20 @@ const MarketInsights = () => {
               </motion.button>
             </div>
           </motion.div>
-        )) : (
+        )) : isRefreshing ? (
           <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted">
-            <Loader2 size={48} className="animate-spin mb-4" />
-            <p className="font-black uppercase tracking-widest text-sm">Syncing with Global Markets...</p>
+            <Loader2 size={48} className="animate-spin mb-4 text-cyan-400" />
+            <p className="font-black uppercase tracking-widest text-sm">Syncing with Mandi APMCs...</p>
+          </div>
+        ) : (
+          <div className="col-span-full py-20 flex flex-col items-center justify-center text-text-muted text-center">
+            <p className="font-black uppercase tracking-widest text-sm mb-4">No commodity rates received for this mandi.</p>
+            <button
+              onClick={() => fetchMarketRates()}
+              className="px-6 py-2.5 bg-secondary/20 hover:bg-secondary/30 text-secondary border border-secondary/30 rounded-2xl font-bold text-xs uppercase tracking-widest transition-all"
+            >
+              Retry Sync
+            </button>
           </div>
         )}
       </div>

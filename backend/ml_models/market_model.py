@@ -87,7 +87,37 @@ def get_accurate_local_rates(location: str = "Global"):
           {"crop": "Turmeric (Finger)", "price_range": (6800, 7500), "unit": "per Quintal", "mandi": "Nizamabad Mandi"},
           {"crop": "Groundnut", "price_range": (6375, 6800), "unit": "per Quintal", "mandi": "Anantapur Mandi"}
         ]
-    # 7. Generic Pan-India Average (Fallback for location unknown)
+    # 7. Odisha region
+    elif any(k in location_lower for k in ["odisha", "orissa", "sambalpur", "bargarh", "cuttack", "bhubaneswar", "balasore", "puri", "berhampur", "koraput"]):
+        crops_db = [
+          {"crop": "Paddy (Swarna / Common)", "price_range": (2200, 2350), "unit": "per Quintal", "mandi": "Sambalpur APMC"},
+          {"crop": "Moong (Green Gram)", "price_range": (7600, 8400), "unit": "per Quintal", "mandi": "Bargarh Mandi"},
+          {"crop": "Groundnut (Pods)", "price_range": (6300, 6850), "unit": "per Quintal", "mandi": "Cuttack Mandi"},
+          {"crop": "Mustard Seeds", "price_range": (5450, 5800), "unit": "per Quintal", "mandi": "Balasore APMC"},
+          {"crop": "Turmeric (Organic)", "price_range": (7800, 8900), "unit": "per Quintal", "mandi": "Kandhamal APMC"},
+          {"crop": "Brinjal / Vegetables", "price_range": (1450, 1900), "unit": "per Quintal", "mandi": "Sambalpur Mandi"}
+        ]
+    # 8. Madhya Pradesh region
+    elif any(k in location_lower for k in ["madhya pradesh", "mp", "indore", "ujjain", "bhopal", "jabalpur", "gwalior", "sehore"]):
+        crops_db = [
+          {"crop": "Soyabean (Yellow)", "price_range": (4400, 4800), "unit": "per Quintal", "mandi": "Indore Mandi"},
+          {"crop": "Wheat (Sharbati)", "price_range": (2650, 3100), "unit": "per Quintal", "mandi": "Sehore Mandi"},
+          {"crop": "Gram (Chana)", "price_range": (5850, 6300), "unit": "per Quintal", "mandi": "Ujjain APMC"},
+          {"crop": "Garlic", "price_range": (9000, 13500), "unit": "per Quintal", "mandi": "Mandsaur Mandi"},
+          {"crop": "Mustard", "price_range": (5350, 5700), "unit": "per Quintal", "mandi": "Morena Mandi"},
+          {"crop": "Maize", "price_range": (2050, 2220), "unit": "per Quintal", "mandi": "Chhindwara Mandi"}
+        ]
+    # 9. Gujarat & Rajasthan region
+    elif any(k in location_lower for k in ["gujarat", "rajkot", "surat", "ahmedabad", "gondal", "unjha", "rajasthan", "jaipur", "jodhpur", "kota", "bikaner"]):
+        crops_db = [
+          {"crop": "Cotton (Shankar-6)", "price_range": (7100, 7650), "unit": "per Quintal", "mandi": "Rajkot APMC"},
+          {"crop": "Groundnut (Bold)", "price_range": (6400, 7000), "unit": "per Quintal", "mandi": "Gondal Mandi"},
+          {"crop": "Cumin (Jeera)", "price_range": (26000, 31000), "unit": "per Quintal", "mandi": "Unjha Mandi"},
+          {"crop": "Mustard Seeds", "price_range": (5600, 5950), "unit": "per Quintal", "mandi": "Bharatpur Mandi"},
+          {"crop": "Guar Seed", "price_range": (5200, 5600), "unit": "per Quintal", "mandi": "Jodhpur APMC"},
+          {"crop": "Castor Seed", "price_range": (5800, 6200), "unit": "per Quintal", "mandi": "Patan Mandi"}
+        ]
+    # 10. Generic Pan-India Average (Fallback for location unknown)
     else:
         # If user searched a generic term, customize mandi name to sound local
         display_mandi = location.strip()
@@ -202,17 +232,16 @@ async def get_market_rates(location: str = "Global"):
     if not ollama_configured:
         return get_accurate_local_rates(location)
 
-    prompt = f"""Generate a realistic JSON list of 6 agricultural commodities currently being traded in {location}, India for May 2026.
-    Include local crops specific to this region.
-    Prices should be accurate to current Indian market trends (Paddy ~2200-2400, Wheat ~2400-2600, Cotton ~6800-7400, Onions ~1800-2400, etc.).
+    prompt = f"""You are an Indian agricultural market intelligence expert.
+Generate a JSON array of 6 key agricultural commodities currently traded in or near {location}, India.
+Include real local crops, accurate APMC mandi names in/near {location}, and authentic Indian mandi prices per Quintal.
 
-    Return ONLY a JSON array with this structure:
-    [
-      {{"id": 1, "crop": "Crop Name", "price": 3200, "unit": "per Quintal", "trend": "+1.2%", "up": true, "location": "Specific Mandi Name"}} ,
-      ...
-    ]
-    Ensure the Mandi names are real locations within or near {location}.
-    """
+Return ONLY a raw JSON array matching this structure:
+[
+  {{"id": 1, "crop": "Paddy (Common)", "price": 2250, "unit": "per Quintal", "trend": "+1.2%", "up": true, "location": "{location.split(',')[0].strip()} APMC"}}
+]
+Do not wrap inside any JSON object or dictionary key.
+"""
 
     try:
         import asyncio
@@ -231,7 +260,55 @@ async def get_market_rates(location: str = "Global"):
             text = match.group(1).strip()
 
         market_data = json.loads(text)
-        return market_data
+
+        # Handle case where Ollama wraps the array in a dict (e.g. {"agricultural_commodities": [...]})
+        if isinstance(market_data, dict):
+            for key in ["agricultural_commodities", "commodities", "market_data", "rates", "crops", "data", "items"]:
+                if key in market_data and isinstance(market_data[key], list):
+                    market_data = market_data[key]
+                    break
+            else:
+                for val in market_data.values():
+                    if isinstance(val, list):
+                        market_data = val
+                        break
+                else:
+                    if all(isinstance(v, dict) and "crop" in v for v in market_data.values()):
+                        market_data = list(market_data.values())
+                    else:
+                        market_data = []
+
+        if not isinstance(market_data, list) or len(market_data) == 0:
+            return get_accurate_local_rates(location)
+
+        # Validate and normalize every entry so frontend never gets malformed data
+        cleaned = []
+        for idx, item in enumerate(market_data):
+            if isinstance(item, dict) and item.get("crop"):
+                crop_name = str(item.get("crop", "")).strip()
+                try:
+                    price_val = int(float(str(item.get("price", 2200)).replace("₹", "").replace(",", "").strip()))
+                except Exception:
+                    price_val = 2200
+
+                trend_val = str(item.get("trend", "+1.0%")).strip()
+                up_val = item.get("up", not trend_val.startswith("-"))
+                unit_val = str(item.get("unit", "per Quintal")).strip()
+                loc_val = str(item.get("location", f"{location.split(',')[0].strip()} Mandi")).strip()
+
+                cleaned.append({
+                    "id": idx + 1,
+                    "crop": crop_name,
+                    "price": price_val,
+                    "unit": unit_val,
+                    "trend": trend_val,
+                    "up": bool(up_val),
+                    "location": loc_val
+                })
+
+        if cleaned:
+            return cleaned
+        return get_accurate_local_rates(location)
     except Exception as e:
         logger.warning(f"Ollama Market API failed: {e}. Falling back to accurate local database.")
         return get_accurate_local_rates(location)

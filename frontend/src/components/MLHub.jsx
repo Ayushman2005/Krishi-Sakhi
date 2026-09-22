@@ -245,7 +245,7 @@ const MLHub = () => {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 bg-cyan-950/40 rounded-full border border-cyan-500/30 text-sm font-black uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-cyan-300 font-[var(--font-display)]"
+          className="inline-flex items-center gap-3 px-5 py-2.5 bg-cyan-950/40 rounded-full border border-cyan-500/30 text-sm font-black uppercase tracking-widest mb-6 shadow-[0_0_15px_rgba(6,182,212,0.2)] text-cyan-300 font-display"
         >
           <Cpu size={16} className="text-cyan-400 animate-pulse" />
           Cyber-Intelligence Neural Hub
@@ -255,7 +255,7 @@ const MLHub = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-6xl font-black tracking-tighter mb-4 font-[var(--font-display)]"
+          className="text-6xl font-black tracking-tighter mb-4 font-display"
         >
           AI <span className="gradient-text">Neural Core Suite</span>
         </motion.h1>
@@ -299,7 +299,7 @@ const MLHub = () => {
                   >
                     {stat.display ?? `${stat.value}${stat.suffix}`}
                   </motion.p>
-                  <p className="text-[9px] text-cyan-400/60 font-black uppercase tracking-widest mt-1 font-[var(--font-display)]">{stat.label}</p>
+                  <p className="text-[9px] text-cyan-400/60 font-black uppercase tracking-widest mt-1 font-display">{stat.label}</p>
                 </div>
               </motion.div>
             ))}
@@ -323,7 +323,7 @@ const MLHub = () => {
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border font-[var(--font-display)] ${
+                  className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border font-display ${
                     activeCategory === category
                       ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                       : 'bg-white/5 text-text-muted border-cyan-500/10 hover:border-cyan-500/30 hover:bg-cyan-500/10 hover:text-white'
@@ -413,7 +413,7 @@ const MLHub = () => {
                     </p>
                   </div>
 
-                  <div className="relative z-10 pt-4 border-t border-cyan-500/15 flex items-center justify-between text-xs font-black uppercase tracking-widest text-cyan-400 group-hover:text-white transition-colors font-[var(--font-display)]">
+                  <div className="relative z-10 pt-4 border-t border-cyan-500/15 flex items-center justify-between text-xs font-black uppercase tracking-widest text-cyan-400 group-hover:text-white transition-colors font-display">
                     <span>{isLaunching ? 'Initializing Node…' : 'Launch Model'}</span>
                     <motion.div
                       animate={isLaunching ? { rotate: 360 } : { rotate: 0 }}
@@ -435,7 +435,7 @@ const MLHub = () => {
           <div>
             <button
               onClick={() => setSelectedModelId(null)}
-              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-950/30 rounded-full border border-cyan-500/25 hover:border-cyan-400/50 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-cyan-500/15 hover:shadow-[0_4px_20px_rgba(6,182,212,0.2)] hover:-translate-y-0.5 text-cyan-200 font-[var(--font-display)]"
+              className="group inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-950/30 rounded-full border border-cyan-500/25 hover:border-cyan-400/50 text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-cyan-500/15 hover:shadow-[0_4px_20px_rgba(6,182,212,0.2)] hover:-translate-y-0.5 text-cyan-200 font-display"
             >
               <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform duration-300 text-cyan-400" />
               <span>Back to Neural Suite</span>

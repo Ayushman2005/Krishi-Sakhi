@@ -159,15 +159,15 @@ const Dashboard = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-2 mb-3"
           >
-            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-ping" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-400/90 font-[var(--font-display)]">Agri-Telemetry Cyber Node</span>
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400/90 font-display">Live Farm Overview</span>
           </motion.div>
           <motion.h1 
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            className="text-7xl font-black mb-4 tracking-tighter leading-none font-[var(--font-display)]"
+            className="text-7xl font-black mb-4 tracking-tighter leading-none font-display"
           >
-            {t('welcome')}, <span className="gradient-text">{profile?.name || 'Commander'}</span>
+            {t('welcome')}, <span className="gradient-text">{profile?.name || 'Kisan'}</span>
           </motion.h1>
           <div className="flex flex-wrap items-center gap-3">
             <motion.span 
@@ -184,7 +184,7 @@ const Dashboard = () => {
               transition={{ delay: 0.4 }}
               className="flex items-center gap-2 bg-cyan-950/30 px-4 py-2 rounded-2xl border border-cyan-500/20 backdrop-blur-md text-xs font-bold text-cyan-200"
             >
-              <Sprout size={14} className="text-cyan-400" /> {profile?.crop || 'Mixed'} Crop System
+              <Sprout size={14} className="text-cyan-400" /> {profile?.crop || 'Mixed'} Cultivation
             </motion.span>
           </div>
         </div>
@@ -202,7 +202,7 @@ const Dashboard = () => {
             whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(6,182,212,0.6)" }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setShowLogModal(true)}
-            className="btn btn-primary px-10 h-14 text-lg rounded-2xl font-black shadow-xl shadow-cyan-500/25 font-[var(--font-display)]"
+            className="btn btn-primary px-10 h-14 text-lg rounded-2xl font-black shadow-xl shadow-cyan-500/25 font-display"
           >
             <Plus size={24} /> {t('log_activity')}
           </motion.button>
@@ -280,15 +280,15 @@ const Dashboard = () => {
                 </div>
               )}
               <div className="text-right z-10">
-                <span className="text-[10px] font-black opacity-40 uppercase tracking-widest block mb-1 font-[var(--font-display)]">{stat.label}</span>
-                <span className="text-xs font-black text-cyan-300 bg-cyan-500/10 px-2.5 py-0.5 rounded-md border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.15)] font-[var(--font-mono)]">{stat.sub}</span>
+                <span className="text-[10px] font-black opacity-40 uppercase tracking-widest block mb-1 font-display">{stat.label}</span>
+                <span className="text-xs font-black text-cyan-300 bg-cyan-500/10 px-2.5 py-0.5 rounded-md border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.15)] font-mono">{stat.sub}</span>
               </div>
             </div>
             <motion.p
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 + 0.3 }}
-              className="text-3xl font-black tracking-tighter z-10 text-white font-[var(--font-display)]"
+              className="text-3xl font-black tracking-tighter z-10 text-white font-display"
             >
               {stat.value}
             </motion.p>
@@ -300,7 +300,7 @@ const Dashboard = () => {
 
         <div className="lg:col-span-2 space-y-10">
           <section>
-            <h2 className="text-3xl font-black mb-8 flex items-center gap-4 font-[var(--font-display)]">
+            <h2 className="text-3xl font-black mb-8 flex items-center gap-4 font-display">
               <span className="w-3 h-3 bg-cyan-400 rounded-full pulse-primary" />
               {t('personalized_guidance')}
             </h2>
@@ -343,9 +343,9 @@ const Dashboard = () => {
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between items-center mb-2">
-                          <h3 className="text-xl font-black leading-tight font-[var(--font-display)] text-white">{adv.title}</h3>
+                          <h3 className="text-xl font-black leading-tight font-display text-white">{adv.title}</h3>
                           {adv.priority === 'high' && (
-                            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-[9px] font-black uppercase rounded-lg border border-amber-500/30 animate-pulse font-[var(--font-display)]">Action Required</span>
+                            <span className="px-3 py-1 bg-amber-500/20 text-amber-400 text-[9px] font-black uppercase rounded-lg border border-amber-500/30 animate-pulse font-display">Action Required</span>
                           )}
                         </div>
                         <p className="text-text-muted text-sm leading-relaxed">{adv.content}</p>
@@ -359,17 +359,17 @@ const Dashboard = () => {
 
           <section>
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-3xl font-black flex items-center gap-4 font-[var(--font-display)]">
+              <h2 className="text-3xl font-black flex items-center gap-4 font-display">
                 <span className="w-3 h-3 bg-violet-400 rounded-full" />
                 {t('farm_timeline')}
               </h2>
-              <span className="text-xs font-bold text-cyan-400/80 uppercase tracking-widest font-[var(--font-mono)]">{activities.length} Events Logged</span>
+              <span className="text-xs font-bold text-cyan-400/80 uppercase tracking-widest font-mono">{activities.length} Activities Logged</span>
             </div>
             <div className="space-y-4">
               {activities.length === 0 ? (
                 <div className="glass-card text-center py-20 text-text-muted flex flex-col items-center">
                   <Plus size={48} className="mb-4 opacity-10" />
-                  <p className="italic font-medium">Your telemetry log is empty. Start by recording your first field event!</p>
+                  <p className="italic font-medium">Your farm log is empty. Start by recording your first field activity!</p>
                 </div>
               ) : (
                 activities.map((act) => (
@@ -386,15 +386,15 @@ const Dashboard = () => {
                          act.type === 'harvest' ? <CheckCircle2 size={22} /> : <Sprout size={22} />}
                       </div>
                       <div>
-                        <p className="font-black text-lg tracking-tight capitalize font-[var(--font-display)] text-white">{act.type.replace('-', ' ')}</p>
+                        <p className="font-black text-lg tracking-tight capitalize font-display text-white">{act.type.replace('-', ' ')}</p>
                         <p className="text-text-muted text-sm italic opacity-80">"{act.note}"</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] font-black text-cyan-400 mb-1 flex items-center gap-1 justify-end uppercase tracking-widest font-[var(--font-display)]">
-                        <CheckCircle2 size={12} /> Verified Telemetry
+                      <p className="text-[10px] font-black text-emerald-400 mb-1 flex items-center gap-1 justify-end uppercase tracking-widest font-display">
+                        <CheckCircle2 size={12} /> Recorded Work
                       </p>
-                      <p className="text-xs text-text-muted font-bold font-[var(--font-mono)]">
+                      <p className="text-xs text-text-muted font-bold font-mono">
                         {format(new Date(act.timestamp), 'MMM d, h:mm a')}
                       </p>
                     </div>
@@ -408,7 +408,7 @@ const Dashboard = () => {
         <div className="space-y-10">
           <motion.div variants={itemVariants} className="glass p-10 relative overflow-hidden group border border-cyan-500/20">
             <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl -mr-24 -mt-24 group-hover:bg-cyan-500/20 transition-colors" />
-            <h3 className="text-2xl font-black mb-8 flex items-center gap-4 font-[var(--font-display)]">
+            <h3 className="text-2xl font-black mb-8 flex items-center gap-4 font-display">
               <CalendarCheck className="text-cyan-400" /> {t('upcoming_tasks')}
             </h3>
             <div className="space-y-4">
@@ -419,12 +419,12 @@ const Dashboard = () => {
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-cyan-500/15 hover:bg-cyan-500/10 hover:border-cyan-500/30 transition-all cursor-pointer">
                   <div className="flex flex-col items-center justify-center min-w-[50px] border-r border-white/10 pr-4">
-                    <span className="text-[10px] uppercase font-black text-text-muted font-[var(--font-mono)]">{format(item.date, 'MMM')}</span>
-                    <span className="text-xl font-black text-white font-[var(--font-mono)]">{format(item.date, 'dd')}</span>
+                    <span className="text-[10px] uppercase font-black text-text-muted font-mono">{format(item.date, 'MMM')}</span>
+                    <span className="text-xl font-black text-white font-mono">{format(item.date, 'dd')}</span>
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <p className="font-bold text-sm text-white">{item.task}</p>
-                    <p className={`text-[9px] uppercase font-black tracking-widest mt-1 font-[var(--font-display)] ${item.type === 'critical' ? 'text-amber-400' : 'text-cyan-400'}`}>
+                    <p className={`text-[9px] uppercase font-black tracking-widest mt-1 font-display ${item.type === 'critical' ? 'text-amber-400' : 'text-cyan-400'}`}>
                       {item.type}
                     </p>
                   </div>
@@ -434,7 +434,7 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-            <button className="w-full mt-8 py-4 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 transition-all text-xs font-black uppercase tracking-[0.2em] border border-cyan-500/30 text-cyan-300 flex items-center justify-center gap-2 font-[var(--font-display)]">
+            <button className="w-full mt-8 py-4 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 transition-all text-xs font-black uppercase tracking-[0.2em] border border-cyan-500/30 text-cyan-300 flex items-center justify-center gap-2 font-display">
               <Plus size={14} /> Add Task
             </button>
           </motion.div>
@@ -443,7 +443,7 @@ const Dashboard = () => {
             <div className="absolute top-4 right-4 animate-spin-slow">
               <Sun className="text-cyan-400 opacity-20" size={80} />
             </div>
-            <h3 className="text-2xl font-black mb-8 relative z-10 flex items-center justify-between font-[var(--font-display)]">
+            <h3 className="text-2xl font-black mb-8 relative z-10 flex items-center justify-between font-display">
               {t('regional_climate')}
               {(!weatherData || weatherData.error) && <span className="text-[10px] bg-rose-500/10 text-rose-400 px-2 py-1 rounded-full border border-rose-500/20 ml-2">{weatherData?.error || "Loading..."}</span>}
             </h3>
@@ -460,19 +460,19 @@ const Dashboard = () => {
                 )}
               </div>
               <div>
-                <p className="text-6xl font-black tracking-tighter text-white font-[var(--font-mono)]">{weatherData && !weatherData.error ? Math.round(weatherData.main.temp) : 28}°C</p>
+                <p className="text-6xl font-black tracking-tighter text-white font-mono">{weatherData && !weatherData.error ? Math.round(weatherData.main.temp) : 28}°C</p>
                 <p className="text-text-muted font-bold text-xl tracking-tight capitalize">{weatherData && !weatherData.error ? weatherData.weather[0].description : 'Showers expected'}</p>
-                {weatherData && !weatherData.error && <p className="text-xs text-cyan-400 font-bold tracking-widest uppercase mt-1 font-[var(--font-display)]">{weatherData.name}</p>}
+                {weatherData && !weatherData.error && <p className="text-xs text-cyan-400 font-bold tracking-widest uppercase mt-1 font-display">{weatherData.name}</p>}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 relative z-10">
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-cyan-500/15">
-                <p className="text-[10px] text-cyan-400/70 uppercase font-black tracking-widest mb-1 font-[var(--font-display)]">{t('humidity')}</p>
-                <p className="font-black text-xl text-white font-[var(--font-mono)]">{weatherData && !weatherData.error ? weatherData.main.humidity : 84}%</p>
+                <p className="text-[10px] text-cyan-400/70 uppercase font-black tracking-widest mb-1 font-display">{t('humidity')}</p>
+                <p className="font-black text-xl text-white font-mono">{weatherData && !weatherData.error ? weatherData.main.humidity : 84}%</p>
               </div>
               <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-cyan-500/15">
-                <p className="text-[10px] text-cyan-400/70 uppercase font-black tracking-widest mb-1 font-[var(--font-display)]">{t('wind')}</p>
-                <p className="font-black text-xl text-white font-[var(--font-mono)]">{weatherData && !weatherData.error ? weatherData.wind.speed : 12} <span className="text-sm font-bold text-text-muted">m/s</span></p>
+                <p className="text-[10px] text-cyan-400/70 uppercase font-black tracking-widest mb-1 font-display">{t('wind')}</p>
+                <p className="font-black text-xl text-white font-mono">{weatherData && !weatherData.error ? weatherData.wind.speed : 12} <span className="text-sm font-bold text-text-muted">m/s</span></p>
               </div>
             </div>
           </motion.div>
@@ -496,22 +496,22 @@ const Dashboard = () => {
               className="glass p-12 max-w-xl w-full relative z-10 shadow-[0_50px_100px_rgba(0,0,0,0.9),0_0_30px_rgba(6,182,212,0.15)] border-cyan-500/30 bg-[#030712]/95"
             >
               <div className="flex justify-between items-center mb-10">
-                <h2 className="text-4xl font-black tracking-tighter font-[var(--font-display)] text-white">Record Field Telemetry</h2>
+                <h2 className="text-4xl font-black tracking-tighter font-display text-white">Record Field Activity</h2>
                 <button onClick={() => setShowLogModal(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-text-muted hover:text-white">
                   <X size={24} />
                 </button>
               </div>
               <form onSubmit={handleLogActivity} className="space-y-8">
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400 font-[var(--font-display)]">Select Event Type</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400 font-display">Select Activity Type</label>
                   <div className="grid grid-cols-2 gap-3">
                     {['irrigation', 'sowing', 'fertilizer', 'pest-control', 'harvest'].map(type => (
                       <button 
                         key={type}
                         type="button"
                         onClick={() => setLogType(type)}
-                        className={`px-4 py-4 rounded-2xl border-2 font-bold text-sm transition-all capitalize font-[var(--font-display)] ${
-                          logType === type ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 border-cyan-400 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]' : 'bg-white/5 border-cyan-500/10 text-text-muted hover:border-cyan-500/30 hover:text-white'
+                        className={`px-4 py-4 rounded-2xl border-2 font-bold text-sm transition-all capitalize font-display ${
+                          logType === type ? 'bg-linear-to-r from-emerald-500 to-teal-600 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.4)]' : 'bg-white/5 border-cyan-500/10 text-text-muted hover:border-cyan-500/30 hover:text-white'
                         }`}
                       >
                         {type.replace('-', ' ')}
@@ -520,17 +520,17 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400 font-[var(--font-display)]">Telemetry Observation Details</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-400 font-display">Activity Notes & Observations</label>
                   <textarea 
                     name="note" 
-                    placeholder="Input field telemetry observations or chemical dosages..." 
+                    placeholder="Enter details (e.g. applied 50kg urea, watered south field, noticed aphids on leaves)..." 
                     required
-                    className="min-h-[140px] text-lg py-5 px-6 bg-white/5 border-cyan-500/20 rounded-3xl focus:border-cyan-400 transition-all text-white"
+                    className="min-h-[140px] text-base py-4 px-5 bg-white/5 border-cyan-500/20 rounded-3xl focus:border-cyan-400 transition-all text-white placeholder-text-muted/50"
                   ></textarea>
                 </div>
                 <div className="flex gap-4 pt-6">
-                  <button type="button" onClick={() => setShowLogModal(false)} className="btn btn-secondary flex-1 py-5 text-lg font-black rounded-3xl">Abort</button>
-                  <button type="submit" className="btn btn-primary flex-1 py-5 text-lg font-black rounded-3xl shadow-xl shadow-cyan-500/30">Commit Telemetry</button>
+                  <button type="button" onClick={() => setShowLogModal(false)} className="btn btn-secondary flex-1 py-4 text-base font-black rounded-3xl">Cancel</button>
+                  <button type="submit" className="btn btn-primary flex-1 py-4 text-base font-black rounded-3xl shadow-xl shadow-cyan-500/30">Save Activity</button>
                 </div>
               </form>
             </motion.div>

@@ -181,12 +181,12 @@ const ProfileForm = () => {
               <Sprout size={24} className="text-white" />
             </div>
             <div>
-              <p className="font-black text-lg tracking-tight font-[var(--font-display)] text-white">Krishi Sakhi</p>
-              <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest font-[var(--font-display)]">Cyber-Agro AI Terminal</p>
+              <p className="font-black text-lg tracking-tight font-display text-white">Krishi Sakhi</p>
+              <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest font-display">Cyber-Agro AI Terminal</p>
             </div>
           </div>
 
-          <h2 className="text-4xl font-black tracking-tighter leading-tight mb-4 font-[var(--font-display)]">
+          <h2 className="text-4xl font-black tracking-tighter leading-tight mb-4 font-display">
             Your Cyber<br />
             <span className="gradient-text">Agro Companion</span><br />
             Initializes Here.
@@ -216,7 +216,7 @@ const ProfileForm = () => {
                   {step > s.id ? <CheckCircle2 size={16} /> : s.id}
                 </motion.div>
                 <div>
-                  <p className="font-black text-sm font-[var(--font-display)] text-white">{s.label}</p>
+                  <p className="font-black text-sm font-display text-white">{s.label}</p>
                   <p className="text-[10px] text-cyan-400/70">{s.sub}</p>
                 </div>
               </div>
@@ -382,7 +382,7 @@ const ProfileForm = () => {
                 )}
 
                 <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                  className="btn btn-primary w-full py-5 text-lg font-black group font-[var(--font-display)]"
+                  className="btn btn-primary w-full py-5 text-lg font-black group font-display"
                   style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(6,182,212,0.5)' }}
                 >
                   Continue to Field Details
@@ -403,10 +403,10 @@ const ProfileForm = () => {
                 className="space-y-8"
               >
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 rounded-full text-cyan-400 text-xs font-black uppercase tracking-widest mb-4 border border-cyan-500/30 font-[var(--font-display)]">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 rounded-full text-cyan-400 text-xs font-black uppercase tracking-widest mb-4 border border-cyan-500/30 font-display">
                     <Sprout size={12} /> Step 2 of 2 — Agro Configuration
                   </div>
-                  <h1 className="text-5xl font-black tracking-tighter mb-2 font-[var(--font-display)] text-white">
+                  <h1 className="text-5xl font-black tracking-tighter mb-2 font-display text-white">
                     Calibrate Your <span className="gradient-text">Agro Node</span>
                   </h1>
                   <p className="text-text-muted text-base">This powers your personalized AI inference models and precision yield forecasting.</p>
@@ -421,7 +421,7 @@ const ProfileForm = () => {
                       value={formData.landSize} onChange={e => set('landSize', e.target.value)}
                       style={{ paddingLeft: '2.75rem', paddingRight: '5rem' }}
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-black text-cyan-400/80 pointer-events-none font-[var(--font-display)]">acres</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-black text-cyan-400/80 pointer-events-none font-display">acres</span>
                   </div>
                 </Field>
 
@@ -440,7 +440,7 @@ const ProfileForm = () => {
                         }`}
                       >
                         <span className="text-2xl leading-none">{crop.emoji}</span>
-                        <span className="text-[10px] font-black leading-tight font-[var(--font-display)]">{crop.label}</span>
+                        <span className="text-[10px] font-black leading-tight font-display">{crop.label}</span>
                         <span className="text-[8px] text-text-muted leading-none hidden sm:block">{crop.desc}</span>
                       </motion.button>
                     ))}
@@ -461,7 +461,7 @@ const ProfileForm = () => {
                         }`}
                       >
                         <irr.icon size={20} className={formData.irrigation === irr.value ? 'text-cyan-400' : ''} />
-                        <span className="text-xs font-black font-[var(--font-display)]">{irr.label}</span>
+                        <span className="text-xs font-black font-display">{irr.label}</span>
                         <span className="text-[9px] opacity-60">{irr.desc}</span>
                       </button>
                     ))}
@@ -475,7 +475,7 @@ const ProfileForm = () => {
                       <button
                         key={soil.value} type="button"
                         onClick={() => set('soilType', soil.value)}
-                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all text-sm font-bold font-[var(--font-display)] ${
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border transition-all text-sm font-bold font-display ${
                           formData.soilType === soil.value
                             ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-[0_0_12px_rgba(6,182,212,0.3)]'
                             : 'border-white/10 bg-white/5 text-text-muted hover:border-cyan-500/30'
@@ -506,7 +506,7 @@ const ProfileForm = () => {
                   </motion.button>
 
                   <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                    className="btn btn-primary flex-1 py-5 text-lg font-black group font-[var(--font-display)]"
+                    className="btn btn-primary flex-1 py-5 text-lg font-black group font-display"
                     style={{ borderRadius: '18px', boxShadow: '0 20px 50px -12px rgba(6,182,212,0.5)' }}
                   >
                     <Sparkles size={20} />

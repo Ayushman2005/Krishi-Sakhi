@@ -93,7 +93,7 @@ const ChatInterface = () => {
           whileHover={{ scale: 1.1, rotate: -5 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-cyan-500 via-cyan-600 to-indigo-600 rounded-[24px] shadow-[0_20px_40px_rgba(6,182,212,0.5)] flex items-center justify-center text-white z-50 cursor-pointer group border border-cyan-300/30"
+          className="fixed bottom-24 md:bottom-8 right-6 md:right-8 w-16 h-16 bg-gradient-to-tr from-cyan-500 via-cyan-600 to-indigo-600 rounded-[24px] shadow-[0_20px_40px_rgba(6,182,212,0.5)] flex items-center justify-center text-white z-50 cursor-pointer group border border-cyan-300/30"
         >
           <div className="absolute inset-0 bg-white/20 rounded-[24px] scale-0 group-hover:scale-100 transition-transform duration-300" />
           <MessageCircle size={30} className="relative z-10 group-hover:scale-110 transition-transform text-white" />
@@ -133,7 +133,7 @@ const ChatInterface = () => {
                   <div className="absolute bottom-0 right-0 w-4 h-4 bg-cyan-400 border-2 border-[#02040a] rounded-full shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-white flex items-center gap-2 tracking-tighter font-[var(--font-display)]">
+                  <h3 className="text-2xl font-black text-white flex items-center gap-2 tracking-tighter font-display">
                     Krishi Sakhi
                     <motion.span
                       animate={{ scale: [1, 1.2, 1] }}
@@ -143,8 +143,8 @@ const ChatInterface = () => {
                     </motion.span>
                   </h3>
                   <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-                    <p className="text-[10px] text-cyan-400 font-black tracking-[0.2em] uppercase font-[var(--font-display)]">AI Telemetry Core</p>
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <p className="text-[10px] text-emerald-400 font-black tracking-[0.2em] uppercase font-display">Farm AI Assistant</p>
                   </div>
                 </div>
               </div>
@@ -212,7 +212,7 @@ const ChatInterface = () => {
                     type="text" 
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask about neural models, weather, crop telemetry..."
+                    placeholder="Ask about crops, diseases, weather, fertilizer, mandi prices..."
                     className="relative w-full bg-[#071126]/90 border border-cyan-500/25 rounded-[24px] pl-6 pr-12 py-4 text-white focus:outline-none focus:border-cyan-400 transition-all text-[15px] shadow-inner"
                   />
                   <button 

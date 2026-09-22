@@ -21,7 +21,8 @@ _ollama_status_cache = {"status": False, "last_check": 0.0}
 
 def check_ollama_status(cache_ttl: float = 5.0) -> bool:
     """
-    Verify connection to local Ollama instance with 5-second caching.
+    Verify connection to local Ollama instance and ensure configured model exists.
+    With 5-second caching.
     Tries 127.0.0.1 automatically if localhost encounters Windows IPv6 resolution refusal.
     """
     global ollama_host
@@ -41,8 +42,28 @@ def check_ollama_status(cache_ttl: float = 5.0) -> bool:
             response = requests.get(f"{host}/api/tags", timeout=3)
             if response.status_code == 200:
                 ollama_host = host
+                data = response.json()
+                models = [m.get("name", "") for m in data.get("models", [])]
+
+                # Check if configured model (or with tags, e.g. llama3.2:latest) is installed
+                model_installed = any(
+                    m == ollama_model or m.startswith(f"{ollama_model}:") or m.split(":")[0] == ollama_model
+                    for m in models
+                )
+
+                if not model_installed:
+                    if _ollama_status_cache["status"] or _ollama_status_cache.get("warned") != ollama_model:
+                        logger.warning(
+                            f"⚠️ Ollama is running at {ollama_host}, but model '{ollama_model}' is not pulled yet. "
+                            f"Installed models: {models if models else 'None'}. "
+                            f"Run 'ollama pull {ollama_model}' in your terminal to enable AI features. Falling back to local database."
+                        )
+                        _ollama_status_cache["warned"] = ollama_model
+                    _ollama_status_cache["status"] = False
+                    return False
+
                 if not _ollama_status_cache["status"]:
-                    logger.info(f"✅ Ollama connection verified at {ollama_host}. Default model: {ollama_model}")
+                    logger.info(f"✅ Ollama connection verified at {ollama_host} with active model '{ollama_model}'.")
                 _ollama_status_cache["status"] = True
                 return True
         except Exception:
@@ -124,6 +145,13 @@ def generate_content_with_fallback(contents, **kwargs):
             headers={"Content-Type": "application/json"},
             timeout=60  # Local models can take a moment to generate, especially vision
         )
+        if response.status_code != 200:
+            err_detail = response.text
+            try:
+                err_detail = response.json().get("error", response.text)
+            except Exception:
+                pass
+            logger.error(f"Ollama server returned {response.status_code}: {err_detail}")
         response.raise_for_status()
         res_json = response.json()
         text_content = res_json.get("response", "")
