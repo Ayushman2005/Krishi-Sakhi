@@ -233,14 +233,15 @@ async def get_market_rates(location: str = "Global"):
         return get_accurate_local_rates(location)
 
     prompt = f"""You are an Indian agricultural market intelligence expert.
-Generate a JSON array of 6 key agricultural commodities currently traded in or near {location}, India.
+Generate a JSON object containing 6 key agricultural commodities currently traded in or near {location}, India.
 Include real local crops, accurate APMC mandi names in/near {location}, and authentic Indian mandi prices per Quintal.
 
-Return ONLY a raw JSON array matching this structure:
-[
-  {{"id": 1, "crop": "Paddy (Common)", "price": 2250, "unit": "per Quintal", "trend": "+1.2%", "up": true, "location": "{location.split(',')[0].strip()} APMC"}}
-]
-Do not wrap inside any JSON object or dictionary key.
+Return ONLY a valid JSON object matching this structure:
+{{
+  "agricultural_commodities": [
+    {{"id": 1, "crop": "Paddy (Common)", "price": 2250, "unit": "per Quintal", "trend": "+1.2%", "up": true, "location": "{location.split(',')[0].strip()} APMC"}}
+  ]
+}}
 """
 
     try:

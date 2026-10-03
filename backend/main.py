@@ -31,12 +31,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-from ml_models.ai_client import ollama_configured, generate_content_with_fallback, check_ollama_status
+from ml_models.ai_client import ai_configured, ollama_configured, generate_content_with_fallback, get_active_provider
 
-if ollama_configured:
-    logger.info("✅ Ollama configured successfully via centralized client.")
+if ai_configured:
+    logger.info(f"✅ AI service configured successfully via centralized client (Provider: {get_active_provider().upper()}).")
 else:
-    logger.warning("⚠ Ollama service missing or invalid. Running in Demo Mode.")
+    logger.warning("⚠ AI service missing or invalid. Running in Demo Mode.")
 
 app = FastAPI(
     title="Krishi Sakhi API",
@@ -97,10 +97,10 @@ async def health_check():
 
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
-    if not ollama_configured:
+    if not ai_configured:
         return {
             "response": (
-                "Ollama service is not running. Please start Ollama locally for full AI capabilities.")}
+                "AI service is not configured. Please check your API key or start Ollama locally for full AI capabilities.")}
 
     context = f"Profile: {
         request.profile}\nActivities: {
@@ -176,39 +176,37 @@ async def get_market_trends():
         {"name": "Rice", "price": "$420.00/MT", "trend": "up", "change": "+0.8%"},
     ]
 
+from ml_models.schemes_data import get_all_schemes, get_scheme_categories_with_counts
+
+@app.get("/schemes/categories")
+async def get_schemes_categories_endpoint():
+    return {"categories": get_scheme_categories_with_counts()}
+
 @app.get("/schemes")
 async def get_schemes(
-        state: str = "Global",
+        state: str = "All",
         crop: str = "General",
+        category: str = "all",
+        search: str = "",
         land_size_acres: float = 2.0):
-    schemes = [{"name": "PM-KISAN",
-                "benefit": "₹6,000 per year in 3 equal installments.",
-                "eligibility": "All landholding farmers."},
-               {"name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
-                "benefit": "Crop insurance against natural calamities.",
-                "eligibility": "Farmers growing notified crops."},
-               {"name": "Kisan Credit Card (KCC)",
-                "benefit": "Short-term formal credit at subsidized interest rates (4-7%).",
-                "eligibility": "Farmers, tenant farmers, sharecroppers."},
-               ]
-
-    if state.lower() == "global" or state.lower() == "india":
-        schemes.append({"name": "Sustainable Agriculture Mission",
-                        "benefit": "Subsidies for integrated farming and sustainable practices.",
-                        "eligibility": "Farmers worldwide / National guidelines."})
-        if crop.lower() == "wheat" or crop.lower() == "rice":
-            schemes.append({"name": "Staple Crop Protection Scheme",
-                            "benefit": "Financial assistance for staple crop rejuvenation.",
-                            "eligibility": "Staple crop farmers."})
-
-    if land_size_acres < 5.0:
-        schemes.append({"name": "Paramparagat Krishi Vikas Yojana (PKVY)",
-                        "benefit": "Financial assistance for adopting organic farming.",
-                        "eligibility": "Small/marginal farmers forming clusters."})
-
-    return {"state": state, "crop": crop, "schemes": schemes}
+    filtered_schemes = get_all_schemes(
+        category=category,
+        state=state,
+        crop=crop,
+        search=search,
+        land_size_acres=land_size_acres
+    )
+    categories = get_scheme_categories_with_counts()
+    return {
+        "state": state,
+        "crop": crop,
+        "category": category,
+        "total": len(filtered_schemes),
+        "schemes": filtered_schemes,
+        "categories": categories
+    }
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
